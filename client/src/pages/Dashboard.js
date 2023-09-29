@@ -1,3 +1,5 @@
+
+
 import NavbarComponent from "../components/NavbarComponent";
 import userLogo from "../images/userLogo.svg";
 import downArrowFilled from "../images/downArrowFilled.svg";
@@ -47,6 +49,7 @@ export default function Dashboard() {
       </CardBody>
     </Card>
     </div>
+
     </>
   );
 }
