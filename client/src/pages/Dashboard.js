@@ -1,45 +1,30 @@
-import React from "react";
-import Footer from '../components/footer'
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@nextui-org/react";
-import {AcmeLogo} from "../components/AcmeLogo";
 
+
+import NavbarComponent from "../components/NavbarComponent";
+import userLogo from "../images/userLogo.svg";
+import downArrowFilled from "../images/downArrowFilled.svg";
+import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
 
 export default function Dashboard() {
-  return (<>
-    <Navbar>
-      <NavbarBrand>
-        <AcmeLogo />
-        <p className="font-bold text-inherit">ACME</p>
-      </NavbarBrand>
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Features
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive>
-          <Link href="#" aria-current="page">
-            Customers
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Integrations
-          </Link>
-        </NavbarItem>
-      </NavbarContent>
-      <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
-            Sign Up
-          </Button>
-        </NavbarItem>
-      </NavbarContent>
-    </Navbar>
-    <Footer/>
+  return (
+    <>
+    <NavbarComponent />
+    <div className="flex flex-col gap-5 p-7 font-['Poppins']">
+    
+    <Card className="rounded-[12px] border-slate-800 border-2">
+        <CardHeader className="gap-4 px-6 h-32">
+            <img className="h-full p-2 opacity-90" src={userLogo} alt="menu" />
+            <div className="flex flex-col"><p className="text-4xl font-bold">Admin</p><p className="text-2xl">Institute Name</p></div>
+            <img className="h-4/6 p-2 ml-auto" src={downArrowFilled} alt="menu" />
+        </CardHeader>
+    </Card>
+    <Card className="rounded-[12px] border-slate-800 border-2">
+      <CardBody>
+        <p>Make beautiful websites regardless of your design experience.</p>
+      </CardBody>
+    </Card>
+    </div>
+
     </>
   );
 }
