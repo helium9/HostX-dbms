@@ -1,26 +1,31 @@
 import NavbarComponent from "../components/NavbarComponent";
 import InputComponent from "../components/InputComponent";
 import ButtonComponent from "../components/ButtonComponent";
-
+import Footer from "../components/footer"
 export default function Preferences(){
     return(
-        <div>
-        <NavbarComponent/>
-        <div className="mx-auto" >
-        <h1 className=" ml-20 text-base mt-8 md:text-4xl md:mt-16 md:ml-60 lg:ml-72 xl:ml-96  ">Your Preferences</h1>
-        <div className="md:mt-9 ">
-        <div className="flex  flex-col items-center">
-                        <InputComponent />
-                        <InputComponent />
-                        <InputComponent />
-                        <InputComponent />
-                        <InputComponent />
-                        <InputComponent />
-        </div>
-        </div>
-        <ButtonComponent/>
-        </div>
         
+        <div className="grid flex-col">
+        <NavbarComponent/>
+        <div className="grid mx-64 w-80  md:w-200  justify-self-center " >
+        <div className="flex mt-8 md:text-4xl md:mt-16 items-center justify-self-start ">Your Preferences</div>
+        
+        <div className="flex  flex-col justify-self-start ">
+                        <InputComponent />
+                        <InputComponent />
+                        <InputComponent />
+                        <InputComponent />
+                        <InputComponent />
+                        <InputComponent />
+        </div>
+        <div className="flex mt-4 items-center justify-self-end ">
+        <ButtonComponent />
+        </div>
+       
+        </div>
+        <div className="mt-auto">
+        <Footer/>
+        </div>
         </div>
     );
 }
