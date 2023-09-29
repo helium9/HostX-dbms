@@ -7,6 +7,7 @@ import editPencil from "../images/editPencil.svg";
 import blueCross from "../images/blueCross.svg";
 import blueEditPencil from "../images/blueEditPencil.svg";
 import {useState} from 'react';
+import Footer from "../components/footer"
 
 function DashButton({children}){
     const [active, setActive] = useState(false);
@@ -46,6 +47,7 @@ export default function Dashboard() {
         <DashButton />
       </CardBody>
     </Card>
+    <Footer/>
     </div>
 
     </>

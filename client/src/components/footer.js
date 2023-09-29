@@ -7,9 +7,9 @@ import PropTypes from 'prop-types'
 
 export default function Footer(){
 return (<div className="grid space-y-4">
-    <hr className='w-full mx-auto h-px my-2 bg-gray-200 border-0'></hr>
+    <hr className=' invisible sm:visible w-full mx-auto h-px my-2 bg-gray-200 border-0'></hr>
     
-    <div className="flex-row flex mx-10 md:mx-20 xl:mx-24">
+    <div className=" invisible sm:visible flex-row flex mx-10 md:mx-20 xl:mx-24">
         <div className="font-[poppins] italic font-semibold text-6xl justify-self-center self-center block ">HostX<sup className='font-thin '>®</sup></div>
         <img src={git2} className='mx-4'></img>
         <div className='grid grid-cols-2 gap-4 gap-x-0 box-content justify-self-end  ml-auto '>
@@ -22,8 +22,8 @@ return (<div className="grid space-y-4">
         </div>
         
     </div>
-    <div className='grid'>
-    <hr className='w-3/4 sm:w-4/5 xl:w-5/6 mx-auto h-px my-2 border-0.25 border-grey-500'></hr>
+    <div className=' grid'>
+    <hr className='  w-3/4 sm:w-4/5 xl:w-5/6 mx-auto h-px my-2 border-0.25 border-grey-500'></hr>
 
     
     <div className='justify-self-center font-[poppins] self-center text-xs'>HostX • 2023 • All rights reserved</div>
