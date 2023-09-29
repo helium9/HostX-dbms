@@ -1,10 +1,11 @@
 import React from "react";
+import Footer from '../components/footer'
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@nextui-org/react";
 import {AcmeLogo} from "../components/AcmeLogo";
 
 
 export default function Dashboard() {
-  return (
+  return (<>
     <Navbar>
       <NavbarBrand>
         <AcmeLogo />
@@ -38,5 +39,7 @@ export default function Dashboard() {
         </NavbarItem>
       </NavbarContent>
     </Navbar>
+    <Footer/>
+    </>
   );
 }
