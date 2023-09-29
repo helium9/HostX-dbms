@@ -6,19 +6,28 @@ import PropTypes from 'prop-types'
 
 
 export default function Footer(){
-return (<div>
-    <hr className='w-11/12 mx-auto h-px my-2 bg-gray-200 border-0'></hr>
-    <div className="flex-row flex ">
-        <div className="font-[poppins] italic font-semibold text-6xl justify-self-center self-center block">HostX</div>
-        <img src={git2}></img>
-        <div className='grid grid-cols-2 gap-0.25 gap-x-0 content-end box-content content-end '>
-            <div className='font-[poppins] justify-self-center self-center box-content'>Home</div>
-            <div className='font-[poppins] justify-self-center self-center box-content'>Contact Us</div>
-            <div className='font-[poppins] justify-self-center self-center box-content'>Docs</div>
-            <div className='font-[poppins] justify-self-center self-center box-content'>About Us</div>
-            <div className='font-[poppins] justify-self-center self-center box-content'>Help</div>
+return (<div className="grid space-y-4">
+    <hr className='w-full mx-auto h-px my-2 bg-gray-200 border-0'></hr>
+    
+    <div className="flex-row flex mx-10 md:mx-20 xl:mx-24">
+        <div className="font-[poppins] italic font-semibold text-6xl justify-self-center self-center block ">HostX<sup className='font-thin '>®</sup></div>
+        <img src={git2} className='mx-4'></img>
+        <div className='grid grid-cols-2 gap-4 gap-x-0 box-content justify-self-end  ml-auto '>
+            <div className='font-[poppins]  self-left '>Home</div>
+            <div className='font-[poppins]  self-left '>Contact Us</div>
+            <div className='font-[poppins]  self-left '>Docs</div>
+            <div className='font-[poppins]  self-left '>About Us</div>
+            <div className='font-[poppins]  self-left '>Help</div>
             
         </div>
+        
+    </div>
+    <div className='grid'>
+    <hr className='w-3/4 sm:w-4/5 xl:w-5/6 mx-auto h-px my-2 border-0.25 border-grey-500'></hr>
+
+    
+    <div className='justify-self-center font-[poppins] self-center text-xs'>HostX • 2023 • All rights reserved</div>
+    
     </div>
     
 </div>);
