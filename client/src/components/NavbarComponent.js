@@ -1,4 +1,5 @@
 import React from "react";
+import menuLogo from "../images/menu.svg";
 import {
   Navbar,
   NavbarBrand,
@@ -36,9 +37,18 @@ export default function NavbarComponent() {
           <Link href="#">Login</Link>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
+          <Button
+            as={Link}
+            color="primary"
+            href="#"
+            variant="flat"
+            className="invisible sm:visible"
+          >
             Sign Up
           </Button>
+        </NavbarItem>
+        <NavbarItem className="sm:invisible visible">
+          <img src={menuLogo} alt="menu" /> {/*use with memu implementation later on */}
         </NavbarItem>
       </NavbarContent>
     </Navbar>
