@@ -1,5 +1,5 @@
 import React from "react";
-import Footer from '../components/footer'
+import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
 import {Card, CardBody,CardHeader,CardFooter,Link, Image, Button, Progress} from "@nextui-org/react";
 import mainCard from "../components/card"
