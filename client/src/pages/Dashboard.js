@@ -82,9 +82,9 @@ function FormControlsSection({ active }) {
   let put;
   if (active) {
     put = (
-      <div className="flex flex-col gap-5 lg:flex-row lg:mx-32 lg:border-2 lg:border-blue-600 p-7 pt-0 lg:p-7 lg:rounded-[12px]">
-        <Card className="border-2 border-blue-600 bg-black">
-          <CardHeader className="flex flex-row justify-center items-start my-2">
+      <div className="flex flex-col gap-5 lg:flex-row lg:mx-32 lg:border-2 lg:border-blue-600 p-7 pt-0 lg:p-7 lg:rounded-[12px] lg:content-stretch lg:h-48">
+        <Card className="border-2 border-blue-600 bg-black lg:px-4">
+          <CardHeader className="flex flex-row justify-center items-start my-2 min-w-max">
             <div className="flex flex-col items-center">
               <p className="font-['Roboto'] mb-2 text-xl">Filled by</p>
               <p className="text-5xl font-semibold">30</p>
@@ -101,22 +101,23 @@ function FormControlsSection({ active }) {
         </Card>
         <Card className="bg-blue-600 px-7 grow lg:px-4">
           <CardBody className="flex flex-row items-center">
-            <img className="h-14 w-14 lg:h-12 lg:w-12 mr-1" src={linkLogo} alt="menu" />
-            <div className="flex flex-col p-3 gap-2">
-              <p className="text-3xl font-bold">Form link</p>
-              <p className="text-xl grow break-words">ergteterw46b746</p>
+            <img className="h-14 w-14 lg:h-12 lg:w-12 mr-2" src={linkLogo} alt="menu" />
+            <div className="flex flex-col p-3 lg:p-1 gap-2">
+              <p className="text-3xl font-bold lg:text-4xl">Form link</p>
+              <p className="text-xl grow break-words lg:text-2xl">ergteterw46b746</p>
             </div>{" "}
             {/* Word wrapping not working */}
           </CardBody>
         </Card>
-        <Button className="bg-zinc-300 h-20 hover:bg-white">
+        <Button className="bg-zinc-300 h-20 hover:bg-white lg:flex lg:flex-col lg:h-full">
           <img className="h-10 w-10" src={viewForm} alt="menu" />
           <p className="text-3xl font-bold text-black">View form</p>
         </Button>
-        <Button className="bg-zinc-300 h-20 hover:bg-white">
+        <Button className="bg-zinc-300 h-20 hover:bg-white lg:flex lg:flex-col lg:h-full">
           <img className="h-9 w-9" src={stopForm} alt="menu" />
           <p className="text-3xl font-bold text-black">Stop form</p>
         </Button>
+        
       </div>
     );
   } else {
@@ -150,7 +151,7 @@ export default function Dashboard() {
         </Card>
         <Card className="rounded-[12px] border-slate-800 border-2 px-9  lg:grow">
           <CardHeader className="m-0 p-0">
-            <p className="font-bold text-2xl mt-6 mb-4">Registered Hostels</p>
+            <p className="font-bold text-2xl mt-6 mb-4 lg:text-3xl lg:font-normal">Registered Hostels</p>
           </CardHeader>
           <CardBody className="m-0 mb-4 p-0 pb-4 flex-row gap-4 flex-wrap items-center">
             <DashButton>Name</DashButton>
