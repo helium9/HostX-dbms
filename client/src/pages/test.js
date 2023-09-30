@@ -27,7 +27,7 @@ export default function Dashboard2() {
     <div className="grid  bg-opacity-10 backdrop-blur-lg backdrop-filter bg-slate-100 rounded-xl  max-w-full p-4 pl-8   "><div className="font-[poppins] font-semibold text-2xl"><span className="text-3xl whitespace-pre ">③  </span> Get allotment</div><div className="text-xl font-[poppins] invisible  sm:visible">Export your alloment list as a PDF or an excel file.</div></div>
     </div>
     </div>
-    <Footer className="mt-auto" />
+    <FooterComponent className="mt-auto" />
     </>
   );
 }
