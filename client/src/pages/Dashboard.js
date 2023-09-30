@@ -20,6 +20,7 @@ import expandArrowUp from "../images/expandArrowUp.svg";
 import linkLogo from "../images/linkLogo.svg";
 import stopForm from "../images/stopForm.svg";
 import viewForm from "../images/viewForm.svg";
+import whiteEditPencil from "../images/whiteEditPencil.svg";
 
 function DashButton({ children }) {
   const [active, setActive] = useState(false);
@@ -50,20 +51,38 @@ function DashButton({ children }) {
     </Button>
   );
 }
-
-function FormControlsSection() {
-  const [active, setActive] = useState(false);
+function FormControlsButton({ active, setActive }) {
   let put;
   if (active) {
     put = (
       <div className="flex flex-col gap-5">
         <Button
-          className="bg-black h-20 border-2 border-blue-600 flex flex-row items-center content-center"
+          className="bg-black h-20 border-2 min-w-fit border-blue-600 flex flex-row items-center content-center"
           onClick={() => setActive(false)}
         >
-          <p className="text-3xl font-bold ml-6">Form options</p>
-          <img className="h-9 w-9" src={expandArrowUp} alt="menu" />
+          <p className="text-3xl lg:text-2xl font-bold ml-6">Form options</p>
+          <img className="h-9 w-9 mr-6" src={expandArrowUp} alt="menu" />
         </Button>
+      </div>
+    );
+  } else {
+    put = (
+      <Button
+        className="bg-blue-600 h-20 min-w-fit"
+        onClick={() => setActive(true)}
+      >
+        <img className="h-8 w-8" src={releaseForm} alt="menu" />
+        <p className="text-3xl font-bold lg:text-2xl">Release form</p>
+      </Button>
+    );
+  }
+  return <>{put}</>;
+}
+function FormControlsSection({ active }) {
+  let put;
+  if (active) {
+    put = (
+      <div className="flex flex-col gap-5 lg:flex-row lg:mx-32 lg:border-2 lg:border-blue-600 p-7 pt-0 lg:p-7 lg:rounded-[12px]">
         <Card className="border-2 border-blue-600 bg-black">
           <CardHeader className="flex flex-row justify-center items-start my-2">
             <div className="flex flex-col items-center">
@@ -80,9 +99,9 @@ function FormControlsSection() {
             </div>
           </CardHeader>
         </Card>
-        <Card className="bg-blue-600 px-7">
+        <Card className="bg-blue-600 px-7 grow lg:px-4">
           <CardBody className="flex flex-row items-center">
-            <img className="h-14 w-14 mr-1" src={linkLogo} alt="menu" />
+            <img className="h-14 w-14 lg:h-12 lg:w-12 mr-1" src={linkLogo} alt="menu" />
             <div className="flex flex-col p-3 gap-2">
               <p className="text-3xl font-bold">Form link</p>
               <p className="text-xl grow break-words">ergteterw46b746</p>
@@ -101,16 +120,12 @@ function FormControlsSection() {
       </div>
     );
   } else {
-    put = (
-      <Button className="bg-blue-600 h-20 min-w-fit" onClick={() => setActive(true)}>
-        <img className="h-8 w-8" src={releaseForm} alt="menu" />
-        <p className="text-3xl font-bold lg:text-2xl">Release form</p>
-      </Button>
-    );
+    put = <div></div>;
   }
   return <>{put}</>;
 }
 export default function Dashboard() {
+  const [formActive, setFormActive] = useState(false);
   return (
     <>
       <NavbarComponent />
@@ -157,8 +172,29 @@ export default function Dashboard() {
             </div>
           </CardBody>
         </Card>
-        <FormControlsSection className="shrink-0" />
+        <div className="flex flex-col gap-5 lg:max-w-xs">
+          <div className="max-lg:hidden grow">
+            <Card className="border-2 border-blue-600 bg-black h-full px-6 pt-1">
+              <CardHeader className="flex flex-row items-center my-2 text-2xl font-bold gap-3">
+                <p>User details</p>
+                <img className="h-5 w-5" src={whiteEditPencil} alt="menu" />
+              </CardHeader>
+              <CardBody className="m-0 p-0 px-3">
+              <div className="text-xl flex flex-row"><p className="w-fit font-bold mr-2">Email</p>admin@iiti.ac.in</div>
+                <div className="text-xl flex flex-row"><p className="w-fit font-bold mr-2">Contact</p>99999999999</div>
+              </CardBody>
+                
+            </Card>
+          </div>
+
+          <FormControlsButton
+            active={formActive}
+            setActive={setFormActive}
+            className="shrink-0"
+          />
+        </div>
       </div>
+      <FormControlsSection active={formActive} className="shrink-0" />
     </>
   );
 }
