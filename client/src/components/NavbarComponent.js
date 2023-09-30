@@ -13,28 +13,28 @@ export default function NavbarComponent() {
   return (
     <Navbar>
       <NavbarBrand>
-        <p className="font-bold text-inherit italic text-lg">HostX</p>
+        <p className="font-bold text-inherit italic text-3xl">HostX</p>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-x-16" justify="center">
         <NavbarItem>
-          <Link color="foreground" href="#">
+          <Link color="foreground" href="#" className="text-xl">
             Home
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
-          <Link href="#" aria-current="page">
+          <Link href="#" aria-current="page" className="text-xl">
             Docs
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="#">
+          <Link color="foreground" href="#" className="text-xl">
             About us
           </Link>
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
+          <Link href="#" className="text-xl">Login</Link>
         </NavbarItem>
         <NavbarItem>
           <Button
@@ -42,7 +42,7 @@ export default function NavbarComponent() {
             color="primary"
             href="#"
             variant="flat"
-            className="invisible sm:visible"
+            className="invisible sm:visible text-xl h-10 rounded-lg"
           >
             Sign Up
           </Button>
