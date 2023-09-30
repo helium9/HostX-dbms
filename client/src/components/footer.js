@@ -25,7 +25,7 @@ return (
         
     </div>
     <div className=' grid'>
-    <hr className='  w-3/4 sm:w-4/5 xl:w-5/6 mx-auto h-px my-2 border-0.25 border-grey-500'></hr>
+    <hr className='  w-3/4 invisible sm:visible sm:w-4/5 xl:w-5/6 mx-auto h-px my-2 border-0.25 border-grey-500'></hr>
 
     
     <div className='justify-self-center font-[poppins] self-center text-xs'>HostX • 2023 • All rights reserved</div>
