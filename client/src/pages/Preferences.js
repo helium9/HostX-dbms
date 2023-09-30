@@ -1,7 +1,7 @@
 import NavbarComponent from "../components/NavbarComponent";
 import InputComponent from "../components/InputComponent";
 import ButtonComponent from "../components/ButtonComponent";
-import Footer from "../components/footer"
+import FooterComponent from "../components/FooterComponent";
 export default function Preferences(){
     return(
         
@@ -24,7 +24,7 @@ export default function Preferences(){
        
         </div>
         <div className="mt-auto">
-        <Footer/>
+        <FooterComponent />
         </div>
         </div>
     );

@@ -1,12 +1,12 @@
 import React from "react";
-import Footer from '../components/footer'
+import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
 
 
 export default function Dashboard2() {
   return (<>
     <NavbarComponent />
-    <Footer/>
+    <FooterComponent />
     </>
   );
 }

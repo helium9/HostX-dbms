@@ -1,5 +1,5 @@
 import React from "react";
-import Footer from '../components/footer'
+import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
 import pyramid from "../images/2_3pyramid.svg"
 import donut from "../images/5_3donut.svg"
@@ -20,7 +20,7 @@ export default function LandingPage(){
 
     </div>
     <div className="items-baseline">
-    <Footer/>
+    <FooterComponent />
     </div>
     </div>
     );
