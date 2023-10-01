@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "@nextui-org/react";
 import whiteTick from "../images/whiteTick.svg";
 import FooterComponent from "../components/FooterComponent";
+import testNavbarComponent from "../components/testNavbarComponent";
 
 function InputComponent({ id, children = "Roll number", isDisabled = false }) {
   const [active, setActive] = useState(false);
@@ -36,7 +37,7 @@ export default function Forms2() {
   return (
     <>
       <div className="flex flex-col min-h-screen">
-        <NavbarComponent />
+        <testNavbarComponent />
         <form className="flex flex-col w-96 lg:w-[32rem] self-center gap-3 mb-20 lg:gap-4">
           <p className="font-bold lg:text-4xl text-3xl m-4 lg:m-6 lg:ml-0 ml-0">
             Your preferences
