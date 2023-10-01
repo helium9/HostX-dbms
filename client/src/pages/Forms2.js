@@ -6,7 +6,7 @@ import FooterComponent from "../components/FooterComponent";
 
 function InputComponent({ id, children = "Roll number", isDisabled = false }) {
   const [active, setActive] = useState(false);
-  let opacity = isDisabled?"opacity-70":"opacity-100";
+  let opacity = isDisabled?"opacity-60":"opacity-100";
   // let disabledStyles = isDisabled? { border: "", textColor: "text-white" }:{ border: "border-zinc-800", textColor: "text-gray-400" };
   let activeAttributes = active
     ? { border: "border-blue-600", textColor: "text-blue-500" }
@@ -37,7 +37,7 @@ export default function Forms2() {
     <>
       <div className="flex flex-col min-h-screen">
         <NavbarComponent />
-        <form className="flex flex-col w-96 lg:w-[32rem] self-center gap-3 mb-20">
+        <form className="flex flex-col w-96 lg:w-[32rem] self-center gap-3 mb-20 lg:gap-4">
           <p className="font-bold lg:text-4xl text-3xl m-4 lg:m-6 lg:ml-0 ml-0">
             Your preferences
           </p>
