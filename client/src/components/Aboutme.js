@@ -1,7 +1,3 @@
-import NavbarComponent from "../components/NavbarComponent";
-import userLogo from "../images/userLogo.svg";
-import downArrowFilled from "../images/downArrowFilled.svg";
-import FooterComponent from "../components/FooterComponent";
 import {
   Card,
   CardHeader,
@@ -12,15 +8,7 @@ import {
   ButtonGroup,
   Divider,
 } from "@nextui-org/react";
-import editPencil from "../images/editPencil.svg";
-import blueCross from "../images/blueCross.svg";
-import blueEditPencil from "../images/blueEditPencil.svg";
 
-
-import facei from "../images/girl.jpg"
-import stopForm from "../images/stopForm.svg";
-import viewForm from "../images/viewForm.svg";
-import whiteEditPencil from "../images/whiteEditPencil.svg";
 import PropTypes from 'prop-types'
 import react,{useState} from "react"
 // export default function Aboutme(){
@@ -29,12 +17,11 @@ import react,{useState} from "react"
         
 //     </div>)
 // }
-import githubicon from "../images/Vectorgithub.svg"
+import githubicon from "../images/github-mark-white.svg"
 import instaicon from "../images/Vectorinsta.svg"
 import linkedinicon from "../images/Vectorlinkedin.svg"
 import mailicon from "../images/Vectormail.svg"
 
-import icons from "../images/Frame 34.svg"
 
 
 
@@ -69,7 +56,6 @@ export default function Aboutme(prop) {
         <img src={githubicon} className="pb-4 hover:pb-4 pt-2 hover:pt-0"></img>
         <img src={mailicon} className="pb-4 hover:pb-5 "></img>
         <img src={linkedinicon} className="pb-4 hover:pb-5"></img>
-        
         </div>
         
       </CardFooter>
