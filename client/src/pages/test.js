@@ -8,7 +8,7 @@ import {Card, CardBody,CardHeader,CardFooter,Link, Image, Button, Progress} from
 export default function Dashboard2() {
   return (<>
   <div className="relative flex flex-col min-h-screen">
-    <NavbarComponent />
+    <NavbarComponent/>
     <img className="w-full" src={bgcombine}></img>
     <div className="absolute top-20 left-0 w-full h-full bg-opacity-10 bg-black">
     
