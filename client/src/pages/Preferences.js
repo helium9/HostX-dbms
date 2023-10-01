@@ -2,6 +2,7 @@ import NavbarComponent from "../components/NavbarComponent";
 import InputComponent from "../components/InputComponent";
 import ButtonComponent from "../components/ButtonComponent";
 import FooterComponent from "../components/FooterComponent";
+
 export default function Preferences(){
     return(
         

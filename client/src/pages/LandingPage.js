@@ -17,7 +17,7 @@ export default function LandingPage() {
     <>
       <div className="relative flex flex-col min-h-screen">
         <NavbarComponent />
-        <div className="flex flex-col p-6 items-center px-6 sm:px-10  max-w-screen-xl self-center">
+        <div className="flex flex-col p-6 items-center px-6 sm:px-10  max-w-screen-xl self-center mb-24">
           <div className="font-[poppins] text-3xl lg:text-6xl w-full">
             Seamlessly&nbsp;<span className="text-blue-500">allot rooms</span>,<br></br>
             <div className="lg:mt-5">get started!</div>
@@ -35,7 +35,7 @@ export default function LandingPage() {
             Get started in 3 easy steps:
           </div>
           <div className="flex flex-col md:flex-row gap-4 justify-self-start w-full">
-            <div className="flex flex-col bg-opacity-10 backdrop-blur-lg backdrop-filter bg-zinc-100 rounded-2xl p-4 pl-8 lg:pt-6 gap-2 lg:pb-10">
+            <div className="flex flex-col bg-opacity-10 backdrop-blur-lg backdrop-filter bg-zinc-100 rounded-xl md:rounded-2xl p-4 pl-8 lg:pt-6 gap-2 lg:pb-10 md:max-w-[200px] lg:max-w-[240px]">
               <div className="flex flex-row font-[poppins] font-semibold text-2xl lg:text-3xl items-center gap-3">
                 <span className="text-4xl lg:text-5xl">①</span>
                 <p>Register</p>
@@ -45,7 +45,7 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="flex flex-col bg-opacity-10 backdrop-blur-lg backdrop-filter bg-zinc-100 rounded-2xl p-4 pl-8 lg:pt-6 gap-2 lg:pb-10">
+            <div className="flex flex-col bg-opacity-10 backdrop-blur-lg backdrop-filter bg-zinc-100 rounded-xl md:rounded-2xl p-4 pl-8 lg:pt-6 gap-2 lg:pb-10">
               <div className="flex flex-row font-[poppins] font-semibold text-2xl lg:text-3xl items-center gap-3">
                 <span className="text-4xl lg:text-5xl">②</span>
                 <p>Let us know your preferences</p>
@@ -56,7 +56,7 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="flex flex-col bg-opacity-10 backdrop-blur-lg backdrop-filter bg-zinc-100 rounded-2xl p-4 px-8 lg:pt-6 gap-2 lg:pb-10">
+            <div className="flex flex-col bg-opacity-10 backdrop-blur-lg backdrop-filter bg-zinc-100 rounded-xl md:rounded-2xl p-4 px-8 lg:pt-6 gap-2 lg:pb-10 md:max-w-[300px]">
               <div className="flex flex-row font-[poppins] font-semibold text-2xl lg:text-3xl items-center gap-3">
                 <span className="text-4xl lg:text-5xl">③</span>
                 Get allotment
