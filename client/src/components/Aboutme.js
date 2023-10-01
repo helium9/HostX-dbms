@@ -65,10 +65,20 @@ export default function Aboutme(prop) {
           <p className="text-white text-lg">{prop.branch}</p>
         </div>
         <div className="flex flex-row justify-self-center space-x-2 pr-2 ">
-        <img src={instaicon} className="pb-4 hover:pb-5 "></img>
-        <img src={githubicon} className="pb-4 hover:pb-4 pt-2 hover:pt-0"></img>
-        <img src={mailicon} className="pb-4 hover:pb-5 "></img>
-        <img src={linkedinicon} className="pb-4 hover:pb-5"></img>
+        <a href="https://instagram.com/abhinav_gangil?igshid=MzRlODBiNWFlZA==" class="group inline-block relative">
+  <img src={instaicon} alt="Instagram Icon" class="group-hover:-translate-y-1 pt-3 transition-transform transform-gpu"/>
+        </a>
+
+<a href="https://github.com/xenom2004" class="group inline-block relative">
+  <img src={githubicon} alt="GitHub Icon" class="group-hover:-translate-y-1 pt-3 pt-2 transition-transform transform-gpu" />
+</a>
+<a href="mailto:youremail@example.com" class="group inline-block relative">
+  <img src={mailicon} alt="Mail Icon" class="group-hover:-translate-y-1 pt-3 transition-transform transform-gpu" />
+</a>
+<a href="https://www.linkedin.com/in/abhinav-gangil-193594255/" class="group inline-block relative">
+  <img src={linkedinicon} alt="LinkedIn Icon" class="group-hover:-translate-y-1 pt-3 transition-transform transform-gpu" />
+</a>
+
         
         </div>
         
