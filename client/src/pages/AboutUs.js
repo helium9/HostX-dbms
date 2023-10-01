@@ -7,6 +7,7 @@ import linkedinicon from "../images/Vectorlinkedin.svg";
 import mailicon from "../images/Vectormail.svg";
 import { Card, Image, CardFooter } from "@nextui-org/react";
 import girl from "../images/girl.jpg";
+import AboutParaComponent from "../components/AboutParaComponent";
 
 function ContactComponent({ photo, name, branch, socials }) {
   return (
@@ -81,6 +82,7 @@ export default function AboutPage() {
     <>
       <div className="flex flex-col items-center min-h-screen">
         <NavbarComponent />
+        <AboutParaComponent/>
         <div className="container grid lg:grid-cols-3 grid-cols-1 sm:grid-cols-2 w-fit gap-6 mt-6 mb-20">
           <div className="tile">
             <ContactComponent name="Abhinav Gangil" photo={girl} branch="CSE" socials={socialAbhinav} />
