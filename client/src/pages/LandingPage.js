@@ -25,16 +25,16 @@ export default function LandingPage(){
                   color="primary"
                   href="#"
                   variant="flat"
-                  className="sm:visible text-xl lg:text-2xl  h-10 rounded-lg mt-4 justify-self-start"
+                  className=" text-xl lg:text-2xl  h-10 rounded-lg mt-4 justify-self-start"
                 >
                   Sign Up
                 </Button>
                 
           <div className="mt-24 font-[poppins] text-xl lg:text-2xl  justify-self-start">get started in 3 easy steps:</div>
-          <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 justify-self-start">
-          <div className="grid  bg-opacity-10 backdrop-blur-lg backdrop-filter bg-slate-100 rounded-xl  max-w-full p-4 pl-8   "><div className="font-[poppins] font-semibold text-2xl lg:text-3xl"><span className="text-3xl lg:text-4xl whitespace-pre ">①  </span> Register</div><div className="text-xl lg:text-2xl font-[poppins] invisible  sm:visible md:p-2">Register either as a resident or an administrator.</div></div>
-          <div className="grid  bg-opacity-10 backdrop-blur-lg backdrop-filter bg-slate-100 rounded-xl  max-w-full p-4 pl-8   "><div className="font-[poppins] font-semibold text-2xl lg:text-3xl"><span className="text-3xl  lg:text-4xl whitespace-pre ">②  </span> Let us know your preferences</div><div className="text-xl lg:text-2xl font-[poppins] invisible md:p-2  sm:visible ">Provide hostel details as an administrator or roommates as a resident.</div></div>
-          <div className="grid  bg-opacity-10 backdrop-blur-lg backdrop-filter bg-slate-100 rounded-xl  max-w-full p-4 pl-8   "><div className="font-[poppins] font-semibold text-2xl lg:text-3xl"><span className="text-3xl  lg:text-4xl whitespace-pre ">③  </span> Get allotment</div><div className="text-xl lg:text-2xl font-[poppins] invisible  sm:visible md:p-2">Export your alloment list as a PDF or an excel file.</div></div>
+          <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 justify-self-start max-w-full">
+          <div className="grid  bg-opacity-10 backdrop-blur-lg backdrop-filter bg-slate-100 rounded-xl  sm:w-max-full  p-4 pl-8  "><div className="font-[poppins] font-semibold text-2xl lg:text-3xl"><span className="text-3xl lg:text-4xl whitespace-pre ">①  </span> Register</div><div className="text-xl lg:text-2xl font-[poppins] hidden  sm:block md:p-2">Register either as a resident or an administrator.</div></div>
+          <div className="grid  bg-opacity-10 backdrop-blur-lg backdrop-filter bg-slate-100 rounded-xl  sm:w-max-full p-4 pl-8  "><div className="font-[poppins] font-semibold text-2xl lg:text-3xl"><span className="text-3xl  lg:text-4xl whitespace-pre ">②  </span> Let us know your preferences</div><div className="text-xl lg:text-2xl hidden  font-[poppins]  md:p-2  sm:block ">Provide hostel details as an administrator or roommates as a resident.</div></div>
+          <div className="grid  bg-opacity-10 backdrop-blur-lg backdrop-filter bg-slate-100 rounded-xl  sm:w-max-full p-4 pl-8  "><div className="font-[poppins] font-semibold text-2xl lg:text-3xl"><span className="text-3xl  lg:text-4xl whitespace-pre ">③  </span> Get allotment</div><div className="text-xl lg:text-2xl font-[poppins] hidden  sm:block md:p-2">Export your alloment list as a PDF or an excel file.</div></div>
           </div>
           </div>
           </div>
