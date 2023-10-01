@@ -4,6 +4,7 @@ import Dashboard from "./pages/Dashboard"
 import Preferences from "./pages/Preferences"
 import Dashboard2 from "./pages/test";
 import Forms2 from "./pages/Forms2";
+import AboutPage from "./pages/AboutUs";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route path="/form" element={<Preferences />}></Route>
       <Route path="/test" element={<Dashboard2 />}></Route>
       <Route path="/form2" element={<Forms2 />}></Route>
+      <Route path="/AboutUs" element={<AboutPage />}></Route>
     </Routes>
     </>
   );
