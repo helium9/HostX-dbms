@@ -28,7 +28,7 @@ import girl from "../images/girl.jpg"
 export default function AboutPage(){
 
     return (<>
-    <div>
+    <div className="pb-8">
     <NavbarComponent/>
     <div className="mx-24 lg:mx-60 xl:mx-64 grid gap-12 lg:grid-cols-2 xl:grid-cols-3 justify-center">
   <Aboutme name="Ybhinav yangil" imageurl={girl} branch="CSE" />

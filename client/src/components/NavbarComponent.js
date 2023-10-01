@@ -1,5 +1,6 @@
 import React from "react";
 import menuLogo from "../images/menu.svg";
+import AboutUs from "../pages/AboutUs.js"
 import {
   Navbar,
   NavbarBrand,
@@ -27,7 +28,7 @@ export default function NavbarComponent() {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="#" className="text-xl">
+          <Link color="foreground" href="/AboutUs" className="text-xl">
             About us
           </Link>
         </NavbarItem>
