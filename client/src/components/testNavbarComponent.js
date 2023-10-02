@@ -14,7 +14,7 @@ import {
   menuItems,
 } from "@nextui-org/react";
 
-export default function NavbarComponent() {
+export default function TestNavbarComponent() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const menuItems = [
     "Home",
@@ -68,7 +68,7 @@ export default function NavbarComponent() {
       <NavbarContent className="sm:hidden" justify="end">
         <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} />
       </NavbarContent>
-      <NavbarMenu className="navbar-menu absolute left-full">
+      <NavbarMenu className="absolute left-60">
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
             <Link
