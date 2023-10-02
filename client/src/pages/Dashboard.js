@@ -2,15 +2,7 @@ import NavbarComponent from "../components/NavbarComponent";
 import userLogo from "../images/userLogo.svg";
 import downArrowFilled from "../images/downArrowFilled.svg";
 import FooterComponent from "../components/FooterComponent";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Button,
-  ButtonGroup,
-  Divider,
-} from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Button, Divider } from "@nextui-org/react";
 import editPencil from "../images/editPencil.svg";
 import blueCross from "../images/blueCross.svg";
 import blueEditPencil from "../images/blueEditPencil.svg";
