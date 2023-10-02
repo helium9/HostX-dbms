@@ -3,7 +3,7 @@ import bgcombine from "../images/Frame 31cb.svg"
 import FooterComponent from "../components/FooterComponent";
 // import NavbarComponent from "../components/NavbarComponent";
 import {Input} from "@nextui-org/react";
-import NavbarComponent from "../components/testNavbarComponent"
+import NavbarComponent from "../components/NavbarComponent"
 import {Card, CardBody,CardHeader,CardFooter,Link, Image, Button, Progress} from "@nextui-org/react";
 export default function Dashboard2() {
   return (<>
