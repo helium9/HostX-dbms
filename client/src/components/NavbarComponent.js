@@ -44,7 +44,7 @@ export default function NavbarComponent() {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="/AboutUs" className="text-xl">
+          <Link color="foreground" href="/About" className="text-xl">
             About us
           </Link>
         </NavbarItem>

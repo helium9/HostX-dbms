@@ -26,7 +26,7 @@ export default function LandingPage() {
 
         <img
           src={person}
-          className="w-[120px]  h-[128px] left-3/4 top-[100px] sm:w-1/8  md:top-[50px] md:h-[185px] lg:h-[280px] md:w-[20%] absolute"
+          className="w-[100px] sm:w-[120px] h-[128px] left-3/4 top-[100px] sm:w-1/8  md:top-[50px] md:h-[185px] lg:h-[280px] md:w-[20%] absolute"
         ></img>
         <img
           src={slice}

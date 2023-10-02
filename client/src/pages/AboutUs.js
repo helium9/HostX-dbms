@@ -7,6 +7,10 @@ import linkedinicon from "../images/Vectorlinkedin.svg";
 import mailicon from "../images/Vectormail.svg";
 import { Card, Image, CardFooter } from "@nextui-org/react";
 import girl from "../images/girl.jpg";
+import abhinav from "../photo/abhinav.jpg"
+import aadish from "../photo/aadish.jpg"
+import kshitiz from "../photo/kshitiz.jpg"
+import parth from "../photo/parth.jpg"
 
 
 function ContactComponent({ photo, name, branch, socials }) {
@@ -120,7 +124,7 @@ export default function AboutPage() {
           <div className="tile">
             <ContactComponent
               name="Abhinav Gangil"
-              photo={girl}
+              photo={abhinav}
               branch="CSE"
               socials={socialsData.Abhinav}
             />
@@ -128,7 +132,7 @@ export default function AboutPage() {
           <div className="tile">
             <ContactComponent
               name="Aditya Kshitiz"
-              photo={girl}
+              photo={kshitiz}
               branch="CSE"
               socials={socialsData.Aditya}
             />
@@ -136,7 +140,7 @@ export default function AboutPage() {
           <div className="tile">
             <ContactComponent
               name="Aadish Jain"
-              photo={girl}
+              photo={aadish}
               branch="CSE"
               socials={socialsData.Aadish}
             />
@@ -144,7 +148,7 @@ export default function AboutPage() {
           <div className="tile">
             <ContactComponent
               name="Parth Deshmukh"
-              photo={girl}
+              photo={parth}
               branch="CSE"
               socials={socialsData.Parth}
             />
