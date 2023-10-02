@@ -12,7 +12,7 @@ import { Link, Button } from "@nextui-org/react";
 export default function LandingPage() {
   return (
     <>
-      <div className="relative flex flex-col min-h-screen">
+      <div className="relative flex flex-col ">
         <NavbarComponent />
 
         <img
@@ -30,19 +30,19 @@ export default function LandingPage() {
         ></img>
         <img
           src={slice}
-          className="absolute w-1/8 h-[120px] top-[190px] sm:top-[230px] lg:top-[280px]  left-1/8 "
+          className="absolute w-1/8 h-[120px] top-[190px] sm:top-[230px] lg:top-[280px] xl:left-[12%] left-1/8 "
         ></img>
         <img
           src={strip}
-          className="absolute w-[30%] h-[180px] hidden md:block top-[180px] lg:top-[220px] lg:left-[40%]  left-1/2"
+          className="absolute w-[30%] h-[180px] hidden md:block top-[180px] lg:top-[240px] lg:left-[40%]  left-1/2"
         ></img>
         <img
           src={donut}
           className="absolute w-[15%] h-[100px] left-[85%] top-[400px] md:left-[90%] md:w-[10%] xl:top-[100px] xl:left-[95%] xl:w-[5%] "
         ></img>
 
-        <div className="absolute xl: top-20 left-0 w-full h-full bg-opacity-0 bg-black">
-          <div className="flex flex-col p-6 items-center px-6 sm:px-10  max-w-screen-xl self-center mb-24">
+        <div className="absolute xl: top-20 left-0 w-full h-full bg-opacity-0 bg-black flex flex-col">
+          <div className="flex flex-col p-6 items-center px-6 sm:px-10 self-center max-w-screen-xl mb-24 min-h-screen">
             <div className="font-[poppins] text-3xl lg:text-6xl w-full">
               Seamlessly&nbsp;<span className="text-blue-500">allot rooms</span>
               ,<br></br>
@@ -93,9 +93,11 @@ export default function LandingPage() {
               </div>
             </div>
           </div>
+          <FooterComponent className="mt-auto" />
         </div>
       </div>
-      <FooterComponent className="mt-auto" />
+      
+      
     </>
   );
 }
