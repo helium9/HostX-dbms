@@ -34,17 +34,17 @@ export default function NavbarComponent() {
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-x-16" justify="center">
         <NavbarItem>
-          <Link color="foreground" href="#" className="text-xl">
+          <Link color="foreground" href="/" className="text-xl">
             Home
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
-          <Link href="#" aria-current="page" className="text-xl">
+          <Link href="/form" aria-current="page" className="text-xl">
             Docs
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="/AboutUs" className="text-xl">
+          <Link color="foreground" href="/about" className="text-xl">
             About us
           </Link>
         </NavbarItem>

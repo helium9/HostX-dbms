@@ -12,10 +12,10 @@ export default function FooterComponent() {
           <img src={git2} className="mx-4 h-20 w-20"></img>
         </div>
         <div className="grid grid-cols-2 gap-4 gap-x-0 box-content justify-self-end  ml-auto text-2xl">
-          <div className="font-[poppins]  self-left ">Home</div>
-          <div className="font-[poppins]  self-left ">Contact Us</div>
-          <div className="font-[poppins]  self-left ">Docs</div>
-          <div className="font-[poppins]  self-left ">About Us</div>
+          <div className="font-[poppins]  self-left "><a href="/">Home</a></div>
+          <div className="font-[poppins]  self-left "><a href="">Contact Us</a></div>
+          <div className="font-[poppins]  self-left "><a href="/form">Docs</a></div>
+          <div className="font-[poppins]  self-left "><a href="/about">About Us</a></div>
           <div className="font-[poppins]  self-left ">Help</div>
           <div className="font-[poppins]  self-left ">Results</div>
         </div>
