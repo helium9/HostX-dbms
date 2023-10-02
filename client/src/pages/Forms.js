@@ -33,7 +33,7 @@ function InputComponent({ id, children = "Roll number", isDisabled = false }) {
   );
 }
 
-export default function Forms2() {
+export default function Forms() {
   return (
     <>
       <div className="flex flex-col min-h-screen">

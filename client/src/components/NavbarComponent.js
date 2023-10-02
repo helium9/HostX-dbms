@@ -1,6 +1,6 @@
 import React from "react";
 import menuLogo from "../images/menu.svg";
-import AboutUs from "../pages/AboutUs.js"
+import AboutUs from "../pages/AboutUs.js";
 import {
   Navbar,
   NavbarBrand,
@@ -8,11 +8,27 @@ import {
   NavbarItem,
   Link,
   Button,
+  NavbarMenuToggle,
+  NavbarMenu,
+  NavbarMenuItem,
+  menuItems,
 } from "@nextui-org/react";
 
 export default function NavbarComponent() {
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const menuItems = [
+    "Home",
+    "Docs",
+    "About Us",
+    "Log In",
+    "Sign Up",
+  ];
+
   return (
-    <Navbar>
+    <Navbar
+      isBordered
+      isMenuOpen={isMenuOpen}
+      onMenuOpenChange={setIsMenuOpen}>
       <NavbarBrand>
         <p className="font-bold text-inherit italic text-3xl">HostX</p>
       </NavbarBrand>
@@ -48,10 +64,26 @@ export default function NavbarComponent() {
             Sign Up
           </Button>
         </NavbarItem>
-        <NavbarItem className="sm:invisible visible">
-          <img src={menuLogo} alt="menu" /> {/*use with memu implementation later on */}
-        </NavbarItem>
       </NavbarContent>
+      <NavbarContent className="sm:hidden" justify="end">
+        <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} />
+      </NavbarContent>
+      <NavbarMenu className="absolute left-60">
+        {menuItems.map((item, index) => (
+          <NavbarMenuItem key={`${item}-${index}`}>
+            <Link
+              className="w-full"
+              color={
+                index === 2 ? "warning" : index === menuItems.length - 1 ? "danger" : "foreground"
+              }
+              href="#"
+              size="lg"
+            >
+              {item}
+            </Link>
+          </NavbarMenuItem>
+        ))}
+      </NavbarMenu>
     </Navbar>
   );
 }
