@@ -7,6 +7,7 @@ import linkedinicon from "../images/Vectorlinkedin.svg";
 import mailicon from "../images/Vectormail.svg";
 import { Card, Image, CardFooter } from "@nextui-org/react";
 import girl from "../images/girl.jpg";
+import
 
 function ContactComponent({ photo, name, branch, socials }) {
   return (
