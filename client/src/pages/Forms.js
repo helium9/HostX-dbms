@@ -3,7 +3,8 @@ import { useState } from "react";
 import { Button } from "@nextui-org/react";
 import whiteTick from "../images/whiteTick.svg";
 import FooterComponent from "../components/FooterComponent";
-
+import React from 'react';
+import {Input} from "@nextui-org/react";
 
 // function InputComponent({ id, children = "Roll number", isDisabled = false }) {
 //   const [active, setActive] = useState(false);
@@ -39,25 +40,24 @@ function InputComponent(){
   return (
     <div className="w-full flex flex-col gap-2 max-w-[240px]">
       <Input
-        label="Email"
+        label="Roommate Preference"
         classNames={{
-          
           label: [
-            "text-white-400",
-            "group-hover:text-blue-400",
+            "text-white-400 font-normal",
+            "text-md pl-0.25",
                ],
 
           input: [
-            "text-white-600",
+            "text-white-600 text-2xl",
           ],
 
           inputWrapper: [
             "bg-zinc-900",
-            "border-2",
-            "hover:border-blue-500",
+            "border-2 border-zinc-500",
             "group",
             "rounded-lg",
-          ],
+            "w-96 lg:w-[32rem] h-20"
+          ]
         }}
         placeholder="Enter your email"
         value={value}
