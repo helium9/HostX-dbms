@@ -5,32 +5,68 @@ import whiteTick from "../images/whiteTick.svg";
 import FooterComponent from "../components/FooterComponent";
 
 
-function InputComponent({ id, children = "Roll number", isDisabled = false }) {
-  const [active, setActive] = useState(false);
-  let opacity = isDisabled?"opacity-60":"opacity-100";
-  // let disabledStyles = isDisabled? { border: "", textColor: "text-white" }:{ border: "border-zinc-800", textColor: "text-gray-400" };
-  let activeAttributes = active
-    ? { border: "border-blue-600", textColor: "text-blue-500" }
-    : { border: "border-zinc-500", textColor: "text-white" };
+// function InputComponent({ id, children = "Roll number", isDisabled = false }) {
+//   const [active, setActive] = useState(false);
+//   let opacity = isDisabled?"opacity-60":"opacity-100";
+//   // let disabledStyles = isDisabled? { border: "", textColor: "text-white" }:{ border: "border-zinc-800", textColor: "text-gray-400" };
+//   let activeAttributes = active
+//     ? { border: "border-blue-600", textColor: "text-blue-500" }
+//     : { border: "border-zinc-500", textColor: "text-white" };
+//   return (
+//     <div
+//       className={`rounded-lg bg-zinc-900 border-2 flex flex-col p-3 pt-1 gap-1 ${activeAttributes.border} ${opacity}`}
+//       onFocus={() => setActive(true)}
+//       onBlur={() => setActive(false)}
+//     >
+//       <label htmlFor={id} className={`${activeAttributes.textColor}`}>
+//         Roommate Preference
+//       </label>
+//       <input
+//         className={`bg-transparent focus:outline-none text-2xl`}
+//         disabled={isDisabled}
+//         type="text"
+//         name={id}
+//         id={id}
+//         placeholder={children}
+//       />
+//     </div>
+//   );
+// }
+
+function InputComponent(){
+  const [value, setValue] = React.useState("");
+
   return (
-    <div
-      className={`rounded-lg bg-zinc-900 border-2 flex flex-col p-3 pt-1 gap-1 ${activeAttributes.border} ${opacity}`}
-      onFocus={() => setActive(true)}
-      onBlur={() => setActive(false)}
-    >
-      <label htmlFor={id} className={`${activeAttributes.textColor}`}>
-        Roommate Preference
-      </label>
-      <input
-        className={`bg-transparent focus:outline-none text-2xl`}
-        disabled={isDisabled}
-        type="text"
-        name={id}
-        id={id}
-        placeholder={children}
+    <div className="w-full flex flex-col gap-2 max-w-[240px]">
+      <Input
+        label="Email"
+        classNames={{
+          
+          label: [
+            "text-white-400",
+            "group-hover:text-blue-400",
+               ],
+
+          input: [
+            "text-white-600",
+          ],
+
+          inputWrapper: [
+            "bg-zinc-900",
+            "border-2",
+            "hover:border-blue-500",
+            "group",
+            "rounded-lg",
+          ],
+        }}
+        placeholder="Enter your email"
+        value={value}
+        onValueChange={setValue}
       />
+      {/* <p className="text-default-500 text-small">Input value: {value}</p> */}
     </div>
   );
+
 }
 
 export default function Forms() {
