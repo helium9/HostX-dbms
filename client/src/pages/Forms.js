@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Button } from "@nextui-org/react";
 import whiteTick from "../images/whiteTick.svg";
 import FooterComponent from "../components/FooterComponent";
+import React from "react";
+import {Input} from "@nextui-org/react";
 
 
 // function InputComponent({ id, children = "Roll number", isDisabled = false }) {
