@@ -62,8 +62,8 @@ function InputComponent(){
             "group",
           ]
         }}
-        placeholder="Enter your email"
-        type="email"
+        placeholder="cse220001001"
+        type="number"
         value={value}
         onValueChange={setValue}
       />
