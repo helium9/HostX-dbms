@@ -38,13 +38,14 @@ function InputComponent(){
   const [value, setValue] = React.useState("");
 
   return (
-    <div className="w-full flex flex-col gap-2 max-w-[240px]">
+    <div className="w-full flex flex-col gap-2 max-w-[240px] group">
       <Input
         label="Roommate Preference"
         classNames={{
           label: [
             "text-white-400 font-normal",
             "text-md pl-0.25",
+            "group-focus-within:text-blue-800",
                ],
 
           input: [
@@ -56,10 +57,13 @@ function InputComponent(){
             "border-2 border-zinc-500",
             "group",
             "rounded-lg",
-            "w-96 lg:w-[32rem] h-20"
+            "w-96 lg:w-[32rem] h-20",
+            "focus-within:border-blue-800",
+            "group",
           ]
         }}
         placeholder="Enter your email"
+        type="email"
         value={value}
         onValueChange={setValue}
       />
