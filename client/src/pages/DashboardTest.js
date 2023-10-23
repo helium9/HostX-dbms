@@ -165,7 +165,7 @@ function FormPlusModal(){
                   </div> */}
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="danger" variant="flat" onPress={onClose}>
+                  <Button color="danger" variant="light" onPress={onClose}>
                     Close
                   </Button>
                   <Button color="primary" onPress={onClose}>
