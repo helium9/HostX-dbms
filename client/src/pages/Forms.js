@@ -131,7 +131,8 @@ export default function Forms() {
     event.preventDefault();
     
     try {
-      const response = await axios.post('https://jsonplaceholder.typicode.com/posts', post); 
+      // const response = await axios.post('https://jsonplaceholder.typicode.com/posts', post); 
+      const response = await axios.post('http://localhost:3001/submit', post); 
       console.log(response);
     } catch (err) {
       console.error(err);
