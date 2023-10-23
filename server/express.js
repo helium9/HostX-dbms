@@ -23,6 +23,12 @@ app.post('/api/submit', (req, res) => {
   res.json({ message: 'Form data received and logged' });
 });
 
+app.post('/api/admin/submit', (req, res) => {
+  const formAdminData = req.body;
+  console.log(formAdminData);
+  res.json({ message: 'Form data received and logged' });
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
