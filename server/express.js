@@ -17,7 +17,7 @@ app.get('/form',(req, res) => {
 
 });
 
-app.post('/submit', (req, res) => {
+app.post('/api/submit', (req, res) => {
   const formData = req.body;
   console.log(formData);
   res.json({ message: 'Form data received and logged' });
