@@ -131,27 +131,27 @@ function FormPlusModal(){
           <ModalContent>
             {(onClose) => (
               <>
-                <ModalHeader className="flex flex-col gap-1">Log in</ModalHeader>
+                <ModalHeader className="flex flex-col gap-1">Register a new hostel</ModalHeader>
                 <ModalBody>
                   <Input
                     autoFocus
-                    endContent={
+                    /*endContent={
                       <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                    }
-                    label="Email"
-                    placeholder="Enter your email"
+                    }*/
+                    label="Name"
+                    placeholder="Enter hostel name"
                     variant="bordered"
                   />
                   <Input
-                    endContent={
+                   /* endContent={
                       <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                    }
-                    label="Password"
-                    placeholder="Enter your password"
-                    type="password"
+                    }*/
+                    label="Unit"
+                    placeholder="Enter number of room in unit(5 or 6)"
+                    type="number"
                     variant="bordered"
                   />
-                  <div className="flex py-2 px-1 justify-between">
+                    {/* <div className="flex py-2 px-1 justify-between">
                     <Checkbox
                       classNames={{
                         label: "text-small",
@@ -162,14 +162,14 @@ function FormPlusModal(){
                     <Link color="primary" href="#" size="sm">
                       Forgot password?
                     </Link>
-                  </div>
+                  </div> */}
                 </ModalBody>
                 <ModalFooter>
                   <Button color="danger" variant="flat" onPress={onClose}>
                     Close
                   </Button>
                   <Button color="primary" onPress={onClose}>
-                    Sign in
+                    Register
                   </Button>
                 </ModalFooter>
               </>
