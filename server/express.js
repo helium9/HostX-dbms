@@ -12,10 +12,6 @@ app.use(cors());
 
 const customDirectory = path.join(__dirname, '../client/src/pages/'); 
 
-// app.get('/form',(req, res) => { 
-//     res.sendFile('Forms.js', { root: customDirectory });
-
-// });
 
 app.post('/api/submit', (req, res) => {
   const formData = req.body;
