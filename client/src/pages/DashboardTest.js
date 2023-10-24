@@ -125,7 +125,8 @@ function FormPlusModal(){
 
     const [post,setPost]=useState({
       hostelName:'',
-      hostelUnit:'',
+      hostelUnit5:'',
+      hostelUnit6:'',
     
     })
 
@@ -148,15 +149,17 @@ function FormPlusModal(){
     return (
       <>
         <Button onPress={onOpen} size="sm" radius="lg" className="h-8 min-w-fit bg-black//[.06]"><img className="w-8 h-8" src={AddFilled} alt="menu" /></Button>
-        <Modal 
+        <Modal  
           isOpen={isOpen} 
           onOpenChange={onOpenChange}
           placement="top-center"
+          size="lg"
+          // className="h-96"
         >
           <ModalContent>
             {(onClose) => (
               <>
-                <ModalHeader className="flex flex-col gap-1">Register a new hostel</ModalHeader>
+                <ModalHeader className="flex flex-col gap-1 text-2xl">Register a new hostel</ModalHeader>
                 <form onSubmit={handleSubmit}>
                 <ModalBody>
                   <Input
@@ -171,20 +174,64 @@ function FormPlusModal(){
                     name="hostelName"
                     onChange={handleInput}
                     value={post.hostelName}
+                    classNames={{
+                      label: "text-lg",
+                      input: [
+                        "placeholder:text-xl"
+                      ],
+                      innerWrapper: "bg-transparent",
+                      inputWrapper: [
+                     "h-20",
+                      ],
+                    }}
                     // value={post}
                   />
                   <Input
                    /* endContent={
                       <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                     }*/
-                    label="Unit"
-                    placeholder="Enter number of room in unit(5 or 6)"
+                    label="5 unit rooms"
+                    placeholder="Enter number of 5 unit rooms"
                     type="number"
                     variant="bordered"
-                    id="hostelUnit"
-                    name="hostelUnit"
+                    id="hostelUnit5"
+                    name="hostelUnit5"
                     onChange={handleInput}
-                    value={post.hostelUnit}
+                    value={post.hostelUnit5}
+                    classNames={{
+                      label: "text-lg",
+                      input: [
+                        "placeholder:text-xl"
+                      ],
+                      innerWrapper: "bg-transparent",
+                      inputWrapper: [
+                     "h-20",
+                      ],
+                    }}
+                    // value={post}
+                  />
+                  <Input
+                   /* endContent={
+                      <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                    }*/
+                    label="6 unit rooms"
+                    placeholder="Enter number of 6 unit rooms"
+                    type="number"
+                    variant="bordered"
+                    id="hostelUnit6"
+                    name="hostelUnit6"
+                    onChange={handleInput}
+                    value={post.hostelUnit6}
+                    classNames={{
+                      label: "text-lg",
+                      input: [
+                        "placeholder:text-xl"
+                      ],
+                      innerWrapper: "bg-transparent",
+                      inputWrapper: [
+                     "h-20",
+                      ],
+                    }}
                     // value={post}
                   />
                     {/* <div className="flex py-2 px-1 justify-between">
