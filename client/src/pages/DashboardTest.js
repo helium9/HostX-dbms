@@ -123,7 +123,8 @@ function DashButton({ children }) {
                     classNames={{
                       label: "text-lg",
                       input: [
-                        "placeholder:text-xl"
+                        "placeholder:text-xl",
+                        "text-xl"
                       ],
                       innerWrapper: "bg-transparent",
                       inputWrapper: [
@@ -147,7 +148,8 @@ function DashButton({ children }) {
                     classNames={{
                       label: "text-lg",
                       input: [
-                        "placeholder:text-xl"
+                        "placeholder:text-xl",
+                        "text-xl"
                       ],
                       innerWrapper: "bg-transparent",
                       inputWrapper: [
@@ -300,7 +302,8 @@ function FormPlusModal(){
                     classNames={{
                       label: "text-lg",
                       input: [
-                        "placeholder:text-xl"
+                        "placeholder:text-xl",
+                        "text-xl"
                       ],
                       innerWrapper: "bg-transparent",
                       inputWrapper: [
@@ -324,7 +327,9 @@ function FormPlusModal(){
                     classNames={{
                       label: "text-lg",
                       input: [
-                        "placeholder:text-xl"
+                        "placeholder:text-xl",
+                        "text-xl"
+
                       ],
                       innerWrapper: "bg-transparent",
                       inputWrapper: [
@@ -348,7 +353,8 @@ function FormPlusModal(){
                     classNames={{
                       label: "text-lg",
                       input: [
-                        "placeholder:text-xl"
+                        "placeholder:text-xl",
+                        "text-xl"
                       ],
                       innerWrapper: "bg-transparent",
                       inputWrapper: [
