@@ -70,7 +70,7 @@ export default function NavbarComponent() {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Log in</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1 text-2xl">Log in</ModalHeader>
               <ModalBody>
                 <Input
                   autoFocus
@@ -80,6 +80,18 @@ export default function NavbarComponent() {
                   label="Email"
                   placeholder="Enter your email"
                   variant="bordered"
+                  classNames={{
+                    label: "text-lg",
+                    input: [
+                      "placeholder:text-xl",
+                      "text-xl"
+
+                    ],
+                    innerWrapper: "bg-transparent",
+                    inputWrapper: [
+                   "h-20",
+                    ],
+                  }}
                 />
                 <Input
                   endContent={
@@ -89,6 +101,18 @@ export default function NavbarComponent() {
                   placeholder="Enter your password"
                   type="password"
                   variant="bordered"
+                  classNames={{
+                    label: "text-lg",
+                    input: [
+                      "placeholder:text-xl",
+                      "text-xl"
+
+                    ],
+                    innerWrapper: "bg-transparent",
+                    inputWrapper: [
+                   "h-20",
+                    ],
+                  }}
                 />
                 <div className="flex py-2 px-1 justify-between">
                   <Checkbox
@@ -104,14 +128,14 @@ export default function NavbarComponent() {
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="flat" onPress={onClose}>
+                <Button color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
                 <Button color="primary" onPress={onClose}>
                   Sign in
                 </Button>
               </ModalFooter>
-              <Button color="success" className="m-6">Login with Google</Button>
+              <Button color="success"  className="m-6 mx-12 text-xl text-white">Login with Google</Button>
 
             </>
           )}
