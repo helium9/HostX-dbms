@@ -139,7 +139,7 @@ function FormPlusModal(){
       
       try {
         // const response = await axios.post('https://jsonplaceholder.typicode.com/posts', post); 
-        const response = await axios.post('http://localhost:3001/api/admin/submit', post); 
+        const response = await axios.post('http://localhost:8000/api/admin/submit', post); 
         console.log(response);
       } catch (err) {
         console.error(err);
