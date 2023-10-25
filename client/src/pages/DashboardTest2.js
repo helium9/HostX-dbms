@@ -6,6 +6,7 @@ import { Card, CardHeader, CardBody, Button, Divider } from "@nextui-org/react";
 import editPencil from "../images/editPencil.svg";
 import blueCross from "../images/blueCross.svg";
 import blueEditPencil from "../images/blueEditPencil.svg";
+import blueDelete from "../images/blueDelete.svg";
 import { useState } from "react";
 import AddFilled from "../images/AddFilled.svg";
 import releaseForm from "../images/releaseForm.svg";
@@ -19,160 +20,165 @@ import axios from 'axios'
 import React from "react";
 
 
-function DashButton({ children }) {
-    const {isOpen, onOpen, onOpenChange} = useDisclosure();
-    const [active, setActive] = useState(false);
-    let put;
-    if (active) {
-      put = (
-        <div className="items-center flex flex-row gap-3">
-          <p className="text-blue-500 font-['Roboto'] pt-1">{children}</p>
-          <img className="h-5 w-5" src={blueCross} alt="menu" />
-          {/* <img className="h-5 w-5" src={blueEditPencil} alt="menu" /> */}
-          <>
-          <Button onPress={onOpen} size="sm" radius="lg" className="h-8 min-w-fit bg-black//[.06]"><img className="h-5 w-5" src={blueEditPencil} alt="menu" /></Button>
-        <Modal 
-          isOpen={isOpen} 
-          onOpenChange={onOpenChange}
-          placement="top-center"
-        >
-          <ModalContent>
-            {(onClose) => (
-              <>
-                <ModalHeader className="flex flex-col gap-1 text-2xl">Edit</ModalHeader>
-                <ModalBody>
-                <Input
-                      autoFocus
-                      /*endContent={
-                        <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                      }*/
-                      label="Name"
-                      placeholder="Edit hostel name"
-                      variant="bordered"
-                      id="hostelNameEdit"
-                      name="hostelNameEdit"
-                      // onChange={handleInput}
-                      // value={post.hostelName}
-                      classNames={{
-                        label: "text-lg",
-                        input: [
-                          "placeholder:text-xl"
-                        ],
-                        innerWrapper: "bg-transparent",
-                        inputWrapper: [
-                       "h-20",
-                        ],
-                      }}
-                      // value={post}
-                    />
-                    <Input
-                     /* endContent={
-                        <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                      }*/
-                      label="5 unit rooms"
-                      placeholder="Edit number of 5 unit rooms"
-                      type="number"
-                      variant="bordered"
-                      id="hostelUnit5Edit"
-                      name="hostelUnit5Edit"
-                      // onChange={handleInput}
-                      // value={post.hostelUnit5}
-                      classNames={{
-                        label: "text-lg",
-                        input: [
-                          "placeholder:text-xl",
-                          "text-xl"
-                        ],
-                        innerWrapper: "bg-transparent",
-                        inputWrapper: [
-                       "h-20",
-                        ],
-                      }}
-                      // value={post}
-                    />
-                    <Input
-                     /* endContent={
-                        <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                      }*/
-                      label="6 unit rooms"
-                      placeholder="Edit number of 6 unit rooms"
-                      type="number"
-                      variant="bordered"
-                      id="hostelUnit6Edit"
-                      name="hostelUnit6Edit"
-                      // onChange={handleInput}
-                      // value={post.hostelUnit6}
-                      classNames={{
-                        label: "text-lg",
-                        input: [
-                          "placeholder:text-xl",
-                          "text-xl"
-                        ],
-                        innerWrapper: "bg-transparent",
-                        inputWrapper: [
-                       "h-20",
-                        ],
-                      }}
-                      // value={post}
-                    />
-                  {/* <Input
-                    // endContent={
-                    //   <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                    // }
-                    label="Password"
-                    placeholder="Enter your password"
-                    type="password"
-                    variant="bordered"
-                  /> */}
-                  {/* <div className="flex py-2 px-1 justify-between">
-                    <Checkbox
-                      classNames={{
-                        label: "text-small",
-                      }}
-                    >
-                      Remember me
-                    </Checkbox>
-                    <Link color="primary" href="#" size="sm">
-                      Forgot password?
-                    </Link>
-                  </div> */}
-                </ModalBody>
-                <ModalFooter>
-                  <Button color="danger" variant="flat" onPress={onClose}>
-                    Close
-                  </Button>
-                  <Button color="primary" onPress={onClose}>
-                    Edit
-                  </Button>
-                </ModalFooter>
-              </>
-            )}
-          </ModalContent>
-        </Modal>
-      </>
-        </div>
-        // </Button>
-          
-        // </div>
-      );
-    } else {
-      put = (
-        <div className="items-center flex flex-row gap-3">
-          <p className="text-black font-['Roboto'] pt-1">{children}</p>
-          <img className="h-5 w-5" src={editPencil} alt="menu" />
-        </div>
-      );
+function handleDeleteFunction(itemIndex, roomData, names, setRoomData, setNames) {
+  // Implement your deletion logic here.
+  // You can use the itemIndex to identify the item to be deleted.
+  // For example, you can remove the item from the 'names' and 'roomData' arrays.
+  const updatedNames = [...names];
+  updatedNames.splice(itemIndex, 1);
+
+  const updatedRoomData = [...roomData];
+  updatedRoomData.splice(itemIndex, 1);
+
+  setNames(updatedNames);
+  setRoomData(updatedRoomData);
+}
+
+function DashButton({ children, onDelete }) {
+  const [active, setActive] = useState(false);
+  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+
+  const handleDelete = () => {
+    if (window.confirm("Are you sure you want to delete this item?")) {
+      onDelete(); 
     }
-    return (
-      <Button
-        className="rounded-lg w-fit h-12 text-2xl bg-zinc-300 focus:bg-white"
-        onFocus={() => setActive(true)}
-        onBlur={() => setActive(false)}
-      >
-        {put}
-      </Button>
-    );
-  }
+  };
+
+  return (
+    <>
+      <div className={`items-center flex flex-row gap-3 rounded-lg w-fit px-4 h-12 text-2xl bg-zinc-300 focus:bg-white ${active ? 'bg-white' : 'bg-white'} ` }>
+        <p className={`font-['Roboto'] pt-1 ${active ? 'text-blue-500' : 'text-black'}`}>{children}</p>
+        <img className="h-5 w-5 cursor-pointer" src={active ? blueCross : editPencil} alt="menu" onClick={() => setActive(!active)} />
+        {active && (
+           <>
+           <Button onPress={onOpen} size="sm" radius="lg" className="h-8 min-w-fit bg-black//[.06]"><img className="h-5 w-5" src={blueEditPencil} alt="menu" /></Button>
+         <Modal 
+           isOpen={isOpen} 
+           onOpenChange={onOpenChange}
+           placement="top-center"
+         >
+           <ModalContent>
+             {(onClose) => (
+               <>
+                 <ModalHeader className="flex flex-col gap-1 text-2xl">Edit</ModalHeader>
+                 <ModalBody>
+                 <Input
+                       autoFocus
+                       /*endContent={
+                         <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                       }*/
+                       label="Name"
+                       placeholder="Edit hostel name"
+                       variant="bordered"
+                       id="hostelNameEdit"
+                       name="hostelNameEdit"
+                       // onChange={handleInput}
+                       // value={post.hostelName}
+                       classNames={{
+                         label: "text-lg",
+                         input: [
+                           "placeholder:text-xl"
+                         ],
+                         innerWrapper: "bg-transparent",
+                         inputWrapper: [
+                        "h-20",
+                         ],
+                       }}
+                       // value={post}
+                     />
+                     <Input
+                      /* endContent={
+                         <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                       }*/
+                       label="5 unit rooms"
+                       placeholder="Edit number of 5 unit rooms"
+                       type="number"
+                       variant="bordered"
+                       id="hostelUnit5Edit"
+                       name="hostelUnit5Edit"
+                       // onChange={handleInput}
+                       // value={post.hostelUnit5}
+                       classNames={{
+                         label: "text-lg",
+                         input: [
+                           "placeholder:text-xl",
+                           "text-xl"
+                         ],
+                         innerWrapper: "bg-transparent",
+                         inputWrapper: [
+                        "h-20",
+                         ],
+                       }}
+                       // value={post}
+                     />
+                     <Input
+                      /* endContent={
+                         <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                       }*/
+                       label="6 unit rooms"
+                       placeholder="Edit number of 6 unit rooms"
+                       type="number"
+                       variant="bordered"
+                       id="hostelUnit6Edit"
+                       name="hostelUnit6Edit"
+                       // onChange={handleInput}
+                       // value={post.hostelUnit6}
+                       classNames={{
+                         label: "text-lg",
+                         input: [
+                           "placeholder:text-xl",
+                           "text-xl"
+                         ],
+                         innerWrapper: "bg-transparent",
+                         inputWrapper: [
+                        "h-20",
+                         ],
+                       }}
+                       // value={post}
+                     />
+                   {/* <Input
+                     // endContent={
+                     //   <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                     // }
+                     label="Password"
+                     placeholder="Enter your password"
+                     type="password"
+                     variant="bordered"
+                   /> */}
+                   {/* <div className="flex py-2 px-1 justify-between">
+                     <Checkbox
+                       classNames={{
+                         label: "text-small",
+                       }}
+                     >
+                       Remember me
+                     </Checkbox>
+                     <Link color="primary" href="#" size="sm">
+                       Forgot password?
+                     </Link>
+                   </div> */}
+                 </ModalBody>
+                 <ModalFooter>
+                   <Button color="danger" variant="flat" onPress={onClose}>
+                     Close
+                   </Button>
+                   <Button color="primary" onPress={onClose}>
+                     Edit
+                   </Button>
+                 </ModalFooter>
+               </>
+             )}
+           </ModalContent>
+         </Modal>
+       </>
+        )}
+        {active && (
+          <img className="h-5 w-5 cursor-pointer blue" src={blueDelete} alt="menu" onClick={handleDelete} />
+        )}
+      </div>
+    </>
+  );
+}
 
 
 function FormControlsButton({ active, setActive }) {
@@ -202,11 +208,11 @@ function FormControlsButton({ active, setActive }) {
   }
   return <>{put}</>;
 }
-{/* <Button onPress={onOpen} size="sm" radius="lg" className="h-8 min-w-fit bg-black//[.06]"><img className="w-8 h-8" src={AddFilled} alt="menu" /></Button> */}
+
 function FormPlusModal({ updateNames, updateRoomData }){
 
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
-    const [formActive, setFormActive] = useState(false);
+    // const [formActive, setFormActive] = useState(false);
 
     const [post,setPost]=useState({
       hostelName:'',
@@ -460,9 +466,14 @@ export default function DashboardTest2() {
               </p>
             </CardHeader>
             <CardBody className="m-0 mb-4 p-0 pb-4 flex-row gap-4 flex-wrap items-center">
+  {/* {names.map((name, index) => (
+    <DashButton onDelete={handleDeleteFunction} key={index}>{name}</DashButton>
+  ))} */}
   {names.map((name, index) => (
-    <DashButton key={index}>{name}</DashButton>
-  ))}
+  <DashButton onDelete={(itemIndex) => handleDeleteFunction(itemIndex, roomData, names, setRoomData, setNames)} key={index}>
+  {name}
+</DashButton>
+))}
   {/* Conditionally render FormPlusModal */}
   
     <FormPlusModal updateNames={updateNames} updateRoomData={updateRoomData}></FormPlusModal>
