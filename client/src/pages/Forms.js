@@ -6,7 +6,7 @@ import FooterComponent from "../components/FooterComponent";
 import React from 'react';
 import {Input} from "@nextui-org/react";
 import {useForm,Controller} from 'react-hook-form';
-import {DevTool} from '@hookform/devtools';
+// import {DevTool} from '@hookform/devtools';
 import axios from 'axios'
 
 
@@ -132,7 +132,7 @@ export default function Forms() {
     
     try {
       // const response = await axios.post('https://jsonplaceholder.typicode.com/posts', post); 
-      const response = await axios.post('http://localhost:3001/api/submit', post); 
+      const response = await axios.post('http://localhost:8000/api/submit', post); 
       console.log(response);
     } catch (err) {
       console.error(err);
