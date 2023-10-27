@@ -30,6 +30,10 @@ export default function NavbarComponent() {
   ];
 
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  const handleGoogleLogin = () => {
+    // Redirect to your backend route for Google OAuth login
+    window.location.href = 'http://localhost:8000/auth/google';
+  };
 
   return (
     <Navbar
@@ -135,7 +139,7 @@ export default function NavbarComponent() {
                   Sign in
                 </Button>
               </ModalFooter>
-              <Button color="success"  className="m-6 mx-12 text-xl text-white">Login with Google</Button>
+              <Button color="success" onClick={handleGoogleLogin} className="m-6 mx-12 text-xl text-white">Login with Google</Button>
 
             </>
           )}
