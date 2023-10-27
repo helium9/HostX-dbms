@@ -3,12 +3,24 @@ const bodyParser = require('body-parser');
 const path = require('path'); 
 const { fileURLToPath } = require("url");
 const cors=require('cors');
+const passport = require('passport');
+const googleAuth = require("./routes/authentication");
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const port = 8000; 
 
+require("./controllers/controller.tokenJWT");
+require("dotenv/config");
+
 app.use(bodyParser.json());
 app.use(cors());
+
+
+app.use(bodyParser.urlencoded({extended: true}));
+
+app.use("/auth", googleAuth);
+
 
 const customDirectory = path.join(__dirname, '../client/src/pages/'); 
 
