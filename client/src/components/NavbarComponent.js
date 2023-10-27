@@ -1,9 +1,10 @@
-import React from "react";
+// import React from "react";
 import menuLogo from "../images/menu.svg";
 import AboutUs from "../pages/AboutUs.js";
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Checkbox, Input} from "@nextui-org/react";
 import {MailIcon} from './MailIcon.jsx';
 import {LockIcon} from './LockIcon.jsx';
+import React, { useState, useEffect } from "react";
 
 
 import {
@@ -30,9 +31,41 @@ export default function NavbarComponent() {
   ];
 
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   const handleGoogleLogin = () => {
-    // Redirect to your backend route for Google OAuth login
+   
     window.location.href = 'http://localhost:8000/auth/google';
+  };
+
+  useEffect(() => {
+    
+    fetch('/check-authentication', {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer YOUR_JWT_TOKEN', // Replace with the user's JWT token
+      },
+    })
+      .then((response) => {
+        if (response.status === 200) {
+            setIsAuthenticated(true);
+        } else {
+          
+          setIsAuthenticated(false);
+        }
+      })
+      .catch((error) => {
+        
+        console.error('Error checking authentication status:', error);
+        setIsAuthenticated(false); 
+      });
+  }, []);
+
+  const handleLogout = () => {
+   
+    setIsAuthenticated(false);
+  
+   
   };
 
   return (
@@ -65,7 +98,15 @@ export default function NavbarComponent() {
           <Link href="#" className="text-xl">
             
           <>
-      <Button onPress={onOpen} color="primary" className="text-xl">Login</Button>
+          {isAuthenticated ? (
+            <Button onPress={handleLogout} color="primary" className="text-xl">
+              Logout
+            </Button>
+          ) : (
+            
+              <Button onPress={onOpen} color="primary" className="text-xl">
+                Login
+              </Button>)}
       <Modal 
         isOpen={isOpen} 
         onOpenChange={onOpenChange}
