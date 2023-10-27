@@ -20,6 +20,7 @@ router.get('/google/callback',
     console.log('ID:', req.user._id);
     console.log('Name:', req.user.displayName);
     console.log('Avatar:', req.user.picture);
+    console.log('token: ',token);
   }
 );
 
