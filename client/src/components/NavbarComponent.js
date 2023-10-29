@@ -56,6 +56,7 @@ export default function NavbarComponent() {
         <NavbarItem>
           <Button
             as={Link}
+            
             color="primary"
             href="#"
             variant="flat"
