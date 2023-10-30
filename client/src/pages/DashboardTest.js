@@ -27,9 +27,6 @@ import {
 } from "@nextui-org/react";
 import axios from "axios";
 
-
-
-
 function DashButton({ children }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [active, setActive] = useState(false);
@@ -73,31 +70,12 @@ function DashButton({ children }) {
                       }}
                     />
                     <Input
-                      label="5 unit rooms"
-                      placeholder="Edit number of 5 unit rooms"
+                      label="Floors"
+                      placeholder="Edit number of total floors"
                       type="number"
                       variant="bordered"
                       id="hostelUnit5Edit"
                       name="hostelUnit5Edit"
-                      classNames={{
-                        label: "text-lg",
-                        input: ["placeholder:text-xl", "text-xl"],
-                        innerWrapper: "bg-transparent",
-                        inputWrapper: ["h-20"],
-                      }}
-                    />
-                    <Input
-                      /* endContent={
-                      <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                    }*/
-                      label="6 unit rooms"
-                      placeholder="Edit number of 6 unit rooms"
-                      type="number"
-                      variant="bordered"
-                      id="hostelUnit6Edit"
-                      name="hostelUnit6Edit"
-                      // onChange={handleInput}
-                      // value={post.hostelUnit6}
                       classNames={{
                         label: "text-lg",
                         input: ["placeholder:text-xl", "text-xl"],
@@ -171,7 +149,6 @@ function FormPlusModal() {
   const [post, setPost] = useState({
     hostelName: "",
     hostelUnit5: "",
-    hostelUnit6: "",
   });
 
   const handleInput = (event) => {
@@ -212,9 +189,6 @@ function FormPlusModal() {
                 <ModalBody>
                   <Input
                     autoFocus
-                    /*endContent={
-                      <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                    }*/
                     label="Name"
                     placeholder="Enter hostel name"
                     variant="bordered"
@@ -228,63 +202,23 @@ function FormPlusModal() {
                       innerWrapper: "bg-transparent",
                       inputWrapper: ["h-20"],
                     }}
-                    // value={post}
                   />
                   <Input
-                    /* endContent={
-                      <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                    }*/
-                    label="5 unit rooms"
-                    placeholder="Enter number of 5 unit rooms"
+                    label="Floors"
+                    placeholder="Total floors"
                     type="number"
                     variant="bordered"
-                    id="hostelUnit5"
-                    name="hostelUnit5"
+                    id="floors"
+                    name="floors"
                     onChange={handleInput}
-                    value={post.hostelUnit5}
+                    value={post.floors}
                     classNames={{
                       label: "text-lg",
                       input: ["placeholder:text-xl", "text-xl"],
                       innerWrapper: "bg-transparent",
                       inputWrapper: ["h-20"],
                     }}
-                    // value={post}
                   />
-                  <Input
-                    /* endContent={
-                      <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                    }*/
-                    label="6 unit rooms"
-                    placeholder="Enter number of 6 unit rooms"
-                    type="number"
-                    variant="bordered"
-                    id="hostelUnit6"
-                    name="hostelUnit6"
-                    onChange={handleInput}
-                    value={post.hostelUnit6}
-                    classNames={{
-                      label: "text-lg",
-                      input: ["placeholder:text-xl", "text-xl"],
-                      innerWrapper: "bg-transparent",
-                      inputWrapper: ["h-20"],
-                    }}
-                    // value={post}
-                  />
-                  {/* <div className="flex py-2 px-1 justify-between">
-                    <Checkbox
-                      classNames={{
-                        label: "text-small",
-                      }}
-                    >
-                      Remember me
-                    </Checkbox>
-                    <Link color="primary" href="#" size="sm">
-                      Forgot password?
-                    </Link>
-                  </div> */}
-                  {/* <Button color="primary" onPress={onClose} type="submit" >
-                    Register
-                  </Button> */}
                 </ModalBody>
                 <ModalFooter>
                   <Button color="danger" variant="light" onPress={onClose}>
