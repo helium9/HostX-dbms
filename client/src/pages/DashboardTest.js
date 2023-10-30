@@ -3,12 +3,13 @@ import userLogo from "../images/userLogo.svg";
 import downArrowFilled from "../images/downArrowFilled.svg";
 import FooterComponent from "../components/FooterComponent";
 import { Card, CardHeader, CardBody, Button, Divider } from "@nextui-org/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FormPlusModal from "../components/FormPlusModal";
 import whiteEditPencil from "../images/whiteEditPencil.svg";
 import FormControlsSection from "../components/FormControlsSection";
 import FormControlsButton from "../components/FormControlsButton";
 import DashButton from "../components/DashButton";
+import axios from "axios";
 
 function FloorRoomsInfo({ floor, rooms }) {
   return (
