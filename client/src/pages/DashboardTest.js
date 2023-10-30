@@ -6,7 +6,7 @@ import { Card, CardHeader, CardBody, Button, Divider } from "@nextui-org/react";
 import editPencil from "../images/editPencil.svg";
 import blueCross from "../images/blueCross.svg";
 import blueEditPencil from "../images/blueEditPencil.svg";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import AddFilled from "../images/AddFilled.svg";
 import releaseForm from "../images/releaseForm.svg";
 import expandArrowUp from "../images/expandArrowUp.svg";
@@ -297,6 +297,20 @@ function FormControlsSection({ active }) {
 
 export default function DashboardTest() {
   const [formActive, setFormActive] = useState(false);
+  const [hostels,sethostels]=useState([]);
+  
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/admin/gethostelname')
+      .then(response => {
+        
+       
+        sethostels(response.data);
+         // Update the state with the fetched data
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
   return (
     <>
       <div className="flex flex-col min-h-screen">
