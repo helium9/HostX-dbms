@@ -1,14 +1,23 @@
 const express = require('express');
+const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const path = require('path'); 
 const { fileURLToPath } = require("url");
 const cors=require('cors');
+const { v4: uuidv4 } = require('uuid');
 const passport = require('passport');
 const googleAuth = require("./routes/authentication");
 // const { router, sharedToken } = require("./routes/authentication");
 
 const jwt = require('jsonwebtoken');
-
+function con(){const connection = mysql.createConnection({
+  host: 'localhost',         
+  user: 'root',    
+  password: '@mysql271314', 
+  database: 'hostel_information2', 
+  
+});
+return connection;}
 const app = express();
 const port = 8000; 
 
@@ -38,6 +47,69 @@ app.post('/api/admin/submit', (req, res) => {
   console.log(formAdminData);
   res.json({ message: 'Form data received and logged' });
 });
+
+app.get("/",(req,res)=>{
+  res.send("Onto the backend")
+})
+let index=2;
+
+app.post("/api/admin/hostels",async (req,res)=>{
+  c=con();
+  const id = uuidv4();
+  const val=[id,req.body.hostelName,req.body.Numberoffloors,"http://localhost:4000"];
+  index=index+1;
+  const insertQuery = 'INSERT INTO hostels VALUE (?,?, ?, ?);';
+
+  c.query(insertQuery, val, (err, results) => {
+      if (err) {
+        console.error('Error inserting data:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+      } else {
+        console.log('successfully created hostel ');
+        res.status(201).send();
+              
+      }
+    });
+
+
+
+
+
+
+  // const password=req.body.Password;
+  // const useri=req.body.user;
+  // const ph=req.body.phone;
+  // console.log(req.body);
+  // const insertQuery = 'INSERT INTO mytable VALUE (?, ?, ?);';
+  // const selectquery="select count(*) from mytable where userID=?;"
+  // const b=[useri];
+  // c=con();
+  // const li=c.query(selectquery,b,(err,results)=>{if(err){throw err;}
+  //         if(results[0]["count(*)"]>0){
+              
+  //             res.status(202).send();
+              
+              
+  //         }});
+  
+ 
+  // const hashedPassword = await bcrypt.hash(password, 10)
+  // const user2 = { name: useri, password: hashedPassword }
+  // users.push(user2);
+  // const values = [useri,ph,hashedPassword];
+  // console.log(hashedPassword);
+  
+  // c.query(insertQuery, values, (err, results) => {
+  //     if (err) {
+  //       console.error('Error inserting data:', err);
+  //       res.status(500).json({ error: 'Internal Server Error' });
+  //     } else {
+  //       console.log('successfully registered');
+  //       res.status(201).send();
+              
+  //     }
+  //   });
+})  
 
 // app.post('/api/logout', (req, res) => {
 //   // Perform the logout action here, such as invalidating the user's session or token.

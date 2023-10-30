@@ -148,7 +148,7 @@ function FormPlusModal() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [post, setPost] = useState({
     hostelName: "",
-    hostelUnit5: "",
+    Numberoffloors: "",
   });
 
   const handleInput = (event) => {
@@ -160,7 +160,7 @@ function FormPlusModal() {
     try {
       // const response = await axios.post('https://jsonplaceholder.typicode.com/posts', post);
       const response = await axios.post(
-        "http://localhost:8000/api/admin/submit",
+        "http://localhost:8000/api/admin/hostels",
         post
       );
       console.log(response);
@@ -209,9 +209,9 @@ function FormPlusModal() {
                     type="number"
                     variant="bordered"
                     id="floors"
-                    name="floors"
+                    name="Numberoffloors"
                     onChange={handleInput}
-                    value={post.floors}
+                    value={post.Numberoffloors}
                     classNames={{
                       label: "text-lg",
                       input: ["placeholder:text-xl", "text-xl"],
