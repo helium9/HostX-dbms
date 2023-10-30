@@ -153,7 +153,7 @@ function FormPlusModal() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [info, setInfo] = useState({
     hostelName: "",
-    floors: "",
+    hostelUnit5: "",
   });
 
   const handleInput = (event) => {
@@ -165,7 +165,7 @@ function FormPlusModal() {
     try {
       const response = await axios.post(
         "http://localhost:8000/api/admin/submit",
-        info
+        post
       );
       console.log(response);
     } catch (err) {
@@ -214,9 +214,9 @@ function FormPlusModal() {
                     type="number"
                     variant="bordered"
                     id="floors"
-                    name="floors"
+                    name="Numberoffloors"
                     onChange={handleInput}
-                    value={info.floors}
+                    value={post.floors}
                     classNames={{
                       label: "text-lg",
                       input: ["placeholder:text-xl", "text-xl"],
