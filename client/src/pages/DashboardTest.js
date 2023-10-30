@@ -88,10 +88,13 @@ function DashButton({ children }) {
                     <Button color="danger" variant="flat" onPress={onClose}>
                       Close
                     </Button>
-                    <Button color="primary" onPress={()=>{
-                      console.log("sent");
-                      onClose();
-                    }}>
+                    <Button
+                      color="primary"
+                      onPress={() => {
+                        console.log("sent");
+                        onClose();
+                      }}
+                    >
                       Edit
                     </Button>
                   </ModalFooter>
@@ -295,6 +298,21 @@ function FormControlsSection({ active }) {
   return <>{put}</>;
 }
 
+function FloorRoomsInfo({ floor, rooms }) {
+  return (
+    <div className="flex flex-row mx-3">
+      <div className="flex flex-col items-center">
+        <p className="font-['Roboto'] mb-2 text-lg">Floor</p>
+        <p className="text-6xl font-semibold">{floor}</p>
+      </div>
+      <Divider orientation="vertical" className="bg-white h-24 mx-4" />
+      <div className="flex flex-col items-center">
+        <p className="font-['Roboto'] mb-2 text-lg">Rooms</p>
+        <p className="text-6xl font-semibold">{rooms}</p>
+      </div>
+    </div>
+  );
+}
 export default function DashboardTest() {
   const [formActive, setFormActive] = useState(false);
   const [hostels,sethostels]=useState([]);
@@ -349,15 +367,8 @@ export default function DashboardTest() {
               {/*change such that onfocus becomes white */}
             </CardBody>
             <CardBody className="flex flex-row items-start m-0 mb-4 p-0 h-28">
-              <div className="flex flex-col items-center">
-                <p className="font-['Roboto'] mb-2 text-lg">5 units rooms</p>
-                <p className="text-6xl font-semibold">12</p>
-              </div>
-              <Divider orientation="vertical" className="bg-white h-24 mx-4" />
-              <div className="flex flex-col items-center">
-                <p className="font-['Roboto'] mb-2 text-lg">6 units rooms</p>
-                <p className="text-6xl font-semibold">50</p>
-              </div>
+              <FloorRoomsInfo floor={1} rooms={23} />
+              <FloorRoomsInfo floor={2} rooms={12} />
             </CardBody>
           </Card>
           <div className="flex flex-col gap-5 lg:max-w-xs">
