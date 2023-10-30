@@ -3,7 +3,7 @@ import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
 import pyramid from "../images/2_3pyramid.svg";
 import donut from "../images/5_3donut.svg";
-import strip from "../images/18_3strip.svg";
+import strip from "../images/18_3combine.png";
 import wave from "../images/Line 1wave.svg";
 import person from "../images/Frame 36persons.svg";
 import slice from "../images/Mask groupwatermelon.svg";
@@ -34,7 +34,7 @@ export default function LandingPage() {
         ></img>
         <img
           src={strip}
-          className="absolute w-[30%] h-[180px] hidden md:block top-[180px] lg:top-[240px] lg:left-[40%]  left-1/2"
+          className="absolute  h-[180px] hidden md:block top-[180px] lg:top-[240px] lg:left-[55%]  left-1/2"
         ></img>
         <img
           src={donut}
