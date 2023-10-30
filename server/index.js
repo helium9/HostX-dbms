@@ -13,9 +13,8 @@ const jwt = require('jsonwebtoken');
 function con(){const connection = mysql.createConnection({
   host: 'localhost',         
   user: 'root',    
-  password: '@mysql271314', 
+  password: 'admin', 
   database: 'hostel_information2', 
-  
 });
 return connection;}
 const app = express();
