@@ -15,7 +15,7 @@ const port = 8000;
 require("./controllers/controller.tokenJWT");
 require("dotenv/config");
 
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(cors());
 
 

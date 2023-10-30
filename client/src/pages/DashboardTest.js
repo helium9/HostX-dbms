@@ -88,7 +88,10 @@ function DashButton({ children }) {
                     <Button color="danger" variant="flat" onPress={onClose}>
                       Close
                     </Button>
-                    <Button color="primary" onPress={onClose}>
+                    <Button color="primary" onPress={()=>{
+                      console.log("sent");
+                      onClose();
+                    }}>
                       Edit
                     </Button>
                   </ModalFooter>
@@ -117,6 +120,7 @@ function DashButton({ children }) {
     </Button>
   );
 }
+
 function FormControlsButton({ active, setActive }) {
   let put;
   if (active) {
@@ -144,15 +148,16 @@ function FormControlsButton({ active, setActive }) {
   }
   return <>{put}</>;
 }
+
 function FormPlusModal() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [post, setPost] = useState({
+  const [info, setInfo] = useState({
     hostelName: "",
-    hostelUnit5: "",
+    floors: "",
   });
 
   const handleInput = (event) => {
-    setPost({ ...post, [event.target.name]: event.target.value });
+    setInfo({ ...info, [event.target.name]: event.target.value });
   };
 
   const handleSubmit = async (event) => {
@@ -160,13 +165,14 @@ function FormPlusModal() {
     try {
       const response = await axios.post(
         "http://localhost:8000/api/admin/submit",
-        post
+        info
       );
       console.log(response);
     } catch (err) {
       console.error(err);
     }
   };
+
   return (
     <>
       <button onClick={onOpen}>
@@ -194,7 +200,7 @@ function FormPlusModal() {
                     id="hostelName"
                     name="hostelName"
                     onChange={handleInput}
-                    value={post.hostelName}
+                    value={info.hostelName}
                     classNames={{
                       label: "text-lg",
                       input: ["placeholder:text-xl", "text-xl"],
@@ -210,7 +216,7 @@ function FormPlusModal() {
                     id="floors"
                     name="floors"
                     onChange={handleInput}
-                    value={post.floors}
+                    value={info.floors}
                     classNames={{
                       label: "text-lg",
                       input: ["placeholder:text-xl", "text-xl"],
