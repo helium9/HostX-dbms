@@ -112,8 +112,8 @@ function DashButton({ children }) {
                    /* endContent={
                       <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                     }*/
-                    label="5 unit rooms"
-                    placeholder="Edit number of 5 unit rooms"
+                    label="Number of floors"
+                    placeholder="Enter number of floors"
                     type="number"
                     variant="bordered"
                     id="hostelUnit5Edit"
@@ -250,13 +250,59 @@ function FormPlusModal(){
 
     const [post,setPost]=useState({
       hostelName:'',
-      hostelUnit5:'',
-      hostelUnit6:'',
+      Numberoffloors:1
     
     })
+    
+    const [floornum,setfloornum]=useState([0]);
+    const makefloors=()=>{
+      console.log(post.Numberoffloors);
+      const inputElements = [];
+      for(let i=1;i<=post.Numberoffloors;i++){
+        setfloornum(...floornum,0);
+         inputElements.push(
+          <Input
+                   /* endContent={
+                      <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                    }*/
+                    key={i}
+                    label={ "Enter number of rooms in floor" + {i}}
+                    placeholder="Enter number rooms"
+                    type="number"
+                    variant="bordered"
+                    id="hostelrooms"
+                    name="hostelrooms"
+                    // onChange={(e)=>{set()}}
+                    value={floornum[i]}
+                    classNames={{
+                      label: "text-lg",
+                      input: [
+                        "placeholder:text-xl",
+                        "text-xl"
+                      ],
+                      innerWrapper: "bg-transparent",
+                      inputWrapper: [
+                     "h-20",
+                      ],
+                    }}
+                    // value={post}
+                  />
+        );
+
+
+      }
+      return (
+        <div>
+          {inputElements}
+        </div>
+      );
+    }
+
+    
 
     const handleInput=(event)=>{
-      setPost({...post,[event.target.name]: event.target.value})
+      setPost({...post,[event.target.name]: event.target.value});
+      // makefloors();
   
     }
 
@@ -316,14 +362,14 @@ function FormPlusModal(){
                    /* endContent={
                       <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                     }*/
-                    label="5 unit rooms"
-                    placeholder="Enter number of 5 unit rooms"
+                    label="Number of floors"
+                    placeholder="Enter number of floors"
                     type="number"
                     variant="bordered"
-                    id="hostelUnit5"
-                    name="hostelUnit5"
+                    id="Numberoffloors"
+                    name="Numberoffloors"
                     onChange={handleInput}
-                    value={post.hostelUnit5}
+                    value={post.Numberoffloors}
                     classNames={{
                       label: "text-lg",
                       input: [
@@ -338,46 +384,8 @@ function FormPlusModal(){
                     }}
                     // value={post}
                   />
-                  <Input
-                   /* endContent={
-                      <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                    }*/
-                    label="6 unit rooms"
-                    placeholder="Enter number of 6 unit rooms"
-                    type="number"
-                    variant="bordered"
-                    id="hostelUnit6"
-                    name="hostelUnit6"
-                    onChange={handleInput}
-                    value={post.hostelUnit6}
-                    classNames={{
-                      label: "text-lg",
-                      input: [
-                        "placeholder:text-xl",
-                        "text-xl"
-                      ],
-                      innerWrapper: "bg-transparent",
-                      inputWrapper: [
-                     "h-20",
-                      ],
-                    }}
-                    // value={post}
-                  />
-                    {/* <div className="flex py-2 px-1 justify-between">
-                    <Checkbox
-                      classNames={{
-                        label: "text-small",
-                      }}
-                    >
-                      Remember me
-                    </Checkbox>
-                    <Link color="primary" href="#" size="sm">
-                      Forgot password?
-                    </Link>
-                  </div> */}
-                  {/* <Button color="primary" onPress={onClose} type="submit" >
-                    Register
-                  </Button> */}
+                  
+                 
                 </ModalBody>
                 <ModalFooter>
                   <Button color="danger" variant="light" onPress={onClose}>
