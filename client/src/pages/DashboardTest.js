@@ -165,7 +165,7 @@ function FormPlusModal() {
     try {
       const response = await axios.post(
         "http://localhost:8000/api/admin/submit",
-        post
+        info
       );
       console.log(response);
     } catch (err) {
@@ -216,7 +216,7 @@ function FormPlusModal() {
                     id="floors"
                     name="Numberoffloors"
                     onChange={handleInput}
-                    value={post.floors}
+                    value={info.floors}
                     classNames={{
                       label: "text-lg",
                       input: ["placeholder:text-xl", "text-xl"],
