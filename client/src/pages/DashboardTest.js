@@ -153,7 +153,7 @@ function FormPlusModal() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [info, setInfo] = useState({
     hostelName: "",
-    hostelUnit5: "",
+    floors: "",
   });
 
   const handleInput = (event) => {
