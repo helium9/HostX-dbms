@@ -39,7 +39,6 @@ function DashButton({ children }) {
       <div className="items-center flex flex-row gap-3">
         <p className="text-blue-500 font-['Roboto'] pt-1">{children}</p>
         <img className="h-5 w-5" src={blueCross} alt="menu" />
-        {/* <img className="h-5 w-5" src={blueEditPencil} alt="menu" /> */}
         <>
           <img
             onClick={onOpen}
@@ -303,7 +302,6 @@ function FormPlusModal() {
     </>
   );
 }
-
 function FormControlsSection({ active }) {
   let put;
   if (active) {
@@ -358,7 +356,6 @@ function FormControlsSection({ active }) {
 }
 export default function DashboardTest() {
   const [formActive, setFormActive] = useState(false);
-
   return (
     <>
       <div className="flex flex-col min-h-screen">
@@ -426,7 +423,6 @@ export default function DashboardTest() {
                 </CardBody>
               </Card>
             </div>
-
             <FormControlsButton
               active={formActive}
               setActive={setFormActive}
