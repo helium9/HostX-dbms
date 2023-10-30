@@ -28,6 +28,20 @@ function FloorRoomsInfo({ floor, rooms }) {
 
 export default function DashboardTest() {
   const [formActive, setFormActive] = useState(false);
+  const [hostels,sethostels]=useState([]);
+  
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/admin/gethostelname')
+      .then(response => {
+        
+       
+        sethostels(response.data);
+         // Update the state with the fetched data
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
   return (
     <>
       <div className="flex flex-col min-h-screen">

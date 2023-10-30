@@ -70,11 +70,6 @@ app.post("/api/admin/hostels",async (req,res)=>{
       }
     });
 
-
-
-
-
-
   // const password=req.body.Password;
   // const useri=req.body.user;
   // const ph=req.body.phone;
@@ -109,7 +104,19 @@ app.post("/api/admin/hostels",async (req,res)=>{
   //     }
   //   });
 })  
+app.get("/api/admin/gethostelname",(req,res)=>{
+  c=con();
+  const getQuery = "Select HostelName from hostels ;";
+  const li=c.query(getQuery,(err,results)=>{if(err){throw err;}
+         
+              
+              res.send(results);
+              
+              
+          });
 
+
+})
 // app.post('/api/logout', (req, res) => {
 //   // Perform the logout action here, such as invalidating the user's session or token.
 //   // For example, you can clear the session or remove the user's token from the server.
