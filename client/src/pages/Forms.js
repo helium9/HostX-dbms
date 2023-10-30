@@ -6,7 +6,7 @@ import FooterComponent from "../components/FooterComponent";
 import React from 'react';
 import {Input} from "@nextui-org/react";
 import {useForm,Controller} from 'react-hook-form';
-import {DevTool} from '@hookform/devtools';
+// import {DevTool} from '@hookform/devtools';
 import axios from 'axios'
 
 

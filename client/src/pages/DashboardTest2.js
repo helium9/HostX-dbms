@@ -423,7 +423,7 @@ function FormControlsSection({ active }) {
 }
 export default function DashboardTest2() {
   const [formActive, setFormActive] = useState(false);
-  const [names, setNames] = useState([]);
+  const [names, setNames] = useState(["VSB"]);
   const [roomData, setRoomData] = useState([]);
 
    // Function to update the names array
