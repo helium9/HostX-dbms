@@ -7,14 +7,15 @@ const cors=require('cors');
 const { v4: uuidv4 } = require('uuid');
 const passport = require('passport');
 const googleAuth = require("./routes/authentication");
+
 // const { router, sharedToken } = require("./routes/authentication");
 
 const jwt = require('jsonwebtoken');
 function con(){const connection = mysql.createConnection({
-  host: 'localhost',         
-  user: 'root',    
-  password: 'admin', 
-  database: 'hostel_information2', 
+  host: process.db_env.DB_HOST,         
+  user: process.db_env.DB_USER,    
+  password: process.db_env.DB_PASSWORD, 
+  database: process.db_env.DB_NAME, 
 });
 return connection;}
 const app = express();
@@ -55,7 +56,7 @@ let index=2;
 app.post("/api/admin/hostels",async (req,res)=>{
   c=con();
   const id = uuidv4();
-  const val=[id,req.body.hostelName,req.body.Numberoffloors,"http://localhost:4000"];
+  const val=[id,req.body.hostelName,req.body.floors,"http://localhost:4000"];
   index=index+1;
   const insertQuery = 'INSERT INTO hostels VALUE (?,?, ?, ?);';
 

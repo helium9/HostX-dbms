@@ -79,7 +79,7 @@ function FormPlusModal() {
                     type="number"
                     variant="bordered"
                     id="floors"
-                    name="Numberoffloors"
+                    name="floors"
                     onChange={handleInput}
                     value={info.floors}
                     classNames={{
