@@ -7,6 +7,7 @@ const cors = require("cors");
 const { v4: uuidv4 } = require("uuid");
 const passport = require("passport");
 const googleAuth = require("./routes/authentication");
+// const logoutRouter = require("./routes/authentication");
 
 // const { router, sharedToken } = require("./routes/authentication");
 
@@ -33,6 +34,8 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/auth", googleAuth);
+
+app.use('/api', googleAuth);
 
 const customDirectory = path.join(__dirname, "../client/src/pages/");
 
@@ -118,29 +121,35 @@ app.get("/api/admin/gethostelname", (req, res) => {
     res.send(results);
   });
 });
+
+
+
 // app.post('/api/logout', (req, res) => {
-//   // Perform the logout action here, such as invalidating the user's session or token.
-//   // For example, you can clear the session or remove the user's token from the server.
-
-//   // After successfully logging out, you can send a response to the client.
-//   res.status(200).json({ message: 'User logged out' });
-// });
-// app.get('/api/auth/check', (req, res) => {
-//   // Check the user's authentication status here
-//   // This can involve verifying the user's token or session.
-
-//   // Example: Check if the user is authenticated based on a token
-//   const token = req.header('Authorization'); // Assuming you send the token in the Authorization header
-
-//   // Verify the token (you should have your own token verification logic)
-//   if (tokenVerificationLogic(token)) {
-//     // If the token is valid, the user is authenticated
-//     res.status(200).json({ isAuthenticated: true });
-//   } else {
-//     // If the token is invalid or missing, the user is not authenticated
-//     res.status(401).json({ isAuthenticated: false });
+//   try {
+//     // Perform the logout action here
+//     // This might include invalidating the user's session, clearing cookies, or revoking tokens.
+//     // For example, if you're using session-based authentication:
+//     req.session.destroy((err) => {
+//       if (err) {
+//         console.error('Error destroying session:', err);
+//         res.status(500).json({ message: 'Internal Server Error' });
+//       } else {
+//         res.status(200).json({ message: 'User logged out' });
+//       }
+//     });
+//   } catch (error) {
+//     console.error('Error during logout:', error);
+//     res.status(500).json({ message: 'Internal Server Error' });
 //   }
 // });
+
+// app.post('/api/logout', (req, res) => {
+//   // You can simply respond with a success message for a frontend to handle token expiration.
+//   // Since JWT tokens are stateless, there's no need to perform complex operations here.
+//   res.status(200).json({ message: 'User logged out' });
+// });
+
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
