@@ -2,8 +2,8 @@
 import menuLogo from "../images/menu.svg";
 import AboutUs from "../pages/AboutUs.js";
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Checkbox, Input} from "@nextui-org/react";
-import {MailIcon} from './MailIcon.jsx';
-import {LockIcon} from './LockIcon.jsx';
+import {MailIcon} from '../images/MailIcon.jsx';
+import {LockIcon} from '../images/LockIcon.jsx';
 import React, { useState, useEffect } from "react";
 
 
