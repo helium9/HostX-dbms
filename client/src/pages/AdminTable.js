@@ -86,7 +86,7 @@ export default function AdminTable(){
     return(
     <div>
         <NavbarComponent/>
-        <div className="w-8/12 mx-auto p-4 m-4 mb-24 mt-12">
+        <div className="w-5/6 mx-auto p-4 m-4 mb-24 mt-12">
         <TableUI/>
         </div>
         <FooterComponent/>
