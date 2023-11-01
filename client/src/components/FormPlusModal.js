@@ -15,7 +15,7 @@ import axios from "axios";
 import { useState, useContext, createContext } from "react";
 import { AdminContext } from "../pages/DashboardTest";
 
-function FormPlusModal() {
+function FormPlusModal({getHostel}) {
   const { admin_ID, setAdmin } = useContext(AdminContext);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [info, setInfo] = useState({
@@ -40,6 +40,7 @@ function FormPlusModal() {
     } catch (err) {
       console.error(err);
     }
+    getHostel(admin_ID);
   };
 
   return (
