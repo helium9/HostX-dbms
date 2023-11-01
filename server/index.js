@@ -82,17 +82,27 @@ app.get("/", (req, res) => {
 //   index = index + 1;
 //   const insertQuery = "INSERT INTO hostels VALUE (?,?, ?, ?);";
 
-//   connection.query(insertQuery, val, (err, results) => {
-//     if (err) {
-//       console.error("Error inserting data:", err);
-//       res.status(500).json({ error: "Internal Server Error" });
-//     } else {
-//       console.log("successfully created hostel ");
-//       res.status(201).send();
-//     }
-//   });
+  c.query(insertQuery, val, (err, results) => {
+    if (err) {
+      console.error("Error inserting data:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      console.log("successfully created hostel ");
+      res.status(201).send();
+    }
+  });
 
-<<<<<<< HEAD
+  // const password=req.body.Password;
+  // const useri=req.body.user;
+  // const ph=req.body.phone;
+  // console.log(req.body);
+  // const insertQuery = 'INSERT INTO mytable VALUE (?, ?, ?);';
+  // const selectquery="select count(*) from mytable where userID=?;"
+  // const b=[useri];
+  // c=con();
+  // const li=c.query(selectquery,b,(err,results)=>{if(err){throw err;}
+  //         if(results[0]["count(*)"]>0){
+
   //             res.status(202).send();
 
   //         }});
@@ -145,8 +155,16 @@ app.get("/", (req, res) => {
 //     console.error('Error during logout:', error);
 //     res.status(500).json({ message: 'Internal Server Error' });
 //   }
-=======
->>>>>>> c6d4eefc9f449a7db278e820c14c3d1ef6cf53a2
+//   connection.query(insertQuery, val, (err, results) => {
+//     if (err) {
+//       console.error("Error inserting data:", err);
+//       res.status(500).json({ error: "Internal Server Error" });
+//     } else {
+//       console.log("successfully created hostel ");
+//       res.status(201).send();
+//     }
+//   });
+
 // });
 
 // app.get("/api/admin/gethostelname", (req, res) => {
