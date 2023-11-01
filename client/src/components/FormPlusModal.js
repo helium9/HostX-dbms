@@ -1,24 +1,27 @@
 import AddFilled from "../images/AddFilled.svg";
 import {
-    Modal,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-    useDisclosure,
-    Checkbox,
-    Input,
-    Link,
-  } from "@nextui-org/react";
-  import { Card, CardHeader, CardBody, Button, Divider } from "@nextui-org/react";
-  import axios from "axios";
-  import { useState } from "react";
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  Checkbox,
+  Input,
+  Link,
+} from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Button, Divider } from "@nextui-org/react";
+import axios from "axios";
+import { useState, useContext, createContext } from "react";
+import { AdminContext } from "../pages/DashboardTest";
 
 function FormPlusModal() {
+  const { admin_ID, setAdmin } = useContext(AdminContext);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [info, setInfo] = useState({
+    admin_ID: admin_ID,
     hostelName: "",
-    floors: "",
+    floors: null,
   });
 
   const handleInput = (event) => {
@@ -26,6 +29,7 @@ function FormPlusModal() {
   };
 
   const handleSubmit = async (event) => {
+    // console.log("Payload ", info);
     event.preventDefault();
     try {
       const response = await axios.post(
