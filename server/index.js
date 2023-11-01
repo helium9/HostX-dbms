@@ -65,8 +65,22 @@ app.post("/api/admin/submit", async (req, res) => {
   }
 });
 
-app.get("/", (req, res) => {
-  res.send("Onto the backend");
+app.get("/getHostels", async (req, res) => {
+  try{
+    connection.query(`SELECT HostelName FROM registeredhostels WHERE AdminID="${req.query.admin_ID}"`, (err, rows, fields)=>{
+      if (err) throw err;
+      let hostelNames = [];
+      rows.forEach(element => {
+        hostelNames.push(element.HostelName);
+      });
+      // console.log(rows);
+      res.send({"registered": hostelNames});
+    });
+  }
+  catch{
+    res.status(500).send("Error fetching registered hostels.");
+  }
+  // console.log(req.query);
 });
 
 // let index = 2;

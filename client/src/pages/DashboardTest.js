@@ -31,93 +31,97 @@ function FloorRoomsInfo({ floor, rooms }) {
 
 export default function DashboardTest() {
   const [formActive, setFormActive] = useState(false);
-  const [hostels, sethostels] = useState([]);
+  const [hostels, setHostels] = useState([]);
   const [admin_ID, setAdmin] = useState("1234");
 
-  // useEffect(() => {
-  //   axios
-  //     .get("http://localhost:8000/api/admin/gethostelname")
-  //     .then((response) => {
-  //       sethostels(response.data);
-  //       // Update the state with the fetched data
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching data:", error);
-  //     });
-  // }, []);
+  const getHostel = (admin_ID) => {
+    axios
+      .get("http://localhost:8000/getHostels", {
+        params: {
+          admin_ID: admin_ID,
+        },
+      })
+      .then((res) => {
+        setHostels(res.data.registered);
+      })
+      .catch((err) => console.log(err));
+  };
 
-  
+  useEffect(() => {
+    getHostel(admin_ID);
+  }, []);
+
+  // console.log(hostels);
   return (
     <>
-    <AdminContext.Provider value={{admin_ID, setAdmin}}>
-      <div className="flex flex-col min-h-screen">
-        <NavbarComponent />
-        <div className="flex flex-col gap-5 p-7 font-['Poppins'] lg:flex-row lg:flex-no-wrap lg:px-32">
-          <Card className="rounded-[12px] border-slate-800 border-2 lg:py-8 lg:m-0 shrink-0">
-            <CardHeader className="gap-4 px-6 h-32 flex lg:flex-col lg:h-72 lg:items-center lg:w-64">
-              <img
-                className="h-full p-2 opacity-90 lg:p-0 lg:m-0"
-                src={userLogo}
-                alt="menu"
-              />
-              <div className="flex flex-col lg:items-center lg:m-0">
-                <p className="text-4xl font-bold lg:w-fit">Admin</p>
-                <p className="text-2xl">Institute Name</p>
+      <AdminContext.Provider value={{ admin_ID, setAdmin }}>
+        <div className="flex flex-col min-h-screen">
+          <NavbarComponent />
+          <div className="flex flex-col gap-5 p-7 font-['Poppins'] lg:flex-row lg:flex-no-wrap lg:px-32">
+            <Card className="rounded-[12px] border-slate-800 border-2 lg:py-8 lg:m-0 shrink-0">
+              <CardHeader className="gap-4 px-6 h-32 flex lg:flex-col lg:h-72 lg:items-center lg:w-64">
+                <img
+                  className="h-full p-2 opacity-90 lg:p-0 lg:m-0"
+                  src={userLogo}
+                  alt="menu"
+                />
+                <div className="flex flex-col lg:items-center lg:m-0">
+                  <p className="text-4xl font-bold lg:w-fit">Admin</p>
+                  <p className="text-2xl">Institute Name</p>
+                </div>
+                <img
+                  className="h-4/6 p-2 ml-auto lg:hidden"
+                  src={downArrowFilled}
+                  alt="menu"
+                />
+              </CardHeader>
+            </Card>
+            <Card className="rounded-[12px] border-slate-800 border-2 px-9  lg:grow">
+              <CardHeader className="m-0 p-0">
+                <p className="font-bold text-2xl mt-6 mb-4 lg:text-3xl lg:font-normal">
+                  Registered Hostels
+                </p>
+              </CardHeader>
+              <CardBody className="m-0 mb-4 p-0 pb-4 flex-row gap-4 flex-wrap items-center">
+                {hostels.map((hostel, index) => {
+                  return <DashButton key={index}>{hostel}</DashButton>;
+                })}
+                <FormPlusModal getHostel={getHostel}></FormPlusModal>
+                {/*change such that onfocus becomes white */}
+              </CardBody>
+              <CardBody className="flex flex-row items-start m-0 mb-4 p-0 h-28">
+                <FloorRoomsInfo floor={1} rooms={23} />
+                <FloorRoomsInfo floor={2} rooms={12} />
+              </CardBody>
+            </Card>
+            <div className="flex flex-col gap-5 lg:max-w-xs">
+              <div className="max-lg:hidden grow">
+                <Card className="border-2 border-blue-600 bg-black h-full px-6 pt-1">
+                  <CardHeader className="flex flex-row items-center my-2 text-2xl font-bold gap-3">
+                    <p>User details</p>
+                    <img className="h-5 w-5" src={whiteEditPencil} alt="menu" />
+                  </CardHeader>
+                  <CardBody className="m-0 p-0 px-3">
+                    <div className="text-xl flex flex-row">
+                      <p className="w-fit font-bold mr-2">Email</p>
+                      admin@iiti.ac.in
+                    </div>
+                    <div className="text-xl flex flex-row">
+                      <p className="w-fit font-bold mr-2">Contact</p>99999999999
+                    </div>
+                  </CardBody>
+                </Card>
               </div>
-              <img
-                className="h-4/6 p-2 ml-auto lg:hidden"
-                src={downArrowFilled}
-                alt="menu"
+              <FormControlsButton
+                active={formActive}
+                setActive={setFormActive}
+                className="shrink-0"
               />
-            </CardHeader>
-          </Card>
-          <Card className="rounded-[12px] border-slate-800 border-2 px-9  lg:grow">
-            <CardHeader className="m-0 p-0">
-              <p className="font-bold text-2xl mt-6 mb-4 lg:text-3xl lg:font-normal">
-                Registered Hostels
-              </p>
-            </CardHeader>
-            <CardBody className="m-0 mb-4 p-0 pb-4 flex-row gap-4 flex-wrap items-center">
-              <DashButton>Name</DashButton>
-              <DashButton>Name</DashButton>
-              <DashButton>Vikram Sarabai</DashButton>
-              <DashButton>Name</DashButton>
-              <FormPlusModal></FormPlusModal>
-              {/*change such that onfocus becomes white */}
-            </CardBody>
-            <CardBody className="flex flex-row items-start m-0 mb-4 p-0 h-28">
-              <FloorRoomsInfo floor={1} rooms={23} />
-              <FloorRoomsInfo floor={2} rooms={12} />
-            </CardBody>
-          </Card>
-          <div className="flex flex-col gap-5 lg:max-w-xs">
-            <div className="max-lg:hidden grow">
-              <Card className="border-2 border-blue-600 bg-black h-full px-6 pt-1">
-                <CardHeader className="flex flex-row items-center my-2 text-2xl font-bold gap-3">
-                  <p>User details</p>
-                  <img className="h-5 w-5" src={whiteEditPencil} alt="menu" />
-                </CardHeader>
-                <CardBody className="m-0 p-0 px-3">
-                  <div className="text-xl flex flex-row">
-                    <p className="w-fit font-bold mr-2">Email</p>
-                    admin@iiti.ac.in
-                  </div>
-                  <div className="text-xl flex flex-row">
-                    <p className="w-fit font-bold mr-2">Contact</p>99999999999
-                  </div>
-                </CardBody>
-              </Card>
             </div>
-            <FormControlsButton
-              active={formActive}
-              setActive={setFormActive}
-              className="shrink-0"
-            />
           </div>
+          <FormControlsSection active={formActive} className="shrink-0" />
         </div>
-        <FormControlsSection active={formActive} className="shrink-0" />
-      </div>
-      <FooterComponent />
+        <FooterComponent />
       </AdminContext.Provider>
     </>
   );
