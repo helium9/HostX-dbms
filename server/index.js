@@ -110,17 +110,17 @@ app.post("/api/admin/hostels", async (req, res) => {
   //     }
   //   });
 });
-app.get("/api/admin/gethostelname", (req, res) => {
-  c = con();
-  const getQuery = "Select HostelName from hostels ;";
-  const li = c.query(getQuery, (err, results) => {
-    if (err) {
-      throw err;
-    }
+// app.get("/api/admin/gethostelname", (req, res) => {
+//   c = con();
+//   const getQuery = "Select HostelName from hostels ;";
+//   const li = c.query(getQuery, (err, results) => {
+//     if (err) {
+//       throw err;
+//     }
 
-    res.send(results);
-  });
-});
+//     res.send(results);
+//   });
+// });
 
 
 
