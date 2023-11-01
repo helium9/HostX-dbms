@@ -3,13 +3,15 @@ import userLogo from "../images/userLogo.svg";
 import downArrowFilled from "../images/downArrowFilled.svg";
 import FooterComponent from "../components/FooterComponent";
 import { Card, CardHeader, CardBody, Button, Divider } from "@nextui-org/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 import FormPlusModal from "../components/FormPlusModal";
 import whiteEditPencil from "../images/whiteEditPencil.svg";
 import FormControlsSection from "../components/FormControlsSection";
 import FormControlsButton from "../components/FormControlsButton";
 import DashButton from "../components/DashButton";
 import axios from "axios";
+
+export const AdminContext = createContext(null);
 
 function FloorRoomsInfo({ floor, rooms }) {
   return (
@@ -30,20 +32,24 @@ function FloorRoomsInfo({ floor, rooms }) {
 export default function DashboardTest() {
   const [formActive, setFormActive] = useState(false);
   const [hostels, sethostels] = useState([]);
+  const [admin_ID, setAdmin] = useState("1234");
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:8000/api/admin/gethostelname")
-      .then((response) => {
-        sethostels(response.data);
-        // Update the state with the fetched data
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:8000/api/admin/gethostelname")
+  //     .then((response) => {
+  //       sethostels(response.data);
+  //       // Update the state with the fetched data
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching data:", error);
+  //     });
+  // }, []);
+
+  
   return (
     <>
+    <AdminContext.Provider value={{admin_ID, setAdmin}}>
       <div className="flex flex-col min-h-screen">
         <NavbarComponent />
         <div className="flex flex-col gap-5 p-7 font-['Poppins'] lg:flex-row lg:flex-no-wrap lg:px-32">
@@ -112,6 +118,7 @@ export default function DashboardTest() {
         <FormControlsSection active={formActive} className="shrink-0" />
       </div>
       <FooterComponent />
+      </AdminContext.Provider>
     </>
   );
 }
