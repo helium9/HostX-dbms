@@ -2,6 +2,8 @@ const express = require("express");
 const mysql = require("mysql2");
 const bodyParser = require("body-parser");
 const path = require("path");
+const bcrypt = require('bcrypt');
+
 const { fileURLToPath } = require("url");
 const cors = require("cors");
 const { v4: uuidv4 } = require("uuid");
@@ -22,11 +24,19 @@ app.use("/api", googleAuth);
 
 // const customDirectory = path.join(__dirname, "../client/src/pages/");
 
+// const connection = mysql.createConnection({
+  
+//   host: process.env.DB_HOST,
+//   user: process.env.DB_USER,
+//   password: process.env.DB_PASSWORD,
+//   database: process.env.DB_NAME,
+// });
+
 const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  host: 'localhost',
+  user: 'root',
+  password: '@mysql271314',
+  database: 'hostx-dbms',
 });
 connection.connect((err) => {
   if (err) {
@@ -82,79 +92,6 @@ app.get("/", (req, res) => {
 //   index = index + 1;
 //   const insertQuery = "INSERT INTO hostels VALUE (?,?, ?, ?);";
 
-  c.query(insertQuery, val, (err, results) => {
-    if (err) {
-      console.error("Error inserting data:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-    } else {
-      console.log("successfully created hostel ");
-      res.status(201).send();
-    }
-  });
-
-  // const password=req.body.Password;
-  // const useri=req.body.user;
-  // const ph=req.body.phone;
-  // console.log(req.body);
-  // const insertQuery = 'INSERT INTO mytable VALUE (?, ?, ?);';
-  // const selectquery="select count(*) from mytable where userID=?;"
-  // const b=[useri];
-  // c=con();
-  // const li=c.query(selectquery,b,(err,results)=>{if(err){throw err;}
-  //         if(results[0]["count(*)"]>0){
-
-  //             res.status(202).send();
-
-  //         }});
-
-  // const hashedPassword = await bcrypt.hash(password, 10)
-  // const user2 = { name: useri, password: hashedPassword }
-  // users.push(user2);
-  // const values = [useri,ph,hashedPassword];
-  // console.log(hashedPassword);
-
-  // c.query(insertQuery, values, (err, results) => {
-  //     if (err) {
-  //       console.error('Error inserting data:', err);
-  //       res.status(500).json({ error: 'Internal Server Error' });
-  //     } else {
-  //       console.log('successfully registered');
-  //       res.status(201).send();
-
-  //     }
-  //   });
-});
-// app.get("/api/admin/gethostelname", (req, res) => {
-//   c = con();
-//   const getQuery = "Select HostelName from hostels ;";
-//   const li = c.query(getQuery, (err, results) => {
-//     if (err) {
-//       throw err;
-//     }
-
-//     res.send(results);
-//   });
-// });
-
-
-
-// app.post('/api/logout', (req, res) => {
-//   try {
-//     // Perform the logout action here
-//     // This might include invalidating the user's session, clearing cookies, or revoking tokens.
-//     // For example, if you're using session-based authentication:
-//     req.session.destroy((err) => {
-//       if (err) {
-//         console.error('Error destroying session:', err);
-//         res.status(500).json({ message: 'Internal Server Error' });
-//       } else {
-//         res.status(200).json({ message: 'User logged out' });
-//       }
-//     });
-//   } catch (error) {
-//     console.error('Error during logout:', error);
-//     res.status(500).json({ message: 'Internal Server Error' });
-//   }
 //   connection.query(insertQuery, val, (err, results) => {
 //     if (err) {
 //       console.error("Error inserting data:", err);

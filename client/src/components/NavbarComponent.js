@@ -117,27 +117,7 @@ export default function NavbarComponent() {
             <>
               <ModalHeader className="flex flex-col gap-1 text-2xl">Log in</ModalHeader>
               <ModalBody>
-              <Input
-                  endContent={
-                    <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                  }
-                  label="username"
-                  placeholder="Enter your username"
-                  type="username"
-                  variant="bordered"
-                  classNames={{
-                    label: "text-lg",
-                    input: [
-                      "placeholder:text-xl",
-                      "text-xl"
-
-                    ],
-                    innerWrapper: "bg-transparent",
-                    inputWrapper: [
-                   "h-20",
-                    ],
-                  }}
-                />
+              
                 <Input
                   autoFocus
                   endContent={
