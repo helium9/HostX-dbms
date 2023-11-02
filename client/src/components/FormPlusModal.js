@@ -15,34 +15,44 @@ import axios from "axios";
 import { useState, useContext, createContext } from "react";
 import { AdminContext } from "../pages/DashboardTest";
 
-function FormPlusModal({getHostel}) {
+function FormPlusModal({ getHostel }) {
   const { admin_ID, setAdmin } = useContext(AdminContext);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [info, setInfo] = useState({
     admin_ID: admin_ID,
     hostelName: "",
-    floors: null,
+    floors: "",
   });
+  const [floorInfo, setFloorInfo] = useState({});
 
   const handleInput = (event) => {
     setInfo({ ...info, [event.target.name]: event.target.value });
   };
-
   const handleSubmit = async (event) => {
     // console.log("Payload ", info);
     event.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/admin/submit",
-        info
-      );
-      console.log(response);
+      axios
+        .post("http://localhost:8000/api/admin/submit", info, {
+          params: { type: "H_Info" },
+        })
+        .then((response) => console.log(response))
+        .then(
+          axios
+            .post("http://localhost:8000/api/admin/submit", floorInfo, {
+              params: { type: "F_Info" },
+            })
+            .then((response) => {
+              // console.log(response);
+              getHostel(admin_ID);
+            })
+        );
     } catch (err) {
       console.error(err);
     }
-    getHostel(admin_ID);
+    
   };
-
+  console.log(floorInfo);
   return (
     <>
       <button onClick={onOpen}>
@@ -94,6 +104,36 @@ function FormPlusModal({getHostel}) {
                       inputWrapper: ["h-20"],
                     }}
                   />
+                  {Array(Number(info.floors))
+                    .fill(null)
+                    .map((_, index) => {
+                      return (
+                        <Input
+                          label={`Floor ${index + 1} rooms`}
+                          placeholder="Total Rooms"
+                          type="number"
+                          variant="bordered"
+                          id="floorsInfo"
+                          name="floorsInfo"
+                          key={index}
+                          onChange={(event) =>
+                            setFloorInfo({
+                              ...floorInfo,
+                              [index + 1]: event.target.value,
+                            })
+                          }
+                          value={
+                            floorInfo[index + 1] ? floorInfo[index + 1] : ""
+                          }
+                          classNames={{
+                            label: "text-lg",
+                            input: ["placeholder:text-xl", "text-xl"],
+                            innerWrapper: "bg-transparent",
+                            inputWrapper: ["h-20"],
+                          }}
+                        />
+                      );
+                    })}
                 </ModalBody>
                 <ModalFooter>
                   <Button color="danger" variant="light" onPress={onClose}>
