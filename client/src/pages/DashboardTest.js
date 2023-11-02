@@ -32,7 +32,7 @@ function FloorRoomsInfo({ floor, rooms }) {
 export default function DashboardTest() {
   const [formActive, setFormActive] = useState(false);
   const [hostels, setHostels] = useState([]);
-  // const [admin_ID, setAdmin] = useState("1234");
+// const [admin_ID, setAdmin] = useState("1234");
   const [floorsInfo, setFloorsInfo] = useState([]);
 
   const ID = localStorage.getItem("adminID");
