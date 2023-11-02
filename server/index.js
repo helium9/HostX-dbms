@@ -2,8 +2,7 @@ const express = require("express");
 const mysql = require("mysql2");
 const bodyParser = require("body-parser");
 const path = require("path");
-const bcrypt = require('bcrypt');
-
+const bcrypt = require("bcrypt");
 const { fileURLToPath } = require("url");
 const cors = require("cors");
 const { v4: uuidv4 } = require("uuid");
@@ -24,20 +23,19 @@ app.use("/api", googleAuth);
 
 // const customDirectory = path.join(__dirname, "../client/src/pages/");
 
-// const connection = mysql.createConnection({
-  
-//   host: process.env.DB_HOST,
-//   user: process.env.DB_USER,
-//   password: process.env.DB_PASSWORD,
-//   database: process.env.DB_NAME,
-// });
-
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '@mysql271314',
-  database: 'hostx-dbms',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
+
+// const connection = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: '@mysql271314',
+//   database: 'hostx-dbms',
+// });
 connection.connect((err) => {
   if (err) {
     console.error("Error connecting to MySQL:", err);
@@ -46,10 +44,11 @@ connection.connect((err) => {
   console.log("Connected to MySQL database");
 });
 
+//form page
 app.post("/api/submit", (req, res) => {
   const formData = req.body;
   console.log(formData);
-  res.json({ message: "Form data received and logged for form page" }); //form page
+  res.json({ message: "Form data received and logged for form page" }); 
 });
 
 //plus modal, register hostel
@@ -57,14 +56,16 @@ app.post("/api/admin/submit", async (req, res) => {
   if (req.query.type === "H_Info") {
     const hostelInfo = req.body;
     console.log(hostelInfo);
+    const hostelID = uuidv4();
     res.json({
       message: "Form data received and logged for admin page, register hostel",
+      hostelID: hostelID,
     });
     try {
       connection.query(
         `INSERT INTO registeredhostels VALUES ("${hostelInfo.admin_ID}", 
       "${hostelInfo.hostelName}", 
-      "${uuidv4()}", 
+      "${hostelID}", 
       ${Number(hostelInfo.floors)});`,
         (err, results) => {
           if (err) throw err;
@@ -74,31 +75,73 @@ app.post("/api/admin/submit", async (req, res) => {
     } catch {
       res.status(500).send();
     }
-  }
-  else if(req.query.type === "F_Info"){
-    res.json({
-      message: "Floor data received and logged for admin page, register hostel",
-    });
-    console.log("Floor Info", req.body);
-  }
-  else{
+  } else if (req.query.type === "F_Info") {
+    // console.log("Floor Info", req.body);
+    const floorInfo = req.body;
+    // console.log(floorInfo);
+    const hostelID = floorInfo.hostelID;
+
+    try {
+      connection.query(
+        `SELECT Floors FROM registeredhostels WHERE HostelID="${hostelID}";`,
+        (err, results) => {
+          if (err) throw err;
+          const maxFloors = results[0].Floors;
+          let queryString = `INSERT INTO floorinfo (HostelID, Floor, MaxRooms) \nVALUES\n`;
+          for (let i = 1; i <= maxFloors; i++) {
+            queryString += `("${hostelID}", ${i}, ${
+              floorInfo[i.toString()]
+            }),\n`;
+          }
+          queryString = queryString.slice(0, queryString.length - 2) + `;`;
+          // console.log(queryString);
+          connection.query(queryString, (err, response) => {
+            if (err) throw err;
+            res.send("Sucessfully updated floorInfo data.");
+          });
+        }
+      );
+    } catch {
+      res.status(500).send();
+    }
+  } else {
     res.status(500).send("Invalid query params.");
   }
 });
 
-app.get("/getHostels", async (req, res) => {
-  console.log("try");
+app.get("/getFloors", async (req, res) => {
+  const hostelID = req.query.hostelID;
   try {
     connection.query(
-      `SELECT HostelName FROM registeredhostels WHERE AdminID="${req.query.admin_ID}"`,
+      `SELECT Floor, MaxRooms FROM floorinfo WHERE HostelID="${hostelID}";`,
       (err, rows, fields) => {
         if (err) throw err;
-        let hostelNames = [];
+        let floors = [];
         rows.forEach((element) => {
-          hostelNames.push(element.HostelName);
+          floors.push(element);
+        });
+        res.send({floorsInfo:floors});
+        // console.log(rows);
+      }
+    );
+  } catch {
+    res.status(500).send("Error fetching floors.");
+  }
+});
+
+app.get("/getHostels", async (req, res) => {
+  // console.log("try");
+  try {
+    connection.query(
+      `SELECT HostelID, HostelName FROM registeredhostels WHERE AdminID="${req.query.admin_ID}"`,
+      (err, rows, fields) => {
+        if (err) throw err;
+        let hostels = [];
+        rows.forEach((element) => {
+          hostels.push(element);
         });
         // console.log(rows);
-        res.send({ registered: hostelNames });
+        res.send({ registered: hostels });
       }
     );
   } catch {

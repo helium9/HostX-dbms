@@ -18,6 +18,7 @@ import { AdminContext } from "../pages/DashboardTest";
 function FormPlusModal({ getHostel }) {
   const { admin_ID, setAdmin } = useContext(AdminContext);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  
   const [info, setInfo] = useState({
     admin_ID: admin_ID,
     hostelName: "",
@@ -36,23 +37,24 @@ function FormPlusModal({ getHostel }) {
         .post("http://localhost:8000/api/admin/submit", info, {
           params: { type: "H_Info" },
         })
-        .then((response) => console.log(response))
-        .then(
-          axios
-            .post("http://localhost:8000/api/admin/submit", floorInfo, {
+        .then((response) => {
+          axios.post(
+            "http://localhost:8000/api/admin/submit",
+            { ...floorInfo, hostelID: response.data.hostelID },
+            {
               params: { type: "F_Info" },
-            })
-            .then((response) => {
-              // console.log(response);
-              getHostel(admin_ID);
-            })
-        );
+            }
+          );
+        })
+        .then((response) => {
+          // console.log(response);
+          getHostel(admin_ID);
+        });
     } catch (err) {
       console.error(err);
     }
-    
   };
-  console.log(floorInfo);
+  // console.log(floorInfo);
   return (
     <>
       <button onClick={onOpen}>
