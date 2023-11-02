@@ -16,11 +16,12 @@ import {
 } from "@nextui-org/react";
 import axios from "axios";
 
-function DashButton({ children, hostel_ID, setFloor }) {
+function DashButton({ children, hostel_ID, setFloor, active, setActive }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [active, setActive] = useState(false);
+  
+  // const active = useRef(false);
   const hostelID = useRef(hostel_ID);
-
+  // console.log("test", hostelID===active);
   const [info, setInfo] = useState({
     hostelName: "",
     floors: "",
@@ -60,7 +61,8 @@ function DashButton({ children, hostel_ID, setFloor }) {
   };
 
   let put;
-  if (active) {
+  // console.log(active);
+  if (hostelID.current === active.current) {
     put = (
       <div className="items-center flex flex-row gap-3">
         <p className="text-blue-500 font-['Roboto'] pt-1">{children}</p>
@@ -189,9 +191,12 @@ function DashButton({ children, hostel_ID, setFloor }) {
       className="rounded-lg w-fit h-12 text-2xl bg-zinc-300 focus:bg-white"
       onFocus={() => {
         setFloorRoutine();
-        setActive(true);
+        setActive(hostelID);
       }}
-      onBlur={() => setActive(false)}
+      // onBlur={() => {
+      //   console.log("blur");
+      //   setActive(false);
+      //   }}
     >
       {put}
     </Button>

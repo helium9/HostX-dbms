@@ -32,13 +32,14 @@ function FloorRoomsInfo({ floor, rooms }) {
 export default function DashboardTest() {
   const [formActive, setFormActive] = useState(false);
   const [hostels, setHostels] = useState([]);
-  const [admin_ID, setAdmin] = useState("1234");
+  // const [admin_ID, setAdmin] = useState("1234");
   const [floorsInfo, setFloorsInfo] = useState([]);
+
   const ID = localStorage.getItem('adminID');
   const [admin_ID, setAdmin] = useState(ID);
   const [cred,setcred]=useState({name:"",contact:"",insti:"",email:""});
-
-
+  const [activeTab, setActiveTab] = useState("");
+  // console.log("active", activeTab);
   const getHostel = (admin_ID) => {
     axios
       .get("http://localhost:8000/getHostels", {
@@ -73,7 +74,7 @@ const getcred = () => {
     getHostel(admin_ID);
     getcred();
   }, []);
-  console.log("Floors", floorsInfo);
+  // console.log("Floors", floorsInfo);
   return (
     <>
       <AdminContext.Provider value={{ admin_ID, setAdmin }}>
@@ -111,6 +112,8 @@ const getcred = () => {
                       hostel_ID={hostel.HostelID}
                       key={hostel.HostelID}
                       setFloor={setFloorsInfo}
+                      setActive={setActiveTab}
+                      active={activeTab}
                     >
                       {hostel.HostelName}
                     </DashButton>
