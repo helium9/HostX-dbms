@@ -15,12 +15,12 @@ export const AdminContext = createContext(null);
 
 function FloorRoomsInfo({ floor, rooms }) {
   return (
-    <div className="flex flex-row mx-3">
+    <div className="flex flex-row mx-4">
       <div className="flex flex-col items-center">
         <p className="font-['Roboto'] mb-2 text-lg">Floor</p>
         <p className="text-6xl font-semibold">{floor}</p>
       </div>
-      <Divider orientation="vertical" className="bg-white h-24 mx-4" />
+      <Divider orientation="vertical" className="bg-white h-24 mx-3" />
       <div className="flex flex-col items-center">
         <p className="font-['Roboto'] mb-2 text-lg">Rooms</p>
         <p className="text-6xl font-semibold">{rooms}</p>
@@ -32,6 +32,8 @@ function FloorRoomsInfo({ floor, rooms }) {
 export default function DashboardTest() {
   const [formActive, setFormActive] = useState(false);
   const [hostels, setHostels] = useState([]);
+  const [admin_ID, setAdmin] = useState("1234");
+  const [floorsInfo, setFloorsInfo] = useState([]);
   const ID = localStorage.getItem('adminID');
   const [admin_ID, setAdmin] = useState(ID);
   const [cred,setcred]=useState({name:"",contact:"",insti:"",email:""});
@@ -45,7 +47,7 @@ export default function DashboardTest() {
         },
       })
       .then((res) => {
-        console.log("called", res.data.registered);
+        // console.log("called", res.data.registered);
         setHostels(res.data.registered);
       })
       .catch((err) => console.log(err));
@@ -73,8 +75,7 @@ const getcred = () => {
     getHostel(admin_ID);
     getcred();
   }, []);
-
-  // console.log(hostels);
+  console.log("Floors", floorsInfo);
   return (
     <>
       <AdminContext.Provider value={{ admin_ID, setAdmin }}>
@@ -107,14 +108,26 @@ const getcred = () => {
               </CardHeader>
               <CardBody className="m-0 mb-4 p-0 pb-4 flex-row gap-4 flex-wrap items-center">
                 {hostels.map((hostel, index) => {
-                  return <DashButton key={index}>{hostel}</DashButton>;
+                  return (
+                    <DashButton
+                      hostel_ID={hostel.HostelID}
+                      key={hostel.HostelID}
+                      setFloor={setFloorsInfo}
+                    >
+                      {hostel.HostelName}
+                    </DashButton>
+                  );
                 })}
                 <FormPlusModal getHostel={getHostel}></FormPlusModal>
-                {/*change such that onfocus becomes white */}
               </CardBody>
               <CardBody className="flex flex-row items-start m-0 mb-4 p-0 h-28">
-                <FloorRoomsInfo floor={1} rooms={23} />
-                <FloorRoomsInfo floor={2} rooms={12} />
+              {floorsInfo.map((floor, index) => {
+                  return (
+                    <FloorRoomsInfo key={floor.Floor} floor={floor.Floor} rooms={floor.MaxRooms} />
+                  );
+                })}
+                {/* <FloorRoomsInfo floor={1} rooms={23} />
+                <FloorRoomsInfo floor={2} rooms={12} /> */}
               </CardBody>
             </Card>
             <div className="flex flex-col gap-5 lg:max-w-xs">
