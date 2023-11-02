@@ -58,12 +58,14 @@ const getcred = () => {
         },
       })
       .then((data) => {
+        console.log(data.data);
         setcred({
-          name: data.name,
-          contact: data.contact,
-          insti: data.insti,
-          email: data.email
+          name: data.data.Name,
+          contact: data.data.Contact,
+          insti: data.data.InstituteName,
+          email: data.data.Email
         });
+        console.log(cred)
       })
       .catch((err) => console.log(err));
   };

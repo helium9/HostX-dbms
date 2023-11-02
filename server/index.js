@@ -138,7 +138,7 @@ app.post("/register",(req,res)=>{
             
                 if(results.length==0){
                   const adminid=uuidv4();
-                  connection.query(`insert into admin value (?,?,?,?,?,?)`,[adminid,req.body.name,req.body.email,req.body.contact,req.body.isti,req.body.password],(err,results)=>{if(err){throw err;} console.log("registered"); res.send("Succesfully registered")});
+                  connection.query(`insert into admin value (?,?,?,?,?,?)`,[adminid,req.body.name,req.body.email,req.body.contact,req.body.insti,req.body.password],(err,results)=>{if(err){throw err;} console.log("registered"); res.send("Succesfully registered")});
                 }
                 else{
                   res.send("username already exist");
@@ -155,7 +155,8 @@ app.post("/api/submit", (req, res) => {
 
 
 app.get("/getcred",(req,res)=>{
-  connection.query(`select * from admin where AdminID=(?)`,[req.body.admin_ID],(err,results)=>{if(err){throw err;}  console.log(results[0]); res.send(results[0])});
+  
+  connection.query(`select * from admin where AdminID=(?)`,[req.query.admin_ID],(err,results)=>{if(err){throw err;}  console.log(results[0]); res.send(results[0])});
 
 
 })
