@@ -42,6 +42,7 @@ export default function DashboardTest() {
         },
       })
       .then((res) => {
+        console.log("called", res.data.registered);
         setHostels(res.data.registered);
       })
       .catch((err) => console.log(err));
