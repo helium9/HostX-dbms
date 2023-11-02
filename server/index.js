@@ -194,7 +194,7 @@ app.post("/api/submit", (req, res) => {
 app.get("/getcred", (req, res) => {
   connection.query(
     `select * from admin where AdminID=(?)`,
-    [req.body.admin_ID],
+    [req.query.admin_ID],
     (err, results) => {
       if (err) {
         throw err;
