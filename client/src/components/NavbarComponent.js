@@ -5,6 +5,7 @@ import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure,
 import {MailIcon} from '../images/MailIcon.jsx';
 import {LockIcon} from '../images/LockIcon.jsx';
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 
 import {
@@ -29,8 +30,30 @@ export default function NavbarComponent() {
     "Log In",
     "Sign Up",
   ];
+  const [info, setInfo] = useState({
+    email:"",
+    password:"",
+    
+  });
+  const [Signupinfo,setSignupinfo]=useState({name:"",email:"",contact:"",password:"",insti:"",});
+  const handleInputS = (event) => {
+    console.log(Signupinfo);
+    setSignupinfo({ ...Signupinfo, [event.target.name]: event.target.value });
+  };
+
+  const handleInput = (event) => {
+    // console.log(info);
+    setInfo({ ...info, [event.target.name]: event.target.value });
+  };
 
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  // const {isOpens, onOpens, onOpenChanges} = useDisclosure();
+  const [issignup,setissignup]=useState(false);
+  const handlesignup = (event) => {
+    console.log(issignup);
+    setissignup(!issignup);
+  };
+  
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleGoogleLogin = () => {
@@ -60,13 +83,27 @@ export default function NavbarComponent() {
         setIsAuthenticated(false); 
       });
   }, []);
+  const handlesubmit=async ()=>{
+    handlesignup();
+    const response = await axios.post('http://localhost:8000/register', Signupinfo);
+            console.log(response.data);}
+
+
+  const handleloginsubmit=async ()=>{
+    
+    const response = await axios.post('http://localhost:8000/login', info);
+
+            console.log(response.data);
+            if (response.data.success) {
+              // Redirect to the desired page
+              localStorage.setItem('adminID', response.data.adminID);
+              window.location.href = '/admin2'; // Or use React Router for navigation
+            }}          
 
   const handleLogout = () => {
-   
+    console.log(issignup);
     setIsAuthenticated(false);
-  
-   
-  };
+};
 
   return (
     <Navbar
@@ -111,6 +148,7 @@ export default function NavbarComponent() {
         isOpen={isOpen} 
         onOpenChange={onOpenChange}
         placement="top-center"
+        hideCloseButton={true}
       >
         <ModalContent>
           {(onClose) => (
@@ -123,9 +161,12 @@ export default function NavbarComponent() {
                   endContent={
                     <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                   }
-                  label="Email"
+                  label="email"
                   placeholder="Enter your email"
                   variant="bordered"
+                  onChange={handleInput}
+                  name="email"
+                  value={info.email}
                   classNames={{
                     label: "text-lg",
                     input: [
@@ -146,6 +187,9 @@ export default function NavbarComponent() {
                   label="Password"
                   placeholder="Enter your password"
                   type="password"
+                  name="password"
+                  value={info.password}
+                  onChange={(handleInput)}
                   variant="bordered"
                   classNames={{
                     label: "text-lg",
@@ -177,7 +221,7 @@ export default function NavbarComponent() {
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="primary" onPress={onClose}>
+                <Button color="primary" onPress={onClose} onClick={handleloginsubmit} >
                   Sign in
                 </Button>
               </ModalFooter>
@@ -192,14 +236,164 @@ export default function NavbarComponent() {
         </NavbarItem>
         <NavbarItem>
           <Button
+            onClick={handlesignup}
+            onPress={onOpen}
             as={Link}
             color="primary"
-            href="#"
+          
             variant="flat"
             className="invisible sm:visible text-xl h-10 rounded-lg"
           >
             Sign Up
           </Button>
+          {issignup && <Modal 
+        isOpen={isOpen} 
+        onOpenChange={onOpenChange}
+        placement="top-center"
+        hideCloseButton={true}
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1 text-2xl">Sign Up</ModalHeader>
+              <ModalBody>
+              <Input
+                  autoFocus
+                  endContent={
+                    <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                  }
+                  label="name"
+                  value={Signupinfo.name}
+                  name="name"
+                  onChange={(handleInputS) }
+                  placeholder="Enter your name"
+                  variant="bordered"
+                  classNames={{
+                    label: "text-lg",
+                    input: [
+                      "placeholder:text-xl",
+                      "text-xl"
+
+                    ],
+                    innerWrapper: "bg-transparent",
+                    inputWrapper: [
+                   "h-20",
+                    ],
+                  }}
+                />
+                <Input
+                  autoFocus
+                  endContent={
+                    <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                  }
+                  label="Email"
+                  placeholder="Enter your email"
+                  variant="bordered"
+                  value={Signupinfo.email}
+                  name="email"
+                  onChange={(handleInputS) }
+                  classNames={{
+                    label: "text-lg",
+                    input: [
+                      "placeholder:text-xl",
+                      "text-xl"
+
+                    ],
+                    innerWrapper: "bg-transparent",
+                    inputWrapper: [
+                   "h-20",
+                    ],
+                  }}
+                />
+                <Input
+                  autoFocus
+                  endContent={
+                    <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                  }
+                  label="Contact"
+                  placeholder="Enter your contact"
+                  variant="bordered"
+                  value={Signupinfo.contact}
+                  name="contact"
+                  onChange={(handleInputS) }
+                  classNames={{
+                    label: "text-lg",
+                    input: [
+                      "placeholder:text-xl",
+                      "text-xl"
+
+                    ],
+                    innerWrapper: "bg-transparent",
+                    inputWrapper: [
+                   "h-20",
+                    ],
+                  }}
+                />
+                <Input
+                  endContent={
+                    <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                  }
+                  label="Password"
+                  placeholder="Enter your password"
+                  type="password"
+                  value={Signupinfo.password}
+                  name="password"
+                  onChange={(handleInputS) }
+                  variant="bordered"
+                  classNames={{
+                    label: "text-lg",
+                    input: [
+                      "placeholder:text-xl",
+                      "text-xl"
+
+                    ],
+                    innerWrapper: "bg-transparent",
+                    inputWrapper: [
+                   "h-20",
+                    ],
+                  }}
+                />
+                <Input
+                  endContent={
+                    <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                  }
+                  label="institute name"
+                  placeholder="Enter your institute name"
+                  type="instiname"
+                  variant="bordered"
+                  value={Signupinfo.insti}
+                  name="insti"
+                  onChange={handleInputS }
+                  classNames={{
+                    label: "text-lg",
+                    input: [
+                      "placeholder:text-xl",
+                      "text-xl"
+
+                    ],
+                    innerWrapper: "bg-transparent",
+                    inputWrapper: [
+                   "h-20",
+                    ],
+                  }}
+                />
+                
+                
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose} onClick={handlesignup}>
+                  Close
+                </Button>
+                <Button color="primary" onPress={onClose} onClick={handlesubmit}>
+                  Sign in
+                </Button>
+              </ModalFooter>
+              
+
+            </>
+          )}
+        </ModalContent>
+      </Modal>}
         </NavbarItem>
       </NavbarContent>
       <NavbarContent className="sm:hidden" justify="end">

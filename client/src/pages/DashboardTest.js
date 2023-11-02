@@ -34,6 +34,10 @@ export default function DashboardTest() {
   const [hostels, setHostels] = useState([]);
   const [admin_ID, setAdmin] = useState("1234");
   const [floorsInfo, setFloorsInfo] = useState([]);
+  const ID = localStorage.getItem('adminID');
+  const [admin_ID, setAdmin] = useState(ID);
+  const [cred,setcred]=useState({name:"",contact:"",insti:"",email:""});
+
 
   const getHostel = (admin_ID) => {
     axios
@@ -48,9 +52,26 @@ export default function DashboardTest() {
       })
       .catch((err) => console.log(err));
   };
-
+const getcred = () => {
+    axios
+      .get("http://localhost:8000/getcred", {
+        params: {
+          admin_ID: admin_ID,
+        },
+      })
+      .then((data) => {
+        setcred({
+          name: data.name,
+          contact: data.contact,
+          insti: data.insti,
+          email: data.email
+        });
+      })
+      .catch((err) => console.log(err));
+  };
   useEffect(() => {
     getHostel(admin_ID);
+    getcred();
   }, []);
   console.log("Floors", floorsInfo);
   return (
@@ -67,8 +88,8 @@ export default function DashboardTest() {
                   alt="menu"
                 />
                 <div className="flex flex-col lg:items-center lg:m-0">
-                  <p className="text-4xl font-bold lg:w-fit">Admin</p>
-                  <p className="text-2xl">Institute Name</p>
+                  <p className="text-4xl font-bold lg:w-fit">{cred.name}</p>
+                  <p className="text-2xl">{cred.insti}</p>
                 </div>
                 <img
                   className="h-4/6 p-2 ml-auto lg:hidden"
@@ -117,10 +138,10 @@ export default function DashboardTest() {
                   <CardBody className="m-0 p-0 px-3">
                     <div className="text-xl flex flex-row">
                       <p className="w-fit font-bold mr-2">Email</p>
-                      admin@iiti.ac.in
+                      {cred.email}
                     </div>
                     <div className="text-xl flex flex-row">
-                      <p className="w-fit font-bold mr-2">Contact</p>99999999999
+                      <p className="w-fit font-bold mr-2">Contact</p>{cred.contact}
                     </div>
                   </CardBody>
                 </Card>

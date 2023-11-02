@@ -11,6 +11,8 @@ const googleAuth = require("./routes/authentication");
 const jwt = require("jsonwebtoken");
 require("./controllers/controller.tokenJWT");
 require("dotenv").config({ path: ".db_env" });
+const LocalStrategy = require('passport-local').Strategy;
+const session = require('express-session');
 
 const app = express();
 const port = 8000;
@@ -45,12 +47,128 @@ connection.connect((err) => {
 });
 
 //form page
+
+
+// const customDirectory = path.join(__dirname, "../client/src/pages/");
+
+// const connection = mysql.createConnection({
+  
+//   host: process.env.DB_HOST,
+//   user: process.env.DB_USER,
+//   password: process.env.DB_PASSWORD,
+//   database: process.env.DB_NAME,
+// });
+
+passport.use(new LocalStrategy(
+  {
+    usernameField: 'email', // Your login field (e.g., email)
+    passwordField: 'password', // Your password field
+  },
+  (username, password, done) => {
+    // Validate the user's credentials
+    // Replace this with your database query for user authentication
+    b=[username];
+    try{
+    const li=connection.query(`select * from admin where Email=?`,b,(err,results)=>{if(err){throw err;}
+            
+            if(results.length==0){
+                console.log("username dne")
+              return done(null,false);
+                
+                
+            }
+            else if(results[0].Password!==password){
+              
+              return done(null,false);
+            } 
+            // localStorage.setItem('adminID', results[0].AdminID);
+            return done(null,results[0].AdminID);})}
+            catch(error){
+              return done(error,false);
+          }
+  
+          
+    // const user ="123";
+    
+    // if (!user || !comparePasswords(password, user.password)) {
+    //   return done(null, false, { message: 'Invalid username or password' });
+    // }
+
+    // // Generate a unique admin ID
+    // const adminID = uuid.v4();
+
+    // // Store the admin ID in the user's session
+    // done(null, { adminID });
+  }
+));
+
+// Serialize user (store the admin ID in the session)
+passport.serializeUser((user, done) => {
+  done(null, user.adminID);
+});
+
+// Deserialize user (retrieve the admin ID from the session)
+passport.deserializeUser((adminID, done) => {
+  done(null, { adminID });});
+
+app.use(session({ secret: 'yourSecretKey', resave: false, saveUninitialized: false }));
+app.use(express.urlencoded({ extended: true }));
+app.use(passport.initialize());
+app.use(passport.session());  
+
+// app.post("/register",async (req,res)=>{
+//   const user=await User.findOne({username:req.body.username});
+//   if(user) return res.status(400).send("User already exists");
+//   const newuser=await User.create(req.body);
+//   res.status(201).send(newuser);
+
+
+// })
+app.get("/failed",(rq,res)=>{
+  res.send("Login failed")
+})
+app.post("/login",passport.authenticate("local",{failureRedirect:"/failed"}),async (req,res)=>{
+  // return res.json({ success: true });
+
+
+
+  if (req.isAuthenticated() && req.user) {
+    const adminID = req.user;
+    return res.json({ success: true, adminID });
+  }
+  // Handle cases where the user is not authenticated or the adminID is not available
+  return res.json({ success: false, adminID: null });
+})
+
+app.post("/register",(req,res)=>{
+  
+  b=[req.body.email];
+  let y;
+    const li=connection.query(`select * from admin where Email=(?)`,b,(err,results)=>{if(err){throw err;}
+            
+                if(results.length==0){
+                  const adminid=uuidv4();
+                  connection.query(`insert into admin value (?,?,?,?,?,?)`,[adminid,req.body.name,req.body.email,req.body.contact,req.body.isti,req.body.password],(err,results)=>{if(err){throw err;} console.log("registered"); res.send("Succesfully registered")});
+                }
+                else{
+                  res.send("username already exist");
+                }});
+  
+ 
+})
 app.post("/api/submit", (req, res) => {
   const formData = req.body;
   console.log(formData);
-  res.json({ message: "Form data received and logged for form page" }); 
+  res.json({ message: "Form data received and logged for form page" }); //form page
 });
 
+
+
+app.get("/getcred",(req,res)=>{
+  connection.query(`select * from admin where AdminID=(?)`,[req.body.admin_ID],(err,results)=>{if(err){throw err;}  console.log(results[0]); res.send(results[0])});
+
+
+})
 //plus modal, register hostel
 app.post("/api/admin/submit", async (req, res) => {
   if (req.query.type === "H_Info") {
