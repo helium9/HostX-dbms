@@ -20,7 +20,6 @@ function DashButton({ children, hostel_ID, setFloor }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [active, setActive] = useState(false);
   const hostelID = useRef(hostel_ID);
-
   const [info, setInfo] = useState({
     hostelName: "",
     floors: "",

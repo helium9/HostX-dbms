@@ -25,19 +25,19 @@ app.use("/api", googleAuth);
 
 // const customDirectory = path.join(__dirname, "../client/src/pages/");
 
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
-
 // const connection = mysql.createConnection({
-//   host: 'localhost',
-//   user: 'root',
-//   password: '@mysql271314',
-//   database: 'hostx-dbms',
+//   host: process.env.DB_HOST,
+//   user: process.env.DB_USER,
+//   password: process.env.DB_PASSWORD,
+//   database: process.env.DB_NAME,
 // });
+
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '@mysql271314',
+  database: 'hostx-dbms',
+});
 connection.connect((err) => {
   if (err) {
     console.error("Error connecting to MySQL:", err);
@@ -148,7 +148,7 @@ app.post("/register",(req,res)=>{
             
                 if(results.length==0){
                   const adminid=uuidv4();
-                  connection.query(`insert into admin value (?,?,?,?,?,?)`,[adminid,req.body.name,req.body.email,req.body.contact,req.body.insti,req.body.password],(err,results)=>{if(err){throw err;} console.log("registered"); res.send("Succesfully registered")});
+                  connection.query(`insert into admin value (?,?,?,?,?,?)`,[adminid,req.body.name,req.body.email,req.body.contact,req.body.insti,req.body.password],(err,results)=>{if(err){throw err;} res.send("Succesfully registered")});
                 }
                 else{
                   res.send("username already exist");
@@ -162,6 +162,13 @@ app.post("/api/submit", (req, res) => {
   res.json({ message: "Form data received and logged for form page" }); //form page
 });
 
+
+app.get('/logout', function(req, res, next){
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    res.send("logged out");
+  });
+});
 
 
 app.get("/getcred",(req,res)=>{
