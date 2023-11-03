@@ -409,7 +409,7 @@ export default function NavbarComponent() {
               color={
                 index === 2 ? "warning" : index === menuItems.length - 1 ? "danger" : "foreground"
               }
-              href="#"
+              href={item}
               size="lg"
             >
               {item}
