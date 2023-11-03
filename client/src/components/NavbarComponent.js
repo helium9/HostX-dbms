@@ -388,6 +388,8 @@ export default function NavbarComponent() {
                   Sign in
                 </Button>
               </ModalFooter>
+
+              <Button color="success" onClick={handleGoogleLogin} className="m-6 mx-12 text-xl text-white">Login with Google</Button>
               
 
             </>
@@ -407,7 +409,7 @@ export default function NavbarComponent() {
               color={
                 index === 2 ? "warning" : index === menuItems.length - 1 ? "danger" : "foreground"
               }
-              href="#"
+              href={item}
               size="lg"
             >
               {item}
