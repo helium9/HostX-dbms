@@ -32,7 +32,7 @@ function FloorRoomsInfo({ floor, rooms }) {
 export default function DashboardTest() {
   const [formActive, setFormActive] = useState(false);
   const [hostels, setHostels] = useState([]);
-// const [admin_ID, setAdmin] = useState("1234");
+  // const [admin_ID, setAdmin] = useState("1234");
   const [floorsInfo, setFloorsInfo] = useState([]);
 
   const ID = localStorage.getItem("adminID");
@@ -53,7 +53,7 @@ export default function DashboardTest() {
         },
       })
       .then((res) => {
-        // console.log("called", res.data.registered);
+        console.log("called", res.data.registered);
         setHostels(res.data.registered);
       })
       .catch((err) => console.log(err));
@@ -119,6 +119,7 @@ export default function DashboardTest() {
                       hostel_ID={hostel.HostelID}
                       key={hostel.HostelID}
                       setFloor={setFloorsInfo}
+                      getHostel={getHostel}
                       setActive={setActiveTab}
                       active={activeTab}
                     >
