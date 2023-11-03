@@ -199,11 +199,72 @@ app.get("/getcred", (req, res) => {
       if (err) {
         throw err;
       }
-      console.log(results[0]);
+      
       res.send(results[0]);
     }
   );
 });
+
+app.get("/getFilledBy", (req, res) => {
+  connection.query(
+    `select count(*) from preferences where HostelID=(?);`,
+    [req.query.email_ID],
+    (err, results) => {
+      if (err) {
+        throw err;
+      }
+      res.send(results[0]);
+    }
+  );
+});
+
+app.post("/getpref",(req, res) => {
+  const v=req.body.params
+  try {
+    for (const key in v.pref) {
+      if (key !== 'P1') {
+        connection.query(
+            `INSERT INTO Preferences (HostelID, EmailID, RollNumber, RoommateRollNumber, TimeOfEntry) VALUES (?, ?, ?, ?, ?);`,
+            [v.hostel_ID, v.Email, v.pref["P1"], v.pref[key], v.time],
+            (err, results) => {
+              if (err) {
+                throw err;
+              }}
+          );}}
+  } catch (error) {
+    console.error('Error inserting data:', error);
+  }
+  res.send("Yes");
+});
+
+app.get("/getMaxroom", (req, res) => {
+  connection.query(
+    ` select * from roominfo where HostelID=(?) order by  size desc limit 1;`,
+    [req.query.hostel_ID],
+    (err, results) => {
+      if (err) {
+        throw err;
+      }
+      
+      res.send(results[0]); 
+    }
+  );
+});
+
+app.get("/getLink", (req, res) => {
+  connection.query(
+    ` select * from formcontrols where HostelID=(?);`,
+    [req.query.email_ID],
+    (err, results) => {
+      if (err) {
+        throw err;
+      }
+      console.log(results[0]);
+      res.send(results[0]); 
+    }
+  );
+});
+
 
 //plus modal, register hostel
 app.post("/api/admin/submit", async (req, res) => {

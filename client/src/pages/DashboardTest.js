@@ -61,17 +61,21 @@ const getcred = () => {
         },
       })
       .then((data) => {
-        console.log(data.data);
+       
         setcred({
           name: data.data.Name,
           contact: data.data.Contact,
           insti: data.data.InstituteName,
           email: data.data.Email
         });
-        console.log(cred)
+        
       })
       .catch((err) => console.log(err));
   };
+
+  const formcontrol=async ()=>{
+
+  }
   useEffect(() => {
     getHostel(admin_ID);
     getcred();
@@ -152,13 +156,14 @@ const getcred = () => {
                 </Card>
               </div>
               <FormControlsButton
+                
                 active={formActive}
                 setActive={setFormActive}
                 className="shrink-0"
               />
             </div>
           </div>
-          <FormControlsSection active={formActive} className="shrink-0" />
+          <FormControlsSection active={formActive} hosID={activeTab.current} className="shrink-0" />
         </div>
         <FooterComponent />
       </AdminContext.Provider>

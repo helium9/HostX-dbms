@@ -2,8 +2,62 @@ import { Card, CardHeader, CardBody, Button, Divider } from "@nextui-org/react";
 import linkLogo from "../images/linkLogo.svg";
 import stopForm from "../images/stopForm.svg";
 import viewForm from "../images/viewForm.svg";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-function FormControlsSection({ active }) {
+function FormControlsSection({ active,hosID }) {
+  const [num,setnum]=useState("");
+  const [formlink,setformlink]=useState("xxxxx");
+  const [opensince,setopensince]=useState("2020-02-02");
+  const copyStateValue = () => {
+    
+    navigator.clipboard.writeText(formlink)
+      .then(() => {
+        alert('Link copied to clipboard');
+      })
+      .catch((error) => {
+        console.error('Copy failed:', error);
+      });
+  };
+  const getLink=()=>{
+    axios
+      .get("http://localhost:8000/getLink", {
+        params: {
+          email_ID: hosID,
+
+        },
+      })
+      .then((data) => {
+        
+        setformlink(data.data["FormLink"]);
+        setopensince(data.data["OpenSince"].split("T")[0]);
+        
+      })
+      .catch((err) => console.log(err));
+
+  }
+
+  const getFilledBy = () => {
+    axios
+      .get("http://localhost:8000/getFilledBy", {
+        params: {
+          email_ID: hosID,
+        },
+      })
+      .then((data) => {
+       
+        setnum(data.data['count(*)'])
+        
+      })
+      .catch((err) => console.log(err));
+  };
+  useEffect(() => {
+    
+    getFilledBy();
+    getLink();
+  }, [hosID]);
+
+
   let put;
   if (active) {
     put = (
@@ -12,7 +66,7 @@ function FormControlsSection({ active }) {
           <CardHeader className="flex flex-row justify-center items-start my-2 min-w-max">
             <div className="flex flex-col items-center">
               <p className="font-['Roboto'] mb-2 text-xl">Filled by</p>
-              <p className="text-5xl font-semibold">30</p>
+              <p className="text-5xl font-semibold">{num}</p>
             </div>
             <Divider
               orientation="vertical"
@@ -20,21 +74,22 @@ function FormControlsSection({ active }) {
             />
             <div className="flex flex-col items-center m-0 p-0 gap-1">
               <p className="font-['Roboto'] mb-2 text-xl">Open Since</p>
-              <p className="text-5xl font-semibold ">28-9-23</p>
+              <p className="text-4xl font-semibold ">{opensince}</p>
             </div>
           </CardHeader>
         </Card>
         <Card className="bg-blue-600 px-7 grow lg:px-4">
           <CardBody className="flex flex-row items-center">
             <img
-              className="h-14 w-14 lg:h-12 lg:w-12 mr-2"
+              onClick={copyStateValue}
+              className="h-14 w-14 lg:h-12 lg:w-12 mr-2 hover:cursor-pointer"
               src={linkLogo}
               alt="menu"
             />
             <div className="flex flex-col p-3 lg:p-1 gap-2">
               <p className="text-3xl font-bold lg:text-4xl">Form link</p>
-              <p className="text-xl grow break-words lg:text-2xl">
-                ergteterw46b746
+              <p className="text-xl grow break-words lg:text-1xl">
+                {formlink}
               </p>
             </div>{" "}
             {/* Word wrapping not working */}
