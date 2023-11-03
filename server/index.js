@@ -25,19 +25,19 @@ app.use("/api", googleAuth);
 
 // const customDirectory = path.join(__dirname, "../client/src/pages/");
 
-// const connection = mysql.createConnection({
-//   host: process.env.DB_HOST,
-//   user: process.env.DB_USER,
-//   password: process.env.DB_PASSWORD,
-//   database: process.env.DB_NAME,
-// });
-
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '@mysql271314',
-  database: 'hostx-dbms',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
+
+// const connection = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: '@mysql271314',
+//   database: 'hostx-dbms',
+// });
 connection.connect((err) => {
   if (err) {
     console.error("Error connecting to MySQL:", err);
@@ -46,17 +46,7 @@ connection.connect((err) => {
   console.log("Connected to MySQL database");
 });
 
-//form page
-
 // const customDirectory = path.join(__dirname, "../client/src/pages/");
-
-// const connection = mysql.createConnection({
-
-//   host: process.env.DB_HOST,
-//   user: process.env.DB_USER,
-//   password: process.env.DB_PASSWORD,
-//   database: process.env.DB_NAME,
-// });
 
 passport.use(
   new LocalStrategy(
@@ -185,6 +175,8 @@ app.post("/register", (req, res) => {
     }
   );
 });
+
+//form page
 app.post("/api/submit", (req, res) => {
   const formData = req.body;
   console.log(formData);
@@ -205,6 +197,7 @@ app.get("/getcred", (req, res) => {
   );
 });
 
+<<<<<<< HEAD
 app.get("/getFilledBy", (req, res) => {
   connection.query(
     `select count(*) from preferences where HostelID=(?);`,
@@ -264,6 +257,80 @@ app.get("/getLink", (req, res) => {
     }
   );
 });
+=======
+//dashButton edit handling
+app.put("/api/admin/edit", async (req, res) => {
+  const hostelID = req.query.hostelID;
+  if (req.query.type === "H_Info") {
+    try {
+      connection.query(
+        `UPDATE registeredhostels SET HostelName="${req.body.hostelName}", Floors="${req.body.floors}" WHERE HostelID="${hostelID}";`,
+        (err, results) => {
+          if (err) throw err;
+          res.send("Success, updated Hostel Name and total Floors.");
+        }
+      );
+    } catch {
+      res.status(500).send();
+    }
+  } else if (req.query.type === "F_Info") {
+    const floorInfo = req.body; 
+    console.log(floorInfo, hostelID);
+    try {
+      connection.query(
+        `DELETE FROM floorinfo WHERE HostelID="${hostelID}";`,
+        (err, results) => {
+          if (err) throw err;
+          try {
+            connection.query(
+              `SELECT Floors FROM registeredhostels WHERE HostelID="${hostelID}";`,
+              (err, results) => {
+                if (err) throw err;
+                const maxFloors = results[0].Floors;
+                let queryString = `INSERT INTO floorinfo (HostelID, Floor, MaxRooms) \nVALUES\n`;
+                for (let i = 1; i <= maxFloors; i++) {
+                  queryString += `("${hostelID}", ${i}, ${
+                    floorInfo[i.toString()]
+                  }),\n`;
+                }
+                queryString = queryString.slice(0, queryString.length - 2) + `;`;
+                console.log(queryString);
+                try{
+                  connection.query(queryString, (err, response) => {
+                    if (err) throw err;
+                    res.send("Sucessfully updated floorInfo data.");
+                  });
+                } catch{
+                  res.status(500).send();
+                }
+              }
+            );
+          } catch {
+            res.status(500).send();
+          }
+        }
+      );
+    } catch {
+      res.status(500).send();
+    }
+  }
+});
+
+app.delete("/api/admin/delete", async(req, res) =>{
+  const hostelID = req.query.hostelID;
+  try{
+    connection.query(`DELETE FROM registeredhostels WHERE HostelID="${hostelID}"`,
+    (err, results) => {
+      if (err) throw err;
+      console.log(results);
+      res.send(200);
+    });
+  }
+  catch{
+    res.status(500).send();
+  }
+  });
+>>>>>>> 411767c1b448f5e71f40e21f43c19402c5bc6913
 
 
 //plus modal, register hostel
@@ -307,7 +374,7 @@ app.post("/api/admin/submit", async (req, res) => {
             queryString += `("${hostelID}", ${i}, ${
               floorInfo[i.toString()]
             }),\n`;
-          }
+          } 
           queryString = queryString.slice(0, queryString.length - 2) + `;`;
           // console.log(queryString);
           connection.query(queryString, (err, response) => {
@@ -337,9 +404,10 @@ app.get("/getFloors", async (req, res) => {
         });
         res.send({ floorsInfo: floors });
         // console.log(rows);
-      }
+      } 
     );
   } catch {
+    // console.log(req.query);
     res.status(500).send("Error fetching floors.");
   }
 });

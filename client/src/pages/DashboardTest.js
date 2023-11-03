@@ -32,12 +32,17 @@ function FloorRoomsInfo({ floor, rooms }) {
 export default function DashboardTest() {
   const [formActive, setFormActive] = useState(false);
   const [hostels, setHostels] = useState([]);
-// const [admin_ID, setAdmin] = useState("1234");
+  // const [admin_ID, setAdmin] = useState("1234");
   const [floorsInfo, setFloorsInfo] = useState([]);
 
-  const ID = localStorage.getItem('adminID');
+  const ID = localStorage.getItem("adminID");
   const [admin_ID, setAdmin] = useState(ID);
-  const [cred,setcred]=useState({name:"",contact:"",insti:"",email:""});
+  const [cred, setcred] = useState({
+    name: "",
+    contact: "",
+    insti: "",
+    email: "",
+  });
   const [activeTab, setActiveTab] = useState("");
   // console.log("active", activeTab);
   const getHostel = (admin_ID) => {
@@ -48,12 +53,12 @@ export default function DashboardTest() {
         },
       })
       .then((res) => {
-        // console.log("called", res.data.registered);
+        console.log("called", res.data.registered);
         setHostels(res.data.registered);
       })
       .catch((err) => console.log(err));
   };
-const getcred = () => {
+  const getcred = () => {
     axios
       .get("http://localhost:8000/getcred", {
         params: {
@@ -66,7 +71,7 @@ const getcred = () => {
           name: data.data.Name,
           contact: data.data.Contact,
           insti: data.data.InstituteName,
-          email: data.data.Email
+          email: data.data.Email,
         });
         
       })
@@ -118,6 +123,7 @@ const getcred = () => {
                       hostel_ID={hostel.HostelID}
                       key={hostel.HostelID}
                       setFloor={setFloorsInfo}
+                      getHostel={getHostel}
                       setActive={setActiveTab}
                       active={activeTab}
                     >
@@ -128,9 +134,13 @@ const getcred = () => {
                 <FormPlusModal getHostel={getHostel}></FormPlusModal>
               </CardBody>
               <CardBody className="flex flex-row items-start m-0 mb-4 p-0 h-28">
-              {floorsInfo.map((floor, index) => {
+                {floorsInfo.map((floor, index) => {
                   return (
-                    <FloorRoomsInfo key={floor.Floor} floor={floor.Floor} rooms={floor.MaxRooms} />
+                    <FloorRoomsInfo
+                      key={floor.Floor}
+                      floor={floor.Floor}
+                      rooms={floor.MaxRooms}
+                    />
                   );
                 })}
                 {/* <FloorRoomsInfo floor={1} rooms={23} />
@@ -150,7 +160,8 @@ const getcred = () => {
                       {cred.email}
                     </div>
                     <div className="text-xl flex flex-row">
-                      <p className="w-fit font-bold mr-2">Contact</p>{cred.contact}
+                      <p className="w-fit font-bold mr-2">Contact</p>
+                      {cred.contact}
                     </div>
                   </CardBody>
                 </Card>
