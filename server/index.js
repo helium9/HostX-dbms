@@ -13,6 +13,7 @@ require("./controllers/controller.tokenJWT");
 require("dotenv").config({ path: ".db_env" });
 const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
+// const { sharedToken, router } = require('./routes/authentication.js')
 
 const app = express();
 const port = 8000;
@@ -22,6 +23,10 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/auth", googleAuth);
 app.use("/api", googleAuth);
+
+
+
+// console.log('Email in index.js:',googleAuth.auth_email);
 
 // const customDirectory = path.join(__dirname, "../client/src/pages/");
 
@@ -158,7 +163,7 @@ app.post("/register", (req, res) => {
             req.body.name,
             req.body.email,
             req.body.contact,
-            req.body.isti,
+            req.body.insti,
             req.body.password,
           ],
           (err, results) => {
@@ -196,7 +201,6 @@ app.get("/getcred", (req, res) => {
     }
   );
 });
-
 
 app.get("/getFilledBy", (req, res) => {
   connection.query(
@@ -263,7 +267,7 @@ app.get("/getLink", (req, res) => {
 app.put("/api/admin/edit", async (req, res) => {
   const hostelID = req.query.hostelID;
   if (req.query.type === "H_Info") {
-    try {
+    try { //connection.query("string", func)
       connection.query(
         `UPDATE registeredhostels SET HostelName="${req.body.hostelName}", Floors="${req.body.floors}" WHERE HostelID="${hostelID}";`,
         (err, results) => {
@@ -331,7 +335,6 @@ app.delete("/api/admin/delete", async(req, res) =>{
     res.status(500).send();
   }
   });
-
 
 
 //plus modal, register hostel
@@ -433,6 +436,11 @@ app.get("/getHostels", async (req, res) => {
   }
   // console.log(req.query);
 });
+
+
+
+
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

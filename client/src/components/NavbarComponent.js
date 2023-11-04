@@ -359,7 +359,7 @@ export default function NavbarComponent() {
                   }
                   label="institute name"
                   placeholder="Enter your institute name"
-                  type="instiname"
+                  type="text"
                   variant="bordered"
                   value={Signupinfo.insti}
                   name="insti"
