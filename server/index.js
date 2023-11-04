@@ -25,19 +25,19 @@ app.use("/api", googleAuth);
 
 // const customDirectory = path.join(__dirname, "../client/src/pages/");
 
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
-
 // const connection = mysql.createConnection({
-//   host: 'localhost',
-//   user: 'root',
-//   password: '@mysql271314',
-//   database: 'hostx-dbms',
+//   host: process.env.DB_HOST,
+//   user: process.env.DB_USER,
+//   password: process.env.DB_PASSWORD,
+//   database: process.env.DB_NAME,
 // });
+
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '@mysql271314',
+  database: 'hostx-dbms',
+});
 connection.connect((err) => {
   if (err) {
     console.error("Error connecting to MySQL:", err);
@@ -197,7 +197,7 @@ app.get("/getcred", (req, res) => {
   );
 });
 
-<<<<<<< HEAD
+
 app.get("/getFilledBy", (req, res) => {
   connection.query(
     `select count(*) from preferences where HostelID=(?);`,
@@ -213,6 +213,7 @@ app.get("/getFilledBy", (req, res) => {
 
 app.post("/getpref",(req, res) => {
   const v=req.body.params
+  
   try {
     for (const key in v.pref) {
       if (key !== 'P1') {
@@ -257,7 +258,7 @@ app.get("/getLink", (req, res) => {
     }
   );
 });
-=======
+
 //dashButton edit handling
 app.put("/api/admin/edit", async (req, res) => {
   const hostelID = req.query.hostelID;
@@ -330,7 +331,7 @@ app.delete("/api/admin/delete", async(req, res) =>{
     res.status(500).send();
   }
   });
->>>>>>> 411767c1b448f5e71f40e21f43c19402c5bc6913
+
 
 
 //plus modal, register hostel
