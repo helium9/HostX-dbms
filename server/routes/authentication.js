@@ -103,7 +103,9 @@ router.get('/google/callback',
             }
           );
         } else {
-          res.send("username already exist");
+          console.log("username already exist");
+          res.redirect(`${baseFrontendUrl}`);
+          // res.send("username already exist");
         }
       }
     );
@@ -213,8 +215,23 @@ router.get('/google/callback',
 
 
 
+// Server-Side Route for Logging Out
+router.get('/logout', (req, res) => {
+  // Typically, you don't need to do much on the server-side for JWT logout
+  // You might clear the token from a blacklist (if you're implementing server-side token revocation)
 
+  // Send a response to the client
+  res.status(200).json({ message: 'Logged out successfully' });
+});
 
+// Client-Side Handling (e.g., in your React application)
+function handleLogout() {
+  // Clear the JWT token stored in client-side storage (e.g., local storage)
+  localStorage.removeItem('jwtToken');
+
+  // Redirect to the login or home page
+  window.location.href = '/'; // or any desired destination
+}
 
 
 // // Define a route for logging out
