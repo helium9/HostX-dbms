@@ -1,11 +1,12 @@
-import React from "react";
+import {React,useState} from "react";
 import NavbarComponent from "../components/NavbarComponent";
 import FooterComponent from "../components/FooterComponent";
 import {Input} from "@nextui-org/react";
 
+import { useLocation } from 'react-router-dom';
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
 
-
+import axios from "axios";
 function generateNumberArray(n) {
   const numbers = [];
   for (let i = 1; i <= n; i++) {
@@ -14,58 +15,9 @@ function generateNumberArray(n) {
   return numbers;
 }
 
-const requiredFloor=5;
+// const requiredFloor=5;
 
-const n = 10; 
-const numberArray = generateNumberArray(n);
-
-const rows = numberArray.map((item) => ({
-  key: item,
-  SNo: item, 
-  Name: <Input type="number" label="Name" placeholder="Enter room name" classNames={{
-    label: [
-      "text-white-400 font-normal",
-      "text-md pl-0.25",
-      "group-focus-within:text-blue-800",
-         ],
-
-    input: [
-      "text-white-600 text-2xl",
-      
-    ],
-
-    inputWrapper: [
-      "bg-zinc-900",
-      "border-2 border-zinc-500",
-      "group",
-      "rounded-lg",
-      "w-64  h-20",
-      "focus-within:border-blue-800",
-      "group",
-    ]
-  }} />,
-  Size: <Input type="number" label="Size"  placeholder="Enter room size"  classNames={{
-    label: [
-      "text-white-400 font-normal",
-      "text-md pl-0.25",
-      "group-focus-within:text-blue-800",
-         ],
-
-    input: [
-      "text-white-600 text-2xl",
-    ],
-
-    inputWrapper: [
-      "bg-zinc-900",
-      "border-2 border-zinc-500",
-      "group",
-      "rounded-lg",
-      "w-64 h-20",
-      "focus-within:border-blue-800",
-      "group",
-    ]
-  }}/>,
-}));
+// const n = 10; 
 
 const columns = [
   {
@@ -83,7 +35,13 @@ const columns = [
 ];
 
 
-function TableUI(){
+function TableUI({rows,columns}){
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  // Access specific query parameters
+  const floor = queryParams.get('floor');
+  const maxfloor = queryParams.get('maxfloor');
 
     return(
   //   <Table aria-label="Example static collection table" class="w-8/12 mx-auto p-4 m-4 my-24">
@@ -125,16 +83,120 @@ function TableUI(){
   );
 }
 
-export default function AdminTable(){
+export default function AdminTable(props){
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  // Access specific query parameters
+  const floor = queryParams.get('floor');
+  const maxfloor = queryParams.get('maxfloor');
+  const hostel_id = queryParams.get('hostelID');
+  const numberArray = generateNumberArray(maxfloor);
+
+
+  const [tableData, setTableData] = useState(
+    numberArray.map((item) => ({
+      key: item,
+      SNo: item,
+      Name: '',
+      Size: '',
+    }))
+  );
+
+  const handleTableRowChange = (key, fieldName, value) => {
+    
+    const updatedTableData = tableData.map((row) => {
+      if (row.key === key) {
+        return {
+          ...row,
+          [fieldName]: value,
+        };
+      }
+      return row;
+    });
+   
+    setTableData(updatedTableData);
+  };
+
+
+
+const rows = numberArray.map((item) => ({
+  key: item,
+  SNo: item, 
+  Name: <Input type="text" label="Name" placeholder="Enter room name"  onChange={(e) => handleTableRowChange(item, 'Name', e.target.value)} classNames={{
+    label: [
+      "text-white-400 font-normal",
+      "text-md pl-0.25",
+      "group-focus-within:text-blue-800",
+         ],
+
+    input: [
+      "text-white-600 text-2xl",
+      
+    ],
+
+    inputWrapper: [
+      "bg-zinc-900",
+      "border-2 border-zinc-500",
+      "group",
+      "rounded-lg",
+      "w-64  h-20",
+      "focus-within:border-blue-800",
+      "group",
+    ]
+  }} />,
+  Size: <Input type="number" label="Size"  placeholder="Enter room size"  onChange={(e) => handleTableRowChange(item, 'Size', e.target.value)}  classNames={{
+    label: [
+      "text-white-400 font-normal",
+      "text-md pl-0.25",
+      "group-focus-within:text-blue-800",
+         ],
+
+    input: [
+      "text-white-600 text-2xl",
+    ],
+
+    inputWrapper: [
+      "bg-zinc-900",
+      "border-2 border-zinc-500",
+      "group",
+      "rounded-lg",
+      "w-64 h-20",
+      "focus-within:border-blue-800",
+      "group",
+    ]
+  }}/>,
+}));
+const senddata = async () => {
+  const shouldSendData = window.confirm('Do you want to upload all the data about floors?');
+
+  if (shouldSendData) {
+    
+    console.log('Data sent:', tableData);
+    const response=await axios.post('http://localhost:8000/sendData', {floor,hostel_id,tableData});
+    console.log(response);
+    if (response.data.success) {
+      
+      
+    }}      
+    
+
+  else {
+    console.log('Data not sent');
+  }
+};
+ 
     return(
     <div>
-        <NavbarComponent/>
+        <NavbarComponent/> 
 
-        <h1 className="text-center m-12 text-5xl">Enter information for floor {requiredFloor}</h1>
+        <h1 className="text-center m-12 text-5xl">Enter information for floor {floor}</h1>
         <div className=" w-1/2 mx-auto p-4 m-4 mb-24 mt-12">
-        <TableUI/>
+        <TableUI rows={rows} columns={columns}/>
         </div>
+        <button onClick={senddata}>Submit</button>
         <FooterComponent/>
+        
     </div>
   );
 }

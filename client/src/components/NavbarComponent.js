@@ -21,7 +21,7 @@ import {
   menuItems,
 } from "@nextui-org/react";
 
-export default function NavbarComponent() {
+export default function NavbarComponent({tokens}) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const menuItems = [
     "Home",
@@ -54,35 +54,34 @@ export default function NavbarComponent() {
     setissignup(!issignup);
   };
   
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(tokens);
 
   const handleGoogleLogin = () => {
    
     window.location.href = 'http://localhost:8000/auth/google';
   };
 
-  useEffect(() => {
-    
-    fetch('/check-authentication', {
-      method: 'GET',
-      headers: {
-        'Authorization': 'Bearer YOUR_JWT_TOKEN', // Replace with the user's JWT token
-      },
-    })
-      .then((response) => {
-        if (response.status === 200) {
-            setIsAuthenticated(true);
-        } else {
-          
-          setIsAuthenticated(false);
-        }
-      })
-      .catch((error) => {
-        
-        console.error('Error checking authentication status:', error);
-        setIsAuthenticated(false); 
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch('/check-authentication', {
+  //     method: 'GET',
+  //     headers: {
+  //       'Authorization': 'Bearer YOUR_JWT_TOKEN', // Replace with the user's JWT token
+  //     },
+  //   })
+  //     .then((response) => {
+  //       if (response.status === 200) {
+  //           setIsAuthenticated(true);
+  //       } else {    
+  //         setIsAuthenticated(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error checking authentication status:', error);
+  //       setIsAuthenticated(false); 
+  //     });
+  // }, []);
+
+
   const handlesubmit=async ()=>{
     handlesignup();
     const response = await axios.post('http://localhost:8000/register', Signupinfo);
@@ -90,20 +89,41 @@ export default function NavbarComponent() {
 
 
   const handleloginsubmit=async ()=>{
-    
     const response = await axios.post('http://localhost:8000/login', info);
-
             console.log(response.data);
             if (response.data.success) {
-              // Redirect to the desired page
               localStorage.setItem('adminID', response.data.adminID);
-              window.location.href = '/admin2'; // Or use React Router for navigation
+              window.location.href = '/admin2'; 
+              setIsAuthenticated(true);
             }}          
 
   const handleLogout = () => {
     console.log(issignup);
     setIsAuthenticated(false);
 };
+const handlepassportlogout=async ()=>{
+  console.log("in log")
+  
+  axios
+      .get("http://localhost:8000/logout", {
+        params: {
+          admin:"T"
+        },
+      })
+      .then((data) => {
+        console.log(data.data)
+       
+        // setupdatecontact(data.data.Contact);
+        // setupdateemail(data.data.Email);
+        window.location.href = '/';
+        setIsAuthenticated(false);
+        
+
+        
+      })
+      .catch((err) => console.log(err));
+      alert("LoggedOut");
+}
 
   return (
     <Navbar
@@ -135,13 +155,14 @@ export default function NavbarComponent() {
           <Link href="#" className="text-xl">
             
           <>
+          {console.log(isAuthenticated)}
           {isAuthenticated ? (
-            <Button onPress={handleLogout} color="primary" className="text-xl">
+            <Button onClick={handlepassportlogout} color="primary" className="text-xl">
               Logout
             </Button>
           ) : (
             
-              <Button onPress={onOpen} color="primary" className="text-xl">
+              <Button onClick={onOpen} color="primary" className="text-xl">
                 Login
               </Button>)}
       <Modal 
@@ -420,3 +441,7 @@ export default function NavbarComponent() {
     </Navbar>
   );
 }
+NavbarComponent.defaultProps = {
+ tokens: true,
+ 
+};

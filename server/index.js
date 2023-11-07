@@ -19,7 +19,7 @@ const app = express();
 const port = 8000;
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({"origin":"http://localhost:3000"}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/auth", googleAuth);
 app.use("/api", googleAuth);
@@ -117,7 +117,11 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
+function isAuthenticated(req,res,next){
 
+  if(req.user) return next();
+  res.redirect("/login");
+};
 // app.post("/register",async (req,res)=>{
 //   const user=await User.findOne({username:req.body.username});
 //   if(user) return res.status(400).send("User already exists");
@@ -142,6 +146,9 @@ app.post(
     return res.json({ success: false, adminID: null });
   }
 );
+
+
+
 
 app.post("/register", (req, res) => {
   b = [req.body.email];
@@ -248,7 +255,38 @@ app.get("/getMaxroom", (req, res) => {
     }
   );
 });
+app.get("/updatecred",(req,res)=>{
+  console.log(req.query)
+  
+  connection.query(
+    `update admin set Email=(?),Contact=(?) where AdminID=(?);`,
+    [req.query.email,req.query.contact,req.query.admin_ID],
+    (err, results) => {
+      if (err) {
+        throw err;
+      }
+      
+      res.send(results); 
+    }
+  );
+})
+app.post("/sendData",(req,res)=>{
+  console.log(req.body);
+  for (const val in req.body.tableData){
+    connection.query(
+      `INSERT INTO roominfo VALUES (?, ?, ?, ?, ?);`,
+      [req.body.hostel_id, req.body.floor, req.body.tableData[val].Name, req.body.tableData[val].Size,req.body.tableData[val].SNo],
+      (err, results) => {
+        if (err) {
+          throw err;
+        }}
+    );
+    // console.log( [req.body.hostel_id, req.body.floor, req.body.tableData[val].Name, req.body.tableData[val].Size,req.body.tableData[val].SNo])
 
+    // console.log(req.body.tableData[val].key);
+  }
+  res.send({"success":true});
+})
 app.get("/getLink", (req, res) => {
   connection.query(
     ` select * from formcontrols where HostelID=(?);`,
@@ -262,7 +300,14 @@ app.get("/getLink", (req, res) => {
     }
   );
 });
-
+app.get('/logout', function(req, res, next){
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    res.redirect("http://localhost:3000/")
+  });
+  // req.logout();
+  // res.redirect("http://localhost:3000/")
+});
 //dashButton edit handling
 app.put("/api/admin/edit", async (req, res) => {
   const hostelID = req.query.hostelID;

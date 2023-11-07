@@ -10,7 +10,18 @@ import FormControlsSection from "../components/FormControlsSection";
 import FormControlsButton from "../components/FormControlsButton";
 import DashButton from "../components/DashButton";
 import axios from "axios";
-
+import { BrowserRouter as Router, Route, Link as Li } from 'react-router-dom';
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  Checkbox,
+  Input,
+  Link,
+} from "@nextui-org/react";
 export const AdminContext = createContext(null);
 
 function FloorRoomsInfo({ floor, rooms }) {
@@ -34,6 +45,12 @@ export default function DashboardTest() {
   const [hostels, setHostels] = useState([]);
   // const [admin_ID, setAdmin] = useState("1234");
   const [floorsInfo, setFloorsInfo] = useState([]);
+  const [updateemail,setupdateemail]=useState("");
+  const [updatecontact,setupdatecontact]=useState("");
+  const handleupdates=()=>{
+
+  }
+
 
   const ID = localStorage.getItem("adminID");
   const [admin_ID, setAdmin] = useState(ID);
@@ -43,6 +60,7 @@ export default function DashboardTest() {
     insti: "",
     email: "",
   });
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [activeTab, setActiveTab] = useState("");
   // console.log("active", activeTab);
   const getHostel = (admin_ID) => {
@@ -58,6 +76,29 @@ export default function DashboardTest() {
       })
       .catch((err) => console.log(err));
   };
+  const handleSubmit=(e)=>{
+    // e.preventdefault();
+    axios
+      .get("http://localhost:8000/updatecred", {
+        params: {
+          admin_ID: admin_ID,
+          email:updateemail,
+          contact:updatecontact,
+        },
+      })
+      .then((data) => {
+        // console.log(data.data)
+       
+        // setupdatecontact(data.data.Contact);
+        // setupdateemail(data.data.Email);
+        alert("Updated Email/Contact Successfully");
+
+        
+      })
+      .catch((err) => console.log(err));
+
+
+  }
   const getcred = () => {
     axios
       .get("http://localhost:8000/getcred", {
@@ -81,6 +122,7 @@ export default function DashboardTest() {
   const formcontrol=async ()=>{
 
   }
+  
   useEffect(() => {
     getHostel(admin_ID);
     getcred();
@@ -136,11 +178,14 @@ export default function DashboardTest() {
               <CardBody className="flex flex-row items-start m-0 mb-4 p-0 h-28">
                 {floorsInfo.map((floor, index) => {
                   return (
+                    <Li to={`/table?floor=${floor.Floor}&maxfloor=${floor.MaxRooms}&hostelID=${activeTab.current}`} classNames="hover:cursor-pointer">
                     <FloorRoomsInfo
+                      classNames="hover:cursor-pointer"
                       key={floor.Floor}
                       floor={floor.Floor}
                       rooms={floor.MaxRooms}
                     />
+                    </Li>
                   );
                 })}
                 {/* <FloorRoomsInfo floor={1} rooms={23} />
@@ -152,7 +197,74 @@ export default function DashboardTest() {
                 <Card className="border-2 border-blue-600 bg-black h-full px-6 pt-1">
                   <CardHeader className="flex flex-row items-center my-2 text-2xl font-bold gap-3">
                     <p>User details</p>
-                    <img className="h-5 w-5" src={whiteEditPencil} alt="menu" />
+                    <img className="h-5 w-5 hover:cursor-pointer" onClick={onOpen} src={whiteEditPencil} alt="menu" />
+                    { (
+            <Modal
+              isOpen={isOpen}
+              onOpenChange={onOpenChange}
+              placement="top-center"
+              size="lg"
+              scrollBehavior="inside"
+            >
+              <ModalContent>
+                {(onClose) => (
+                  <>
+                    <ModalHeader className="flex flex-col gap-1 text-2xl">
+                      Edit details
+                    </ModalHeader>
+                    <form onSubmit={handleSubmit}>
+                      <ModalBody>
+                        <Input
+                          autoFocus
+                          label="email"
+                          placeholder="Edit Email"
+                          variant="bordered"
+                          id="Email"
+                          name="email"
+                          onChange={(e)=>{setupdateemail(e.target.value)}}
+                          value={updateemail}
+                          classNames={{
+                            label: "text-lg",
+                            input: ["placeholder:text-xl", "text-xl"],
+                            innerWrapper: "bg-transparent",
+                            inputWrapper: ["h-20"],
+                          }}
+                        />
+                        <Input
+                          label="Contact"
+                          placeholder="Edit contact"
+                          type="number"
+                          variant="bordered"
+                          id="contact"
+                          name="contact"
+                          onChange={(e)=>{setupdatecontact(e.target.value)}}
+                          value={updatecontact}
+                          classNames={{
+                            label: "text-lg",
+                            input: ["placeholder:text-xl", "text-xl"],
+                            innerWrapper: "bg-transparent",
+                            inputWrapper: ["h-20"],
+                          }}
+                        />
+                        </ModalBody>
+                      <ModalFooter>
+                        <Button
+                          color="danger"
+                          variant="light"
+                          onPress={onClose}
+                        >
+                          Close
+                        </Button>
+                        <Button color="primary" onPress={onClose} type="submit">
+                          Submit
+                        </Button>
+                      </ModalFooter>
+                      
+                    </form>
+                  </>
+                )}
+              </ModalContent>
+            </Modal>)}
                   </CardHeader>
                   <CardBody className="m-0 p-0 px-3">
                     <div className="text-xl flex flex-row">

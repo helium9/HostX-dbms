@@ -13,7 +13,7 @@ export default function LandingPage() {
   return (
     <>
       <div className="relative flex flex-col ">
-        <NavbarComponent />
+        <NavbarComponent tokens={false} />
 
         <img
           className="absolute left-0 top-0 h-[200px] sm:w-3/4 sm:h-[250px] "
