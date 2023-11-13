@@ -150,7 +150,7 @@ const rows = numberArray.map((item) => ({
       "border-2 border-zinc-500",
       "group",
       "rounded-lg",
-      "w-64  h-20",
+      "  h-20",
       "focus-within:border-blue-800",
       "group",
     ]
@@ -171,7 +171,7 @@ const rows = numberArray.map((item) => ({
       "border-2 border-zinc-500",
       "group",
       "rounded-lg",
-      "w-64 h-20",
+      " h-20",
       "focus-within:border-blue-800",
       "group",
     ]
@@ -211,7 +211,7 @@ const senddata = async () => {
         <NavbarComponent/> 
 
         <h1 className="text-center m-12 text-5xl">Enter information for floor {floor}</h1>
-        <div className=" w-1/2 mx-auto p-4 m-4 mb-24 mt-12">
+        <div className=" w-full sm:w-10/12 md:w-8/12 lg:w-1/2 2xl:w-8/12 mx-auto p-4 m-4 mb-24 mt-12">
         <TableUI rows={rows} columns={columns}/>
         </div>
         <div className="mx-[50%]">
