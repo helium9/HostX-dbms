@@ -30,19 +30,19 @@ app.use("/api", googleAuth);
 
 // const customDirectory = path.join(__dirname, "../client/src/pages/");
 
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
-
 // const connection = mysql.createConnection({
-//   host: 'localhost',
-//   user: 'root',
-//   password: '@mysql271314',
-//   database: 'hostx-dbms',
+//   host: process.env.DB_HOST,
+//   user: process.env.DB_USER,
+//   password: process.env.DB_PASSWORD,
+//   database: process.env.DB_NAME,
 // });
+
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '@mysql271314',
+  database: 'hostx-dbms',
+});
 connection.connect((err) => {
   if (err) {
     console.error("Error connecting to MySQL:", err);
@@ -332,29 +332,39 @@ app.put("/api/admin/edit", async (req, res) => {
         (err, results) => {
           if (err) throw err;
           try {
-            connection.query(
-              `SELECT Floors FROM registeredhostels WHERE HostelID="${hostelID}";`,
-              (err, results) => {
-                if (err) throw err;
-                const maxFloors = results[0].Floors;
-                let queryString = `INSERT INTO floorinfo (HostelID, Floor, MaxRooms) \nVALUES\n`;
-                for (let i = 1; i <= maxFloors; i++) {
-                  queryString += `("${hostelID}", ${i}, ${
-                    floorInfo[i.toString()]
-                  }),\n`;
-                }
-                queryString = queryString.slice(0, queryString.length - 2) + `;`;
-                console.log(queryString);
-                try{
-                  connection.query(queryString, (err, response) => {
+            connection.query(`DELETE FROM roominfo WHERE HostelID="${hostelID}";`,(err,results)=>{
+              if (err) throw err;
+              try{
+                connection.query(
+                  `SELECT Floors FROM registeredhostels WHERE HostelID="${hostelID}";`,
+                  (err, results) => {
                     if (err) throw err;
-                    res.send("Sucessfully updated floorInfo data.");
-                  });
-                } catch{
-                  res.status(500).send();
-                }
+                    const maxFloors = results[0].Floors;
+                    let queryString = `INSERT INTO floorinfo (HostelID, Floor, MaxRooms) \nVALUES\n`;
+                    for (let i = 1; i <= maxFloors; i++) {
+                      queryString += `("${hostelID}", ${i}, ${
+                        floorInfo[i.toString()]
+                      }),\n`;
+                    }
+                    queryString = queryString.slice(0, queryString.length - 2) + `;`;
+                    console.log(queryString);
+                    try{
+                      connection.query(queryString, (err, response) => {
+                        if (err) throw err;
+                        res.send("Sucessfully updated floorInfo data.");
+                      });
+                    } catch{
+                      res.status(500).send();
+                    }
+                  }
+                );
+                
               }
-            );
+              catch {
+                res.status(500).send();
+              }
+            })
+            
           } catch {
             res.status(500).send();
           }

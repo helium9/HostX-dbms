@@ -2,10 +2,10 @@ import {React,useState} from "react";
 import NavbarComponent from "../components/NavbarComponent";
 import FooterComponent from "../components/FooterComponent";
 import {Input} from "@nextui-org/react";
-
+import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
-
+import { Card, CardHeader, CardBody, Button, Divider } from "@nextui-org/react";
 import axios from "axios";
 function generateNumberArray(n) {
   const numbers = [];
@@ -84,6 +84,7 @@ function TableUI({rows,columns}){
 }
 
 export default function AdminTable(props){
+  const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
@@ -104,6 +105,15 @@ export default function AdminTable(props){
   );
 
   const handleTableRowChange = (key, fieldName, value) => {
+    
+      // Check if the entered room name is unique
+      const isNameUnique = tableData.every((row) => row.Name !== value);
+  
+      if (!isNameUnique) {
+        // You can provide feedback to the user here, for example:
+        alert('Room names must be unique.');
+        return;
+      }
     
     const updatedTableData = tableData.map((row) => {
       if (row.key === key) {
@@ -168,6 +178,14 @@ const rows = numberArray.map((item) => ({
   }}/>,
 }));
 const senddata = async () => {
+  const isAnyFieldEmpty = tableData.some((row) => row.Name === '' || row.Size === '');
+
+  if (isAnyFieldEmpty) {
+    // Provide feedback to the user
+    alert('All fields must be filled.');
+    return;
+  }
+  
   const shouldSendData = window.confirm('Do you want to upload all the data about floors?');
 
   if (shouldSendData) {
@@ -176,6 +194,8 @@ const senddata = async () => {
     const response=await axios.post('http://localhost:8000/sendData', {floor,hostel_id,tableData});
     console.log(response);
     if (response.data.success) {
+     navigate(`/admin2?floor=${floor}&uploadSuccess=true`);
+
       
       
     }}      
@@ -194,7 +214,11 @@ const senddata = async () => {
         <div className=" w-1/2 mx-auto p-4 m-4 mb-24 mt-12">
         <TableUI rows={rows} columns={columns}/>
         </div>
-        <button onClick={senddata}>Submit</button>
+        <div className="mx-[50%]">
+        <Button color="primary" classames="p-24 my-auto" onClick={senddata} >
+                          Submit
+                        </Button></div>
+       
         <FooterComponent/>
         
     </div>

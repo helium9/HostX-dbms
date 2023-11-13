@@ -112,6 +112,7 @@ export default function Forms() {
        
         setpl(data.data["Size"]);
         
+        
       })
       .catch((err) => console.log(err));
   };
