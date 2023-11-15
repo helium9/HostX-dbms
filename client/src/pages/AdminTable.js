@@ -1,10 +1,18 @@
-import {React,useState} from "react";
+import { React, useState, useEffect } from "react";
 import NavbarComponent from "../components/NavbarComponent";
 import FooterComponent from "../components/FooterComponent";
-import {Input} from "@nextui-org/react";
-import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  getKeyValue,
+} from "@nextui-org/react";
 import { Card, CardHeader, CardBody, Button, Divider } from "@nextui-org/react";
 import axios from "axios";
 function generateNumberArray(n) {
@@ -17,7 +25,7 @@ function generateNumberArray(n) {
 
 // const requiredFloor=5;
 
-// const n = 10; 
+// const n = 10;
 
 const columns = [
   {
@@ -34,193 +42,216 @@ const columns = [
   },
 ];
 
-
-function TableUI({rows,columns}){
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
+function TableUI({ rows, columns }) {
+  // const location = useLocation();
+  // const queryParams = new URLSearchParams(location.search);
 
   // Access specific query parameters
-  const floor = queryParams.get('floor');
-  const maxfloor = queryParams.get('maxfloor');
-
-    return(
-  //   <Table aria-label="Example static collection table" class="w-8/12 mx-auto p-4 m-4 my-24">
-  //   <TableHeader>
-  //     <TableColumn class="p-4 text-center">S.NO</TableColumn>
-  //     <TableColumn class="p-4 text-center">NAME</TableColumn>
-  //     <TableColumn class="p-4 text-center">Size</TableColumn>
-  //   </TableHeader>
-  //   <TableBody>
-    
-  //     <TableRow key="1">
-  //       <TableCell class="p-4 ">
-  //         1
-  //       </TableCell>
-  //       <TableCell class="p-4">
-  //         <Input type="text" label="Name" placeholder="Enter room name" />
-  //       </TableCell>
-  //       <TableCell class="p-4">
-  //         <Input type="number" label="Size" placeholder="Enter room size" />
-  //       </TableCell>
-  //     </TableRow>
-  //   </TableBody>
-  // </Table>
-  
-  <Table aria-label="Example static collection table" >
+  // const floor = queryParams.get('floor');
+  // const maxfloor = queryParams.get('maxfloor');
+  return (
+    <Table aria-label="Example static collection table">
       <TableHeader columns={columns}>
-        {(column) => <TableColumn key={column.key} className="p-4 text-center text-2xl">{column.label} </TableColumn>}
+        {(column) => (
+          <TableColumn key={column.key} className="p-4 text-center text-2xl">
+            {column.label}{" "}
+          </TableColumn>
+        )}
       </TableHeader>
       <TableBody items={rows}>
         {(item) => (
-          <TableRow key={item.key} >
-            {(columnKey) => <TableCell className="p-4 text-center text-lg">{getKeyValue(item, columnKey)}</TableCell>}
+          <TableRow key={item.key}>
+            {(columnKey) => (
+              <TableCell className="p-4 text-center text-lg">
+                {getKeyValue(item, columnKey)}
+              </TableCell>
+            )}
           </TableRow>
         )}
       </TableBody>
     </Table>
-
-  
   );
 }
 
-export default function AdminTable(props){
+export default function AdminTable(props) {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
   // Access specific query parameters
-  const floor = queryParams.get('floor');
-  const maxfloor = queryParams.get('maxfloor');
-  const hostel_id = queryParams.get('hostelID');
+  const floor = queryParams.get("floor");
+  const maxfloor = queryParams.get("maxfloor");
+  const hostel_id = queryParams.get("hostelID");
   const numberArray = generateNumberArray(maxfloor);
-
 
   const [tableData, setTableData] = useState(
     numberArray.map((item) => ({
       key: item,
       SNo: item,
-      Name: '',
-      Size: '',
+      Name: "",
+      Size: "",
     }))
   );
-
-  const handleTableRowChange = (key, fieldName, value) => {
-    
-      // Check if the entered room name is unique
-      const isNameUnique = tableData.every((row) => row.Name !== value);
-  
-      if (!isNameUnique) {
-        // You can provide feedback to the user here, for example:
-        alert('Room names must be unique.');
-        return;
+  useEffect(() => {
+    // console.log(hostel_id);
+    const getFormData = async () => {
+      const result = await axios.get("http://localhost:8000/sendData", {
+        params: { hostelID: hostel_id, floor: floor },
+      });
+      // console.log("res", result.data);
+      if (result.data.length !== 0) {
+        setTableData(
+          result.data.map((item) => {
+            return {
+              key: item.SerialNumber,
+              SNo: item.SerialNumber,
+              Name: item.Room,
+              Size: String(item.Size),
+            };
+          })
+        );
       }
-    
+    };
+    getFormData();
+  }, []);
+  const handleTableRowChange = (key, fieldName, value) => {
+    // Check if the entered room name is unique
+    console.log("td", tableData);
+    const isNameUnique = tableData.every((row) => row.Name !== value);
+
+    if (!isNameUnique) {
+      // You can provide feedback to the user here, for example:
+      alert("Room names must be unique.");
+      return;
+    }
+
     const updatedTableData = tableData.map((row) => {
       if (row.key === key) {
         return {
           ...row,
-          [fieldName]: value,
+          [fieldName]: String(value),
         };
       }
       return row;
     });
-   
+
     setTableData(updatedTableData);
   };
 
+  const rows = numberArray.map((item) => ({
+    key: item,
+    SNo: item,
+    Name: (
+      <Input
+        type="text"
+        label="Name"
+        placeholder={
+          tableData[item - 1].Name.length
+            ? tableData[item - 1].Name
+            : "Room Number"
+        }
+        onChange={(e) => handleTableRowChange(item, "Name", e.target.value)}
+        classNames={{
+          label: [
+            "text-white-400 font-normal",
+            "text-md pl-0.25",
+            "group-focus-within:text-blue-800",
+          ],
 
+          input: ["text-white-600 text-2xl"],
 
-const rows = numberArray.map((item) => ({
-  key: item,
-  SNo: item, 
-  Name: <Input type="text" label="Name" placeholder="Enter room name"  onChange={(e) => handleTableRowChange(item, 'Name', e.target.value)} classNames={{
-    label: [
-      "text-white-400 font-normal",
-      "text-md pl-0.25",
-      "group-focus-within:text-blue-800",
-         ],
+          inputWrapper: [
+            "bg-zinc-900",
+            "border-2 border-zinc-500",
+            "group",
+            "rounded-lg",
+            "  h-20",
+            "focus-within:border-blue-800",
+            "group",
+          ],
+        }}
+      />
+    ),
+    Size: (
+      <Input
+        type="number"
+        label="Size"
+        placeholder={
+          tableData[item - 1].Size !== ""
+            ? tableData[item - 1].Size
+            : "Occupancy"
+        }
+        onChange={(e) => handleTableRowChange(item, "Size", e.target.value)}
+        classNames={{
+          label: [
+            "text-white-400 font-normal",
+            "text-md pl-0.25",
+            "group-focus-within:text-blue-800",
+          ],
 
-    input: [
-      "text-white-600 text-2xl",
-      
-    ],
+          input: ["text-white-600 text-2xl"],
 
-    inputWrapper: [
-      "bg-zinc-900",
-      "border-2 border-zinc-500",
-      "group",
-      "rounded-lg",
-      "  h-20",
-      "focus-within:border-blue-800",
-      "group",
-    ]
-  }} />,
-  Size: <Input type="number" label="Size"  placeholder="Enter room size"  onChange={(e) => handleTableRowChange(item, 'Size', e.target.value)}  classNames={{
-    label: [
-      "text-white-400 font-normal",
-      "text-md pl-0.25",
-      "group-focus-within:text-blue-800",
-         ],
+          inputWrapper: [
+            "bg-zinc-900",
+            "border-2 border-zinc-500",
+            "group",
+            "rounded-lg",
+            " h-20",
+            "focus-within:border-blue-800",
+            "group",
+          ],
+        }}
+      />
+    ),
+  }));
+  const senddata = async () => {
+    const isAnyFieldEmpty = tableData.some(
+      (row) => row.Name.length === 0 || row.Size.length === 0
+    );
 
-    input: [
-      "text-white-600 text-2xl",
-    ],
+    if (isAnyFieldEmpty) {
+      // Provide feedback to the user
+      alert("All fields must be filled.");
+      return;
+    }
 
-    inputWrapper: [
-      "bg-zinc-900",
-      "border-2 border-zinc-500",
-      "group",
-      "rounded-lg",
-      " h-20",
-      "focus-within:border-blue-800",
-      "group",
-    ]
-  }}/>,
-}));
-const senddata = async () => {
-  const isAnyFieldEmpty = tableData.some((row) => row.Name === '' || row.Size === '');
+    const shouldSendData = window.confirm(
+      "Do you want to upload all the data about floors?"
+    );
 
-  if (isAnyFieldEmpty) {
-    // Provide feedback to the user
-    alert('All fields must be filled.');
-    return;
-  }
-  
-  const shouldSendData = window.confirm('Do you want to upload all the data about floors?');
+    if (shouldSendData) {
+      console.log("Data sent:", tableData);
+      const response = await axios.post("http://localhost:8000/sendData", {
+        floor,
+        hostel_id,
+        tableData,
+      });
+      console.log(response);
+      if (response.data.success) {
+        navigate(`/admin2?floor=${floor}&uploadSuccess=true`);
+      }
+    } else {
+      console.log("Data not sent");
+    }
+  };
 
-  if (shouldSendData) {
-    
-    console.log('Data sent:', tableData);
-    const response=await axios.post('http://localhost:8000/sendData', {floor,hostel_id,tableData});
-    console.log(response);
-    if (response.data.success) {
-     navigate(`/admin2?floor=${floor}&uploadSuccess=true`);
-
-      
-      
-    }}      
-    
-
-  else {
-    console.log('Data not sent');
-  }
-};
- 
-    return(
+  return (
     <div>
-        <NavbarComponent/> 
+      <NavbarComponent />
 
-        <h1 className="text-center m-12 text-5xl">Enter information for floor {floor}</h1>
-        <div className=" w-full sm:w-10/12 md:w-8/12 lg:w-1/2 2xl:w-8/12 mx-auto p-4 m-4 mb-24 mt-12">
-        <TableUI rows={rows} columns={columns}/>
-        </div>
-        <div className="mx-[50%]">
-        <Button color="primary" classames="p-24 my-auto" onClick={senddata} >
-                          Submit
-                        </Button></div>
-       
-        <FooterComponent/>
-        
+      <h1 className="text-center m-12 text-5xl">
+        Enter information for floor {floor}
+      </h1>
+      <div className=" w-full sm:w-10/12 md:w-8/12 lg:w-1/2 2xl:w-8/12 mx-auto p-4 m-4 mb-24 mt-12">
+        <TableUI rows={rows} columns={columns} />
+      </div>
+      <div className="mx-[50%]">
+        <Button color="primary" classames="p-24 my-auto" onClick={senddata}>
+          Submit
+        </Button>
+      </div>
+
+      <FooterComponent />
     </div>
   );
 }

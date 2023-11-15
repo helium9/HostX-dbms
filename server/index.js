@@ -19,12 +19,10 @@ const app = express();
 const port = 8000;
 
 app.use(express.json());
-app.use(cors({"origin":"http://localhost:3000"}));
+app.use(cors({ origin: "http://localhost:3000" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/auth", googleAuth);
 app.use("/api", googleAuth);
-
-
 
 // console.log('Email in index.js:',googleAuth.auth_email);
 
@@ -117,11 +115,10 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
-function isAuthenticated(req,res,next){
-
-  if(req.user) return next();
+function isAuthenticated(req, res, next) {
+  if (req.user) return next();
   res.redirect("/login");
-};
+}
 // app.post("/register",async (req,res)=>{
 //   const user=await User.findOne({username:req.body.username});
 //   if(user) return res.status(400).send("User already exists");
@@ -146,9 +143,6 @@ app.post(
     return res.json({ success: false, adminID: null });
   }
 );
-
-
-
 
 app.post("/register", (req, res) => {
   b = [req.body.email];
@@ -203,7 +197,6 @@ app.get("/getcred", (req, res) => {
       if (err) {
         throw err;
       }
-      
       res.send(results[0]);
     }
   );
@@ -222,22 +215,25 @@ app.get("/getFilledBy", (req, res) => {
   );
 });
 
-app.post("/getpref",(req, res) => {
-  const v=req.body.params
-  
+app.post("/getpref", (req, res) => {
+  const v = req.body.params;
+
   try {
     for (const key in v.pref) {
-      if (key !== 'P1') {
+      if (key !== "P1") {
         connection.query(
-            `INSERT INTO Preferences (HostelID, EmailID, RollNumber, RoommateRollNumber, TimeOfEntry) VALUES (?, ?, ?, ?, ?);`,
-            [v.hostel_ID, v.Email, v.pref["P1"], v.pref[key], v.time],
-            (err, results) => {
-              if (err) {
-                throw err;
-              }}
-          );}}
+          `INSERT INTO Preferences (HostelID, EmailID, RollNumber, RoommateRollNumber, TimeOfEntry) VALUES (?, ?, ?, ?, ?);`,
+          [v.hostel_ID, v.Email, v.pref["P1"], v.pref[key], v.time],
+          (err, results) => {
+            if (err) {
+              throw err;
+            }
+          }
+        );
+      }
+    }
   } catch (error) {
-    console.error('Error inserting data:', error);
+    console.error("Error inserting data:", error);
   }
   res.send("Yes");
 });
@@ -250,43 +246,67 @@ app.get("/getMaxroom", (req, res) => {
       if (err) {
         throw err;
       }
-      
-      res.send(results[0]); 
+
+      res.send(results[0]);
     }
   );
 });
-app.get("/updatecred",(req,res)=>{
-  console.log(req.query)
-  
+app.get("/updatecred", (req, res) => {
+  // console.log(req.query);
+
   connection.query(
     `update admin set Email=(?),Contact=(?) where AdminID=(?);`,
-    [req.query.email,req.query.contact,req.query.admin_ID],
+    [req.query.email, req.query.contact, req.query.admin_ID],
     (err, results) => {
       if (err) {
         throw err;
       }
-      
-      res.send(results); 
+      res.send(results);
     }
   );
-})
-app.post("/sendData",(req,res)=>{
-  console.log(req.body);
-  for (const val in req.body.tableData){
-    connection.query(
-      `INSERT INTO roominfo VALUES (?, ?, ?, ?, ?);`,
-      [req.body.hostel_id, req.body.floor, req.body.tableData[val].Name, req.body.tableData[val].Size,req.body.tableData[val].SNo],
-      (err, results) => {
-        if (err) {
-          throw err;
-        }}
-    );
-    // console.log( [req.body.hostel_id, req.body.floor, req.body.tableData[val].Name, req.body.tableData[val].Size,req.body.tableData[val].SNo])
+});
 
-    // console.log(req.body.tableData[val].key);
+app.get("/sendData", async (req, res)=>{
+  // console.log(req.query);
+  connection.query(`select SerialNumber, Room, Size from roominfo where hostelId="${req.query.hostelID}" and floor="${req.query.floor}" order by SerialNumber;`, (err, results)=>{
+    try {
+      // console.log(results);
+    res.send(results);
   }
-  res.send({"success":true});
-})
+  catch{
+    res.send("Error /sendData")
+  }
+  })
+});
+app.post("/sendData", (req, res) => {
+  // console.log(req.body);
+  const tableData = req.body.tableData;
+    connection.query(`DELETE FROM roominfo WHERE hostelID="${req.body.hostel_id}" and Floor="${req.body.floor}";`, (err, results)=>{
+      if (err) {
+        res.send(err);
+        throw err;
+      }
+      else{
+        // console.log(tableData.length);
+        let queryString = `INSERT INTO roominfo (HostelID, Floor, Room, Size, SerialNumber) \nVALUES\n`;
+        for (let i = 0; i < tableData.length; i++) {
+          queryString += `("${req.body.hostel_id}", ${req.body.floor}, "${tableData[i].Name}", ${parseInt(tableData[i].Size)}, ${tableData[i].SNo}),\n`;
+          // console.log(tableData[i].Name);
+        }
+        queryString = queryString.slice(0, queryString.length - 2) + `;`;
+        // console.log(queryString);
+        try {
+          connection.query(queryString, (err, response) => {
+            if (err) throw err;
+            res.send("Sucessfully updated roomInfo data.");
+          });
+        } catch {
+          res.status(500).send();
+        }
+      }
+    });
+});
+
 app.get("/getLink", (req, res) => {
   connection.query(
     ` select * from formcontrols where HostelID=(?);`,
@@ -295,15 +315,16 @@ app.get("/getLink", (req, res) => {
       if (err) {
         throw err;
       }
-      console.log(results[0]);
-      res.send(results[0]); 
+      res.send(results[0]);
     }
   );
 });
-app.get('/logout', function(req, res, next){
-  req.logout(function(err) {
-    if (err) { return next(err); }
-    res.redirect("http://localhost:3000/")
+app.get("/logout", function (req, res, next) {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("http://localhost:3000/");
   });
   // req.logout();
   // res.redirect("http://localhost:3000/")
@@ -312,7 +333,8 @@ app.get('/logout', function(req, res, next){
 app.put("/api/admin/edit", async (req, res) => {
   const hostelID = req.query.hostelID;
   if (req.query.type === "H_Info") {
-    try { //connection.query("string", func)
+    try {
+      //connection.query("string", func)
       connection.query(
         `UPDATE registeredhostels SET HostelName="${req.body.hostelName}", Floors="${req.body.floors}" WHERE HostelID="${hostelID}";`,
         (err, results) => {
@@ -324,7 +346,7 @@ app.put("/api/admin/edit", async (req, res) => {
       res.status(500).send();
     }
   } else if (req.query.type === "F_Info") {
-    const floorInfo = req.body; 
+    const floorInfo = req.body;
     console.log(floorInfo, hostelID);
     try {
       connection.query(
@@ -332,39 +354,40 @@ app.put("/api/admin/edit", async (req, res) => {
         (err, results) => {
           if (err) throw err;
           try {
-            connection.query(`DELETE FROM roominfo WHERE HostelID="${hostelID}";`,(err,results)=>{
-              if (err) throw err;
-              try{
-                connection.query(
-                  `SELECT Floors FROM registeredhostels WHERE HostelID="${hostelID}";`,
-                  (err, results) => {
-                    if (err) throw err;
-                    const maxFloors = results[0].Floors;
-                    let queryString = `INSERT INTO floorinfo (HostelID, Floor, MaxRooms) \nVALUES\n`;
-                    for (let i = 1; i <= maxFloors; i++) {
-                      queryString += `("${hostelID}", ${i}, ${
-                        floorInfo[i.toString()]
-                      }),\n`;
+            connection.query(
+              `DELETE FROM roominfo WHERE HostelID="${hostelID}";`,
+              (err, results) => {
+                if (err) throw err;
+                try {
+                  connection.query(
+                    `SELECT Floors FROM registeredhostels WHERE HostelID="${hostelID}";`,
+                    (err, results) => {
+                      if (err) throw err;
+                      const maxFloors = results[0].Floors;
+                      let queryString = `INSERT INTO floorinfo (HostelID, Floor, MaxRooms) \nVALUES\n`;
+                      for (let i = 1; i <= maxFloors; i++) {
+                        queryString += `("${hostelID}", ${i}, ${
+                          floorInfo[i.toString()]
+                        }),\n`;
+                      }
+                      queryString =
+                        queryString.slice(0, queryString.length - 2) + `;`;
+                      console.log(queryString);
+                      try {
+                        connection.query(queryString, (err, response) => {
+                          if (err) throw err;
+                          res.send("Sucessfully updated floorInfo data.");
+                        });
+                      } catch {
+                        res.status(500).send();
+                      }
                     }
-                    queryString = queryString.slice(0, queryString.length - 2) + `;`;
-                    console.log(queryString);
-                    try{
-                      connection.query(queryString, (err, response) => {
-                        if (err) throw err;
-                        res.send("Sucessfully updated floorInfo data.");
-                      });
-                    } catch{
-                      res.status(500).send();
-                    }
-                  }
-                );
-                
+                  );
+                } catch {
+                  res.status(500).send();
+                }
               }
-              catch {
-                res.status(500).send();
-              }
-            })
-            
+            );
           } catch {
             res.status(500).send();
           }
@@ -376,21 +399,21 @@ app.put("/api/admin/edit", async (req, res) => {
   }
 });
 
-app.delete("/api/admin/delete", async(req, res) =>{
+app.delete("/api/admin/delete", async (req, res) => {
   const hostelID = req.query.hostelID;
-  try{
-    connection.query(`DELETE FROM registeredhostels WHERE HostelID="${hostelID}"`,
-    (err, results) => {
-      if (err) throw err;
-      console.log(results);
-      res.send(200);
-    });
-  }
-  catch{
+  try {
+    connection.query(
+      `DELETE FROM registeredhostels WHERE HostelID="${hostelID}"`,
+      (err, results) => {
+        if (err) throw err;
+        console.log(results);
+        res.send(200);
+      }
+    );
+  } catch {
     res.status(500).send();
   }
-  });
-
+});
 
 //plus modal, register hostel
 app.post("/api/admin/submit", async (req, res) => {
@@ -433,7 +456,7 @@ app.post("/api/admin/submit", async (req, res) => {
             queryString += `("${hostelID}", ${i}, ${
               floorInfo[i.toString()]
             }),\n`;
-          } 
+          }
           queryString = queryString.slice(0, queryString.length - 2) + `;`;
           // console.log(queryString);
           connection.query(queryString, (err, response) => {
@@ -463,7 +486,7 @@ app.get("/getFloors", async (req, res) => {
         });
         res.send({ floorsInfo: floors });
         // console.log(rows);
-      } 
+      }
     );
   } catch {
     // console.log(req.query);
@@ -491,11 +514,6 @@ app.get("/getHostels", async (req, res) => {
   }
   // console.log(req.query);
 });
-
-
-
-
-
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
