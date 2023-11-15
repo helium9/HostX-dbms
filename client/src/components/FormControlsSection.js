@@ -19,6 +19,25 @@ function FormControlsSection({ active,hosID }) {
         console.error('Copy failed:', error);
       });
   };
+  const solve=()=>{
+    axios
+      .get("http://localhost:8000/solve", {
+        params: {
+          hostelID: hosID,
+
+
+
+        },
+      })
+      .then((data) => {
+        console.log(data.data);
+        
+        
+        
+      })
+      .catch((err) => console.log(err));
+    
+  }
   const getLink=()=>{
     axios
       .get("http://localhost:8000/getLink", {
@@ -99,7 +118,7 @@ function FormControlsSection({ active,hosID }) {
           <img className="h-10 w-10" src={viewForm} alt="menu" />
           <p className="text-3xl font-bold text-black">View form</p>
         </Button>
-        <Button className="bg-zinc-300 h-20 hover:bg-white lg:flex lg:flex-col lg:h-full">
+        <Button onClick={solve} className="bg-zinc-300 h-20 hover:bg-white lg:flex lg:flex-col lg:h-full">
           <img className="h-9 w-9" src={stopForm} alt="menu" />
           <p className="text-3xl font-bold text-black">Stop form</p>
         </Button>

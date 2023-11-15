@@ -119,6 +119,28 @@ export default function DashboardTest() {
       .catch((err) => console.log(err));
   };
 
+  const getbutton = () => {
+    axios
+      .get("http://localhost:8000/getbutton", {
+        params: {
+          hostelID:activeTab
+        },
+      })
+      .then((data) => {
+
+        console.log("thsi",data.data);
+        if(data.data==true){
+        setFormActive(true);}
+        else{
+          setFormActive(false);
+        }
+       
+        
+      })
+      .catch((err) => console.log(err));
+  };
+
+
   const formcontrol=async ()=>{
 
   }
@@ -126,7 +148,11 @@ export default function DashboardTest() {
   useEffect(() => {
     getHostel(admin_ID);
     getcred();
+    
   }, []);
+  useEffect(()=>{
+    getbutton();
+  },[activeTab]);
   // console.log("Floors", floorsInfo);
   return (
     <>
@@ -279,7 +305,9 @@ export default function DashboardTest() {
                 </Card>
               </div>
               <FormControlsButton
-                
+
+                hostel={activeTab}
+                floor={floorsInfo}
                 active={formActive}
                 setActive={setFormActive}
                 className="shrink-0"
