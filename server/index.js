@@ -28,20 +28,20 @@ app.use("/api", googleAuth);
 
 // const customDirectory = path.join(__dirname, "../client/src/pages/");
 
-// const connection = mysql.createConnection({
-//   host: process.env.DB_HOST,
-//   user: process.env.DB_USER,
-//   password: process.env.DB_PASSWORD,
-//   database: process.env.DB_NAME,
-// });
-
 const connection = mysql.createConnection({
-
-  host: 'localhost',
-  user: 'root',
-  password: '@mysql271314',
-  database: 'hostx-dbms',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
+
+// const connection = mysql.createConnection({
+
+//   host: 'localhost',
+//   user: 'root',
+//   password: '@mysql271314',
+//   database: 'hostx-dbms',
+// });
 connection.connect((err) => {
   if (err) {
 
