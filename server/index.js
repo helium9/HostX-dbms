@@ -28,20 +28,20 @@ app.use("/api", googleAuth);
 
 // const customDirectory = path.join(__dirname, "../client/src/pages/");
 
-// const connection = mysql.createConnection({
-//   host: process.env.DB_HOST,
-//   user: process.env.DB_USER,
-//   password: process.env.DB_PASSWORD,
-//   database: process.env.DB_NAME,
-// });
-
 const connection = mysql.createConnection({
-
-  host: 'localhost',
-  user: 'root',
-  password: '@mysql271314',
-  database: 'hostx-dbms',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
+
+// const connection = mysql.createConnection({
+
+//   host: 'localhost',
+//   user: 'root',
+//   password: '@mysql271314',
+//   database: 'hostx-dbms',
+// });
 connection.connect((err) => {
   if (err) {
 
@@ -186,6 +186,30 @@ app.post("/register", (req, res) => {
 });
 
 //form page
+app.get('/api/preferences/display/:hostelId', (req, res) => {
+  const hostelId = req.params.hostelId;
+
+  // Debugging: Print the hostelId to console
+  console.log("Hostel ID received:", hostelId);
+
+  const query = 'SELECT * FROM Preferences WHERE hostelId = ?';
+
+  connection.query(query, [hostelId], (err, result) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    console.log("Data from server:", result);
+    res.json(result);
+  });
+});
+
+
+
+
+
+
 app.post("/api/submit", (req, res) => {
   const formData = req.body;
   console.log(formData);
