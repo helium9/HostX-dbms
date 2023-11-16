@@ -229,20 +229,7 @@ app.post('/register', (req, res) => {
 
 // Logout endpoint
 app.get('/logout', (req, res) => {
-  // Assuming admin is a valid parameter to identify the user/session to log out
-  // You may want to perform additional validation or checks here
-
-  // Clear the JWT token from the client-side (if you stored it in localStorage)
-  // Note: Make sure to replace 'token' with the actual key you used to store the token
-  // localStorage.removeItem('token');
-
-  // Optionally, you can also check if the user is authenticated based on the token
-  // const isAuthenticated = /* Perform a check here */;
-
-  // You may want to perform additional server-side cleanup, such as marking the session as logged out
-  // or revoking the token on the server, depending on your authentication setup
-
-  // Send a success response
+  
   res.json({ success: true, message: 'Logout successful' });
 });
 

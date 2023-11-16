@@ -555,7 +555,7 @@ export default function NavbarComponent({ tokens }) {
 
   const handlepassportlogout = async () => {
     try {
-      // Send the logout request
+    
       await axios.get("http://localhost:8000/logout", {
         params: {
           admin: "T",
@@ -565,17 +565,17 @@ export default function NavbarComponent({ tokens }) {
         },
       });
   
-      // Clear the token from localStorage
+    
       localStorage.removeItem("token");
   
-      // Update the state to indicate logout
+      //
       setIsAuthenticated(false);
-  
-      // Redirect to the home page or any other page after successful logout
+      
+      console.log("log out+++++++");
+   
       router('/');
   
       alert("LoggedOut");
-      console.log("log out+++++++");
     } catch (error) {
       console.error("Logout failed:", error.response.data);
     }
