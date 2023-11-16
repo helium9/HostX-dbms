@@ -638,7 +638,7 @@ app.post("/api/admin/submit", async (req, res) => {
   }
 });
 app.get("/checkform", async (req, res) => {
-  console.log(req.query);
+  
   let flag = true;
   // console.log(req.query.floorinfo);
   try {
@@ -659,9 +659,11 @@ app.get("/checkform", async (req, res) => {
           if (e != 0) {
             flag = false;
           }
+         
         })
         if(flag){
         try {
+         
           connection.query(`insert into formcontrols value ("${req.query.hostelID}",CURDATE(),"localhost:3000/form?f=${req.query.hostelID}");`,
             (err, rows) => {
               if (err) throw err;
@@ -674,8 +676,10 @@ app.get("/checkform", async (req, res) => {
           res.status(500).send("Error fetching floors.");
         }}
         // console.log(rows);
-      });
+        
       res.send(flag);
+      });
+      
   }
   catch {
     // console.log(req.query);
