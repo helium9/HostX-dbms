@@ -36,7 +36,7 @@ app.use("/api", googleAuth);
 // });
 
 const connection = mysql.createConnection({
-  
+
   host: 'localhost',
   user: 'root',
   password: '@mysql271314',
@@ -44,7 +44,7 @@ const connection = mysql.createConnection({
 });
 connection.connect((err) => {
   if (err) {
-    
+
     console.error("Error connecting to MySQL:", err);
     return;
   }
@@ -220,7 +220,7 @@ app.get("/getFilledBy", (req, res) => {
 
 // app.post("/getpref",(req, res) => {
 //   const v=req.body.params
-  
+
 //   try {
 //     for (const key in v.pref) {
 //       if (key !== 'P1') {
@@ -307,62 +307,63 @@ app.get("/updatecred", (req, res) => {
   );
 });
 
-app.get("/sendData", async (req, res)=>{
+app.get("/sendData", async (req, res) => {
   // console.log(req.query);
-  connection.query(`select SerialNumber, Room, Size from roominfo where hostelId="${req.query.hostelID}" and floor="${req.query.floor}" order by SerialNumber;`, (err, results)=>{
+  connection.query(`select SerialNumber, Room, Size from roominfo where hostelId="${req.query.hostelID}" and floor="${req.query.floor}" order by SerialNumber;`, (err, results) => {
     try {
       // console.log(results);
-    res.send(results);
-  }
-  catch{
-    res.send("Error /sendData")
-  }
+      res.send(results);
+    }
+    catch {
+      res.send("Error /sendData")
+    }
   })
 });
 app.post("/sendData", (req, res) => {
   // console.log(req.body);
   const tableData = req.body.tableData;
-    connection.query(`DELETE FROM roominfo WHERE hostelID="${req.body.hostel_id}" and Floor="${req.body.floor}";`, (err, results)=>{
-      if (err) {
-        res.send(err);
-        throw err;
+  connection.query(`DELETE FROM roominfo WHERE hostelID="${req.body.hostel_id}" and Floor="${req.body.floor}";`, (err, results) => {
+    if (err) {
+      res.send(err);
+      throw err;
+    }
+    else {
+      // console.log(tableData.length);
+      let queryString = `INSERT INTO roominfo (HostelID, Floor, Room, Size, SerialNumber) \nVALUES\n`;
+      for (let i = 0; i < tableData.length; i++) {
+        queryString += `("${req.body.hostel_id}", ${req.body.floor}, "${tableData[i].Name}", ${parseInt(tableData[i].Size)}, ${tableData[i].SNo}),\n`;
+        // console.log(tableData[i].Name);
       }
-      else{
-        // console.log(tableData.length);
-        let queryString = `INSERT INTO roominfo (HostelID, Floor, Room, Size, SerialNumber) \nVALUES\n`;
-        for (let i = 0; i < tableData.length; i++) {
-          queryString += `("${req.body.hostel_id}", ${req.body.floor}, "${tableData[i].Name}", ${parseInt(tableData[i].Size)}, ${tableData[i].SNo}),\n`;
-          // console.log(tableData[i].Name);
-        }
-        queryString = queryString.slice(0, queryString.length - 2) + `;`;
-        // console.log(queryString);
-        try {
-          connection.query(queryString, (err, response) => {
-            if (err) throw err;
-            res.send("Sucessfully updated roomInfo data.");
-          });
-        } catch {
-          res.status(500).send();
-        }
+      queryString = queryString.slice(0, queryString.length - 2) + `;`;
+      // console.log(queryString);
+      try {
+        connection.query(queryString, (err, response) => {
+          if (err) throw err;
+          res.send("Sucessfully updated roomInfo data.");
+        });
+      } catch {
+        res.status(500).send();
       }
-    });
+    }
+  });
 });
 
 
-app.get("/getbutton",(req,res)=>{
+app.get("/getbutton", (req, res) => {
   // console.log("Hellothere")
   // console.log(req.query.hostelID.current)
   connection.query(
     ` select count(*) from formcontrols where HostelID="${req.query.hostelID.current}";`,
-   
+
     (err, results) => {
       if (err) {
         throw err;
       }
       // console.log(results[0]['count(*)'])
-      if(results[0]['count(*)']==1){
-      res.send(true); }
-      else{
+      if (results[0]['count(*)'] == 1) {
+        res.send(true);
+      }
+      else {
         res.send(false);
 
       }
@@ -399,7 +400,7 @@ app.get("/getLink", (req, res) => {
         throw err;
       }
       // console.log(results[0]);
-      res.send(results[0]); 
+      res.send(results[0]);
     }
   );
 });
@@ -417,40 +418,40 @@ app.get("/logout", function (req, res, next) {
 
 //solving the problem
 
-app.get("/solve",(req,res)=>{
+app.get("/solve", (req, res) => {
   let pref;
   let room;
   connection.query(
     ` select * from roominfo where HostelID="${req.query.hostelID}";`,
-    
+
     (err, results) => {
       if (err) {
         throw err;
       }
-      room=results;
+      room = results;
       console.log(results);
-      try{
+      try {
         connection.query(
           ` select * from preferences where HostelID="${req.query.hostelID}"  order by TimeOfEntry  ;`,
-          
+
           (err, re) => {
             if (err) {
               throw err;
             }
-            pref=re;
+            pref = re;
             console.log(re);
-        
+
 
           }
         );
 
       }
-      catch{}
+      catch { }
 
       function transformRoomData(roomData) {
         // Sort room data by SerialNumber
         roomData.sort((a, b) => a.SerialNumber - b.SerialNumber);
-      
+
         // Group rooms by floor
         let groupedByFloor = {};
         roomData.forEach(room => {
@@ -459,17 +460,17 @@ app.get("/solve",(req,res)=>{
           }
           groupedByFloor[room.Floor].push([room.Room, room.Size]);
         });
-      
+
         // Convert the grouped data to a vector of vectors
         let resultVector = Object.values(groupedByFloor).map(floorGroup => floorGroup.map(roomInfo => roomInfo));
-      
+
         return resultVector;
       }
-      
+
       // Call the function
       let resultVector = transformRoomData(room);
-      console.log(resultVector);      
-      res.send(results[0]); 
+      console.log(resultVector);
+      res.send(results[0]);
     }
   );
 
@@ -532,9 +533,8 @@ app.put("/api/admin/edit", async (req, res) => {
                       const maxFloors = results[0].Floors;
                       let queryString = `INSERT INTO floorinfo (HostelID, Floor, MaxRooms) \nVALUES\n`;
                       for (let i = 1; i <= maxFloors; i++) {
-                        queryString += `("${hostelID}", ${i}, ${
-                          floorInfo[i.toString()]
-                        }),\n`;
+                        queryString += `("${hostelID}", ${i}, ${floorInfo[i.toString()]
+                          }),\n`;
                       }
                       queryString =
                         queryString.slice(0, queryString.length - 2) + `;`;
@@ -619,9 +619,8 @@ app.post("/api/admin/submit", async (req, res) => {
           const maxFloors = results[0].Floors;
           let queryString = `INSERT INTO floorinfo (HostelID, Floor, MaxRooms) \nVALUES\n`;
           for (let i = 1; i <= maxFloors; i++) {
-            queryString += `("${hostelID}", ${i}, ${
-              floorInfo[i.toString()]
-            }),\n`;
+            queryString += `("${hostelID}", ${i}, ${floorInfo[i.toString()]
+              }),\n`;
           }
           queryString = queryString.slice(0, queryString.length - 2) + `;`;
           // console.log(queryString);
@@ -638,8 +637,9 @@ app.post("/api/admin/submit", async (req, res) => {
     res.status(500).send("Invalid query params.");
   }
 });
-app.get("/checkform",async (req,res)=>{
+app.get("/checkform", async (req, res) => {
   console.log(req.query);
+  let flag = true;
   // console.log(req.query.floorinfo);
   try {
     connection.query(
@@ -647,46 +647,43 @@ app.get("/checkform",async (req,res)=>{
       (err, rows) => {
         if (err) throw err;
         let floors = [];
-        for(let i=0;i<req.query.floorinfo.length;i++){
+        for (let i = 0; i < req.query.floorinfo.length; i++) {
           floors.push(req.query.floorinfo[i].MaxRooms);
           // console.log(req.query.floorinfo[i].Floor);
         }
-        
         rows.forEach((element) => {
-          floors[element.Floor-1]--;
+          floors[element.Floor - 1]--;
         })
-        floors.forEach((e)=>{
+        floors.forEach((e) => {
           console.log(e);
-          if(e!=0){
-            res.send(false);  
-
+          if (e != 0) {
+            flag = false;
           }
-
         })
-        try{
-        connection.query(`insert into formcontrols value ("${req.query.hostelID}",CURDATE(),"localhost:3000/form?f=${req.query.hostelID}");`,
-        (err, rows) => {
-          if (err) throw err;
-          console.log("S");
-          res.send(true);
-        
-        })
-        
-        
-      }
-      catch {
-        // console.log(req.query);
-        res.status(500).send("Error fetching floors.");
-      }
-        
+        if(flag){
+        try {
+          connection.query(`insert into formcontrols value ("${req.query.hostelID}",CURDATE(),"localhost:3000/form?f=${req.query.hostelID}");`,
+            (err, rows) => {
+              if (err) throw err;
+              console.log("S");
+              flag = true;
+            })
+        }
+        catch {
+          // console.log(req.query);
+          res.status(500).send("Error fetching floors.");
+        }}
         // console.log(rows);
-      });}
-      catch {
-        // console.log(req.query);
-        res.status(500).send("Error fetching floors.");
-      } }
-    );
- 
+      });
+      res.send(flag);
+  }
+  catch {
+    // console.log(req.query);
+    res.status(500).send("Error fetching floors.");
+  }
+}
+);
+
 app.get("/getFloors", async (req, res) => {
   const hostelID = req.query.hostelID;
   try {
