@@ -31,7 +31,7 @@ const PrefTable = () => {
       <div>
         <NavbarComponent></NavbarComponent>
         <div className="bg-black text-white p-8 m-8 mt-16 mb-16">
-          <h1 className="text-2xl mb-4">Data from Preferences Table for Hostel ID: {hostelId}</h1>
+          {/* <h1 className="text-2xl mb-4">Data from Preferences Table for Hostel ID: {hostelId}</h1> */}
           <table className="w-full border-collapse border-t border-b border-white">
             <thead>
               <tr className="bg-gray-900 text-white">
