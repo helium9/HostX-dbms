@@ -8,13 +8,15 @@ const cors = require("cors");
 const { v4: uuidv4 } = require("uuid");
 const passport = require("passport");
 const googleAuth = require("./routes/authentication");
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 require("./controllers/controller.tokenJWT");
 require("dotenv").config({ path: ".db_env" });
 const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
 const { spawn } = require("child_process");
 // const { sharedToken, router } = require('./routes/authentication.js')
+// npm i jsonwebtoken
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const port = 8000;
@@ -132,60 +134,176 @@ function isAuthenticated(req, res, next) {
 app.get("/failed", (rq, res) => {
   res.send("Login failed");
 });
-app.post(
-  "/login",
-  passport.authenticate("local", { failureRedirect: "/failed" }),
-  async (req, res) => {
-    // return res.json({ success: true });
 
-    if (req.isAuthenticated() && req.user) {
-      const adminID = req.user;
-      return res.json({ success: true, adminID });
-    }
-    // Handle cases where the user is not authenticated or the adminID is not available
-    return res.json({ success: false, adminID: null });
-  }
-);
+// app.post(
+//   "/login",
+//   passport.authenticate("local", { failureRedirect: "/failed" }),
+//   async (req, res) => {
+//     // return res.json({ success: true });
 
-app.post("/register", (req, res) => {
-  b = [req.body.email];
-  let y;
-  const li = connection.query(
-    `select * from admin where Email=(?)`,
-    b,
+//     if (req.isAuthenticated() && req.user) {
+//       const adminID = req.user;
+//       return res.json({ success: true, adminID });
+//     }
+//     // Handle cases where the user is not authenticated or the adminID is not available
+//     return res.json({ success: false, adminID: null });
+//   }
+// );
+
+
+// Login endpoint
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+
+  // Check if the email and password match
+  connection.query(
+    'SELECT * FROM admin WHERE Email = ? AND Password = ?',
+    [email, password],
     (err, results) => {
       if (err) {
-        throw err;
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+        return;
       }
 
-      if (results.length == 0) {
-        const adminid = uuidv4();
-        connection.query(
-          `insert into admin value (?,?,?,?,?,?)`,
-          [
-            adminid,
-            req.body.name,
-            req.body.email,
-            req.body.contact,
-            req.body.insti,
-            req.body.password,
-          ],
-          (err, results) => {
-            if (err) {
-              throw err;
-            }
-            console.log("registered");
-            res.send("Succesfully registered");
-          }
+      if (results.length > 0) {
+        // If email and password match, generate a JWT token
+        const { AdminID, email } = results[0];
+        const token = jwt.sign(
+          { adminID: AdminID, email: email },
+          'hostx', // replace with your actual secret key
+          { expiresIn: '1h' } // token expiration time
         );
+        console.log('Database query results:', results);
+
+        console.log('Login successful');
+        console.log('Generated token:', token);
+        console.log('AdminID:', AdminID);
+      
+        // Send the token and adminID to the frontend
+        res.json({ success: true, token: token, adminID: AdminID });
       } else {
-        res.send("username already exist");
+        // If email and password do not match, send a response
+        res.status(401).json({ success: false, message: 'Invalid credentials' });
       }
     }
   );
 });
 
+
+// Signup endpoint
+app.post('/register', (req, res) => {
+  const { name, email, contact, insti, password } = req.body;
+
+  // Check if the email already exists
+  connection.query(
+    'SELECT * FROM admin WHERE Email = ?',
+    [email],
+    (err, results) => {
+      if (err) {
+        throw err;
+      }
+
+      if (results.length === 0) {
+        // If the email does not exist, proceed with registration
+        const adminid = uuidv4();
+        connection.query(
+          'INSERT INTO admin VALUES (?, ?, ?, ?, ?, ?)',
+          [adminid, name, email, contact, insti, password],
+          (err, results) => {
+            if (err) {
+              throw err;
+            }
+
+            // Generate JWT token
+            const token = jwt.sign(
+              { adminID: adminid, email: email },
+              'hostx', // replace with your actual secret key
+              { expiresIn: '1h' } // token expiration time
+            );
+
+            console.log('Registered');
+            res.json({ success: true, token: token });
+          }
+        );
+      } else {
+        // If the email already exists, send a response
+        res.status(409).json({ success: false, message: 'Email already exists' });
+      }
+    }
+  );
+});
+
+// Logout endpoint
+app.get('/logout', (req, res) => {
+  
+  res.json({ success: true, message: 'Logout successful' });
+});
+
+// app.post("/register", (req, res) => {
+//   b = [req.body.email];
+//   let y;
+//   const li = connection.query(
+//     `select * from admin where Email=(?)`,
+//     b,
+//     (err, results) => {
+//       if (err) {
+//         throw err;
+//       }
+
+//       if (results.length == 0) {
+//         const adminid = uuidv4();
+//         connection.query(
+//           `insert into admin value (?,?,?,?,?,?)`,
+//           [
+//             adminid,
+//             req.body.name,
+//             req.body.email,
+//             req.body.contact,
+//             req.body.insti,
+//             req.body.password,
+//           ],
+//           (err, results) => {
+//             if (err) {
+//               throw err;
+//             }
+//             console.log("registered");
+//             res.send("Succesfully registered");
+//           }
+//         );
+//       } else {
+//         res.send("username already exist");
+//       }
+//     }
+//   );
+// });
+
+// ------------------------------------------------------------------------------------------
+
 //form page
+app.get('/api/preferences/display/:hostelId', (req, res) => {
+  const hostelId = req.params.hostelId;
+
+  // Debugging: Print the hostelId to console
+  console.log("Hostel ID received:", hostelId);
+
+  const query = 'SELECT * FROM Preferences WHERE hostelId = ?';
+
+  connection.query(query, [hostelId], (err, result) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    console.log("Data from server:", result);
+    res.json(result);
+  });
+});
+
+
+
+
+
+
 app.post("/api/submit", (req, res) => {
   const formData = req.body;
   console.log(formData);

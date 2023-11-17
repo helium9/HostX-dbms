@@ -4,6 +4,7 @@ import stopForm from "../images/stopForm.svg";
 import viewForm from "../images/viewForm.svg";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from 'react-router-dom';
 
 function FormControlsSection({ active,hosID }) {
   const [num,setnum]=useState("");
@@ -126,10 +127,19 @@ function FormControlsSection({ active,hosID }) {
             {/* Word wrapping not working */}
           </CardBody>
         </Card>
-        <Button className="bg-zinc-300 h-20 hover:bg-white lg:flex lg:flex-col lg:h-full">
+        {/* <Button className="bg-zinc-300 h-20 hover:bg-white lg:flex lg:flex-col lg:h-full">
           <img className="h-10 w-10" src={viewForm} alt="menu" />
-          <p className="text-3xl font-bold text-black">View form</p>
-        </Button>
+          <Link to="/Ptable" className="text-3xl font-bold text-black">
+        View form
+      </Link>
+        </Button> */}
+        <Button className="bg-zinc-300 h-20 hover:bg-white lg:flex lg:flex-col lg:h-full">
+  <img className="h-10 w-10" src={viewForm} alt="menu" />
+  <Link to={{ pathname: "/Ptable", state: { formlink } }} className="text-3xl font-bold text-black">
+    View form
+  </Link>
+</Button>
+
         <Button onClick={solve} className="bg-zinc-300 h-20 hover:bg-white lg:flex lg:flex-col lg:h-full">
           <img className="h-9 w-9" src={stopForm} alt="menu" />
           <p className="text-3xl font-bold text-black">Stop form</p>
