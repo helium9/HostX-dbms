@@ -135,7 +135,7 @@ function FormControlsSection({ active,hosID }) {
         </Button> */}
         <Button className="bg-zinc-300 h-20 hover:bg-white lg:flex lg:flex-col lg:h-full">
   <img className="h-10 w-10" src={viewForm} alt="menu" />
-  <Link to={{ pathname: "/Ptable", state: { formlink } }} className="text-3xl font-bold text-black">
+  <Link to="/Ptable" relative="path" state={{ hostelID: hosID }} className="text-3xl font-bold text-black">
     View form
   </Link>
 </Button>

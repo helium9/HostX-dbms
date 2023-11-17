@@ -7,12 +7,11 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 
 
-
-
-
 const PrefTable = () => {
     const [data, setData] = useState([]);
-    const hostelId = "97d72f70-a52e-4902-9ac9-cf20bc397c1d"; // Replace with the actual hostelId
+    const location = useLocation();
+    // console.log("out", location.state.hostelID);
+    const hostelId = location.state.hostelID; // Replace with the actual hostelId
   
     useEffect(() => {
       fetchData();
