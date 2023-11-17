@@ -521,6 +521,9 @@ export default function NavbarComponent({ tokens }) {
       console.log(response.data);
       if (response.data.success) {
         localStorage.setItem("token", response.data.token);
+        // Save adminID to local storage
+        localStorage.setItem('adminID', response.data.adminID);
+
         window.location.href = "/admin2";
         setIsAuthenticated(true);
       }
@@ -567,6 +570,7 @@ export default function NavbarComponent({ tokens }) {
   
     
       localStorage.removeItem("token");
+      localStorage.removeItem('adminID');
   
       //
       setIsAuthenticated(false);

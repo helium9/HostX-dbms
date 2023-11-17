@@ -161,21 +161,26 @@ app.post('/login', (req, res) => {
     [email, password],
     (err, results) => {
       if (err) {
-        throw err;
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+        return;
       }
 
       if (results.length > 0) {
         // If email and password match, generate a JWT token
-        const { adminID, email } = results[0];
+        const { AdminID, email } = results[0];
         const token = jwt.sign(
-          { adminID: adminID, email: email },
+          { adminID: AdminID, email: email },
           'hostx', // replace with your actual secret key
           { expiresIn: '1h' } // token expiration time
         );
+        console.log('Database query results:', results);
 
         console.log('Login successful');
-        console.log('Generated token:', token); // Display the generated token
-        res.json({ success: true, token: token, adminID: adminID });
+        console.log('Generated token:', token);
+        console.log('AdminID:', AdminID);
+      
+        // Send the token and adminID to the frontend
+        res.json({ success: true, token: token, adminID: AdminID });
       } else {
         // If email and password do not match, send a response
         res.status(401).json({ success: false, message: 'Invalid credentials' });
@@ -183,6 +188,7 @@ app.post('/login', (req, res) => {
     }
   );
 });
+
 
 // Signup endpoint
 app.post('/register', (req, res) => {
