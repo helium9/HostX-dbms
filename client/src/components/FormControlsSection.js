@@ -24,16 +24,28 @@ function FormControlsSection({ active,hosID }) {
       .get("http://localhost:8000/solve", {
         params: {
           hostelID: hosID,
-
-
-
         },
       })
       .then((data) => {
-        console.log(data.data);
-        
-        
-        
+        const output = data.data;
+        console.log(output);
+        const fields = ['Floor', 'Room',' ', 'Roll'];
+        const csv = [fields.join(',')];
+        output.forEach(item => {
+          if(item.Roll){
+            const row = [item.Floor, item.Room, " ", item.Roll.join(',')];
+            csv.push(row.join(','));
+          }
+          // console.log(item);
+        });
+        console.log(csv);
+        const blob = new Blob([csv.join('\n')], { type: 'text/csv' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'data.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
       })
       .catch((err) => console.log(err));
     

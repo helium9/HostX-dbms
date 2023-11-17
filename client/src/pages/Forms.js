@@ -10,7 +10,7 @@ import { MailIcon } from "../images/MailIcon";
 import {useForm,Controller} from 'react-hook-form';
 // import {DevTool} from '@hookform/devtools';
 import axios from 'axios'
-
+import { useNavigate } from "react-router-dom";
 
 
 // function InputComponent({ id, children = "Roll number", isDisabled = false }) {
@@ -72,9 +72,10 @@ function InputComponent(props){
             "group",
           ]
         }}
+        isRequired
         isDisabled={props.isDisabled}
         placeholder="220001001"
-        type={props.typo}
+        type={"text"}
         value={props.value}
         onValueChange={setValue}
         name={props.name}
@@ -95,6 +96,7 @@ InputComponent.defaultProps = {
 };
 
 export default function Forms() {
+  const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const Hostel_ID = searchParams.get('f');
@@ -187,6 +189,7 @@ export default function Forms() {
     <InputComponent
       key={i}
       name={`P${i + 1}`}
+      name1={(i===0)?`Your Roll Number`:`Preference ${i}`}
       id={`P${i + 1}`}
       value={post[`P${i + 1}`]}
       onChange={handleInput}
@@ -196,7 +199,7 @@ export default function Forms() {
     e.preventDefault();
     const jsTimestamp = new Date().toISOString();
     const sqlTimestamp = new Date(jsTimestamp).toISOString().slice(0, 19).replace('T', ' ');
-
+    console.log(post);
     axios
       .post("http://localhost:8000/getpref", {
         params: {
@@ -209,8 +212,7 @@ export default function Forms() {
       .then((data) => {
        
         console.log("Successfully submitted the preferences");
-        alert("Your preference is recorded Thank You")
-        
+        // navigate("/new-route", { state: { hostelID: Hostel_ID } });        
       })
       .catch((err) => console.log(err));
   };
@@ -219,7 +221,10 @@ export default function Forms() {
       <div className="flex flex-col min-h-screen">
         <NavbarComponent />
         <form onSubmit={handleSubmit} className="flex flex-col w-96 lg:w-[32rem] self-center gap-3 mb-20 lg:gap-4">
-        <InputComponent
+           <p className="font-bold lg:text-4xl text-3xl m-4 lg:m-6 lg:ml-0 ml-0">
+            Your preferences
+           </p>
+           <InputComponent
             classNames="mt-12"
             typo="text"
             name1="Email"
@@ -227,9 +232,6 @@ export default function Forms() {
             value={email}
             onChange={(e)=>{setemail(e.target.value)}}
           />
-           <p className="font-bold lg:text-4xl text-3xl m-4 lg:m-6 lg:ml-0 ml-0">
-            Your preferences
-           </p>
           {/* <InputComponent id="P1" isDisabled={true}>220001001 placeholder="user" </InputComponent> */}
           {/* <InputComponent id="P1"  refer={usernameRef} /> */}
           {inputComponents} 

@@ -117,13 +117,13 @@ export default function AdminTable(props) {
   const handleTableRowChange = (key, fieldName, value) => {
     // Check if the entered room name is unique
     console.log("td", tableData);
-    const isNameUnique = tableData.every((row) => row.Name !== value);
+    // const isNameUnique = tableData.every((row) => row.Name !== value);
 
-    if (!isNameUnique) {
-      // You can provide feedback to the user here, for example:
-      alert("Room names must be unique.");
-      return;
-    }
+    // if (!isNameUnique) {
+    //   // You can provide feedback to the user here, for example:
+    //   alert("Room names must be unique.");
+    //   return;
+    // }
 
     const updatedTableData = tableData.map((row) => {
       if (row.key === key) {

@@ -13,6 +13,7 @@ require("./controllers/controller.tokenJWT");
 require("dotenv").config({ path: ".db_env" });
 const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
+const { spawn } = require("child_process");
 // const { sharedToken, router } = require('./routes/authentication.js')
 
 const app = express();
@@ -44,11 +45,10 @@ const connection = mysql.createConnection({
 // });
 connection.connect((err) => {
   if (err) {
-
     console.error("Error connecting to MySQL:", err);
     return;
   }
-  console.log(process.env.DB_HOST)
+  console.log(process.env.DB_HOST);
   console.log("Connected to MySQL database");
 });
 
@@ -249,17 +249,30 @@ app.get("/getFilledBy", (req, res) => {
 //   res.send("Yes");
 // });
 
-
 app.post("/getpref", (req, res) => {
   const v = req.body.params;
-
+  console.log(v);
   try {
     const values = [];
     for (const key in v.pref) {
-      if (key !== 'P1') {
-        values.push([v.hostel_ID, v.Email, v.pref["P1"], v.pref[key], v.time]);
-      } else {
-        values.push([v.hostel_ID, v.Email, v.pref["P1"], v.pref["P1"], v.time]);
+      if (v.pref[key]) {
+        if (key !== "P1") {
+          values.push([
+            v.hostel_ID,
+            v.Email,
+            v.pref["P1"],
+            v.pref[key],
+            v.time,
+          ]);
+        } else {
+          values.push([
+            v.hostel_ID,
+            v.Email,
+            v.pref["P1"],
+            v.pref["P1"],
+            v.time,
+          ]);
+        }
       }
     }
 
@@ -277,7 +290,6 @@ app.post("/getpref", (req, res) => {
 
   res.send("Yes");
 });
-
 
 app.get("/getMaxroom", (req, res) => {
   connection.query(
@@ -309,45 +321,50 @@ app.get("/updatecred", (req, res) => {
 
 app.get("/sendData", async (req, res) => {
   // console.log(req.query);
-  connection.query(`select SerialNumber, Room, Size from roominfo where hostelId="${req.query.hostelID}" and floor="${req.query.floor}" order by SerialNumber;`, (err, results) => {
-    try {
-      // console.log(results);
-      res.send(results);
+  connection.query(
+    `select SerialNumber, Room, Size from roominfo where hostelId="${req.query.hostelID}" and floor="${req.query.floor}" order by SerialNumber;`,
+    (err, results) => {
+      try {
+        // console.log(results);
+        res.send(results);
+      } catch {
+        res.send("Error /sendData");
+      }
     }
-    catch {
-      res.send("Error /sendData")
-    }
-  })
+  );
 });
 app.post("/sendData", (req, res) => {
   // console.log(req.body);
   const tableData = req.body.tableData;
-  connection.query(`DELETE FROM roominfo WHERE hostelID="${req.body.hostel_id}" and Floor="${req.body.floor}";`, (err, results) => {
-    if (err) {
-      res.send(err);
-      throw err;
-    }
-    else {
-      // console.log(tableData.length);
-      let queryString = `INSERT INTO roominfo (HostelID, Floor, Room, Size, SerialNumber) \nVALUES\n`;
-      for (let i = 0; i < tableData.length; i++) {
-        queryString += `("${req.body.hostel_id}", ${req.body.floor}, "${tableData[i].Name}", ${parseInt(tableData[i].Size)}, ${tableData[i].SNo}),\n`;
-        // console.log(tableData[i].Name);
+  connection.query(
+    `DELETE FROM roominfo WHERE hostelID="${req.body.hostel_id}" and Floor="${req.body.floor}";`,
+    (err, results) => {
+      if (err) {
+        res.send(err);
+        throw err;
+      } else {
+        // console.log(tableData.length);
+        let queryString = `INSERT INTO roominfo (HostelID, Floor, Room, Size, SerialNumber) \nVALUES\n`;
+        for (let i = 0; i < tableData.length; i++) {
+          queryString += `("${req.body.hostel_id}", ${req.body.floor}, "${
+            tableData[i].Name
+          }", ${parseInt(tableData[i].Size)}, ${tableData[i].SNo}),\n`;
+          // console.log(tableData[i].Name);
+        }
+        queryString = queryString.slice(0, queryString.length - 2) + `;`;
+        // console.log(queryString);
+        try {
+          connection.query(queryString, (err, response) => {
+            if (err) throw err;
+            res.send("Sucessfully updated roomInfo data.");
+          });
+        } catch {
+          res.status(500).send();
+        }
       }
-      queryString = queryString.slice(0, queryString.length - 2) + `;`;
-      // console.log(queryString);
-      try {
-        connection.query(queryString, (err, response) => {
-          if (err) throw err;
-          res.send("Sucessfully updated roomInfo data.");
-        });
-      } catch {
-        res.status(500).send();
-      }
     }
-  });
+  );
 });
-
 
 app.get("/getbutton", (req, res) => {
   // console.log("Hellothere")
@@ -360,18 +377,14 @@ app.get("/getbutton", (req, res) => {
         throw err;
       }
       // console.log(results[0]['count(*)'])
-      if (results[0]['count(*)'] == 1) {
+      if (results[0]["count(*)"] == 1) {
         res.send(true);
-      }
-      else {
+      } else {
         res.send(false);
-
       }
     }
   );
-
-})
-
+});
 
 // app.post("/sendData",(req,res)=>{
 //   console.log(req.body);
@@ -415,86 +428,135 @@ app.get("/logout", function (req, res, next) {
   // res.redirect("http://localhost:3000/")
 });
 
-
 //solving the problem
 
 app.get("/solve", (req, res) => {
+  function transformRoomData(roomData) {
+    // Sort room data by SerialNumber
+    roomData.sort((a, b) => a.SerialNumber - b.SerialNumber);
+    // Group rooms by floor
+    let groupedByFloor = {};
+    roomData.forEach((room) => {
+      if (!groupedByFloor[room.Floor]) {
+        groupedByFloor[room.Floor] = [];
+      }
+      groupedByFloor[room.Floor].push([room.Room, room.Size]);
+    });
+    // Convert the grouped data to a vector of vectors
+    let resultVector = Object.values(groupedByFloor).map((floorGroup) =>
+      floorGroup.map((roomInfo) => roomInfo)
+    );
+    return resultVector;
+  }
+  function generateAllocation(resultVector, groupSize) {
+    //groupsize is the groups taken after python script runs.
+    let finalAllocation = [];
+    for (let i = 0; i < resultVector.length; i++) {
+      for (let j = 0; j < resultVector[i].length; j++) {
+        let group = groupSize[resultVector[i][j][1]].shift();
+        // console.log(groupSize);
+        // console.log("hi", groupSize['2']);
+        finalAllocation.push({
+          Floor: i,
+          Room: resultVector[i][j][0],
+          Roll: group,
+        });
+      }
+    }
+    return finalAllocation;
+  }
   let pref;
   let room;
   connection.query(
-    ` select * from roominfo where HostelID="${req.query.hostelID}";`,
-
+    `select * from roominfo where HostelID="${req.query.hostelID}";`,
     (err, results) => {
       if (err) {
         throw err;
       }
-      room = results;
-      console.log(results);
+      room = results; //processed into resultvector: room information ,parse it to 2-D floor wise array with increasing SNo. (Name, size)
+      // console.log("room", room)
       try {
         connection.query(
-          ` select * from preferences where HostelID="${req.query.hostelID}"  order by TimeOfEntry  ;`,
-
+          `select RollNumber, RoommateRollNumber, TimeOfEntry from preferences where HostelID="${req.query.hostelID}" order by TimeOfEntry;`,
           (err, re) => {
             if (err) {
               throw err;
             }
             pref = re;
-            console.log(re);
+            // console.log("re", pref);
+            // Call the function
+            let resultVector = transformRoomData(room);
+            // console.log("result", resultVector);
 
+            const roommateMap = {};
+            const timeOfEntryMap = {};
+            const rooms = {};
+            for (const subArray of resultVector) {
+              for (const innerArray of subArray) {
+                const secondElement = innerArray[1];
+                if (rooms[secondElement]) {
+                  rooms[secondElement]++;
+                } else {
+                  rooms[secondElement] = 1;
+                }
+              }
+            }
+            // console.log(rooms);
+            pref.forEach((item) => {
+              const { RollNumber, RoommateRollNumber, TimeOfEntry } = item;
+              if (!roommateMap[RollNumber]) {
+                roommateMap[RollNumber] = [RoommateRollNumber];
+              } else {
+                roommateMap[RollNumber].push(RoommateRollNumber);
+              }
+              const dateObject = new Date(TimeOfEntry);
+              const pythonDateTimeString = dateObject
+                .toISOString()
+                .slice(0, -5);
+              timeOfEntryMap[RollNumber] = pythonDateTimeString;
+            });
+            console.log("roommateMap", roommateMap);
+            console.log("timeOfENtry", timeOfEntryMap);
 
+            const scriptPath = path.resolve(__dirname, "script.py");
+            console.log(scriptPath);
+            const input_data =
+              JSON.stringify(roommateMap) +
+              `\n` +
+              JSON.stringify(timeOfEntryMap) +
+              `\n` +
+              JSON.stringify(rooms);
+            // console.log(input_data)
+            const pythonProcess = spawn("python", [scriptPath]);
+            pythonProcess.stdin.write(input_data);
+            pythonProcess.stdin.end();
+
+            // console.log('After spawn');
+            let outputData = "";
+            pythonProcess.stdout.on("data", (data) => {
+              // console.log('Data received:', data.toString());
+              outputData += data.toString();
+            });
+            pythonProcess.on("close", (code) => {
+              if (code === 0) {
+                const outputJson = outputData;
+                // console.log("out", outputJson);
+                // console.log(resultVector)
+                const correctedJsonString = JSON.parse(outputJson.replace(/'/g, '"'));
+                // console.log(correctedJsonString);
+                const finalAllocation = generateAllocation(resultVector, correctedJsonString);
+                // console.log(finalAllocation)
+                res.send(finalAllocation);
+              } else {
+                res.status(500).send("Internal Server Error");
+              }
+            });
           }
         );
-
-      }
-      catch { }
-
-      function transformRoomData(roomData) {
-        // Sort room data by SerialNumber
-        roomData.sort((a, b) => a.SerialNumber - b.SerialNumber);
-
-        // Group rooms by floor
-        let groupedByFloor = {};
-        roomData.forEach(room => {
-          if (!groupedByFloor[room.Floor]) {
-            groupedByFloor[room.Floor] = [];
-          }
-          groupedByFloor[room.Floor].push([room.Room, room.Size]);
-        });
-
-        // Convert the grouped data to a vector of vectors
-        let resultVector = Object.values(groupedByFloor).map(floorGroup => floorGroup.map(roomInfo => roomInfo));
-
-        return resultVector;
-      }
-
-      // Call the function
-      let resultVector = transformRoomData(room);
-      console.log(resultVector);
-      res.send(results[0]);
+      } catch {}
     }
   );
-
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //dashButton edit handling
 app.put("/api/admin/edit", async (req, res) => {
@@ -533,8 +595,9 @@ app.put("/api/admin/edit", async (req, res) => {
                       const maxFloors = results[0].Floors;
                       let queryString = `INSERT INTO floorinfo (HostelID, Floor, MaxRooms) \nVALUES\n`;
                       for (let i = 1; i <= maxFloors; i++) {
-                        queryString += `("${hostelID}", ${i}, ${floorInfo[i.toString()]
-                          }),\n`;
+                        queryString += `("${hostelID}", ${i}, ${
+                          floorInfo[i.toString()]
+                        }),\n`;
                       }
                       queryString =
                         queryString.slice(0, queryString.length - 2) + `;`;
@@ -619,8 +682,9 @@ app.post("/api/admin/submit", async (req, res) => {
           const maxFloors = results[0].Floors;
           let queryString = `INSERT INTO floorinfo (HostelID, Floor, MaxRooms) \nVALUES\n`;
           for (let i = 1; i <= maxFloors; i++) {
-            queryString += `("${hostelID}", ${i}, ${floorInfo[i.toString()]
-              }),\n`;
+            queryString += `("${hostelID}", ${i}, ${
+              floorInfo[i.toString()]
+            }),\n`;
           }
           queryString = queryString.slice(0, queryString.length - 2) + `;`;
           // console.log(queryString);
@@ -638,7 +702,6 @@ app.post("/api/admin/submit", async (req, res) => {
   }
 });
 app.get("/checkform", async (req, res) => {
-  
   let flag = true;
   // console.log(req.query.floorinfo);
   try {
@@ -653,40 +716,38 @@ app.get("/checkform", async (req, res) => {
         }
         rows.forEach((element) => {
           floors[element.Floor - 1]--;
-        })
+        });
         floors.forEach((e) => {
           console.log(e);
           if (e != 0) {
             flag = false;
           }
-         
-        })
-        if(flag){
-        try {
-         
-          connection.query(`insert into formcontrols value ("${req.query.hostelID}",CURDATE(),"localhost:3000/form?f=${req.query.hostelID}");`,
-            (err, rows) => {
-              if (err) throw err;
-              console.log("S");
-              flag = true;
-            })
+        });
+        if (flag) {
+          try {
+            connection.query(
+              `insert into formcontrols value ("${req.query.hostelID}",CURDATE(),"localhost:3000/form?f=${req.query.hostelID}");`,
+              (err, rows) => {
+                if (err) throw err;
+                console.log("S");
+                flag = true;
+              }
+            );
+          } catch {
+            // console.log(req.query);
+            res.status(500).send("Error fetching floors.");
+          }
         }
-        catch {
-          // console.log(req.query);
-          res.status(500).send("Error fetching floors.");
-        }}
         // console.log(rows);
-        
-      res.send(flag);
-      });
-      
-  }
-  catch {
+
+        res.send(flag);
+      }
+    );
+  } catch {
     // console.log(req.query);
     res.status(500).send("Error fetching floors.");
   }
-}
-);
+});
 
 app.get("/getFloors", async (req, res) => {
   const hostelID = req.query.hostelID;

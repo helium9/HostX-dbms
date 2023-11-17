@@ -47,10 +47,6 @@ export default function DashboardTest() {
   const [floorsInfo, setFloorsInfo] = useState([]);
   const [updateemail,setupdateemail]=useState("");
   const [updatecontact,setupdatecontact]=useState("");
-  const handleupdates=()=>{
-
-  }
-
 
   const ID = localStorage.getItem("adminID");
   const [admin_ID, setAdmin] = useState(ID);
@@ -238,7 +234,7 @@ export default function DashboardTest() {
                     <ModalHeader className="flex flex-col gap-1 text-2xl">
                       Edit details
                     </ModalHeader>
-                    <form onSubmit={handleSubmit}>
+                    <form>
                       <ModalBody>
                         <Input
                           autoFocus
@@ -305,7 +301,6 @@ export default function DashboardTest() {
                 </Card>
               </div>
               <FormControlsButton
-
                 hostel={activeTab}
                 floor={floorsInfo}
                 active={formActive}
