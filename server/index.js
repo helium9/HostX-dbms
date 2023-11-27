@@ -295,6 +295,11 @@ app.get('/api/preferences/display/:hostelId', (req, res) => {
       return;
     }
     console.log("Data from server:", result);
+    // console.log(result);
+    // const dateObject = new Date(TimeOfEntry);
+    // const pythonDateTimeString = dateObject
+    //   .toISOString()
+    //   .slice(0, -5);
     res.json(result);
   });
 });
