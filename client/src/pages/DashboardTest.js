@@ -137,7 +137,9 @@ export default function DashboardTest() {
   };
 
 
- 
+  const formcontrol=async ()=>{
+
+  }
   
   useEffect(() => {
     getHostel(admin_ID);
@@ -275,10 +277,7 @@ export default function DashboardTest() {
                         >
                           Close
                         </Button>
-                        <Button color="primary" onPress={()=>{
-                          handleSubmit();
-                          onClose();
-                          }} type="submit">
+                        <Button color="primary" onPress={onClose} type="submit">
                           Submit
                         </Button>
                       </ModalFooter>
