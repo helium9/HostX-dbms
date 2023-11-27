@@ -395,6 +395,10 @@ rooms=processed_data[2]
 
 # inputs
 input = roommateMap
+
+for key, value in input.items():
+        input[key] = [item for item in value if item != key]
+
 rooms = {int(key): value for key, value in rooms.items()}
 room=rooms
 # room={size:num}
@@ -405,7 +409,8 @@ timeOfENtry = timeOfEntryMap
 
 ans={}
 
-# print("input", input)
+# print("input2", input)
+
 for i in room:
     ans[i]=[]
 out=kosaraju2(input)
