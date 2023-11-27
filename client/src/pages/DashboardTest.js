@@ -277,7 +277,7 @@ export default function DashboardTest() {
                         >
                           Close
                         </Button>
-                        <Button color="primary" onPress={onClose} type="submit">
+                        <Button color="primary" onPress={onClose} onClick={handleSubmit} type="submit">
                           Submit
                         </Button>
                       </ModalFooter>

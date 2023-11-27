@@ -121,22 +121,34 @@ def union(n,m,sets):
 def find(sets,n):
     while(sets[n]!=n):
         n=sets[n]
+   
     return n    
     
     
 
 
 def allotgrpkrushkal(graph,G,n):
+    # print("graph",graph)
+    # print("G",G)
     g=makeedge(graph)
     mst=set()
     nodes=[i for i in graph]
     s=makeset(nodes)
+    # print("g",g)
+    # print("mst",mst,len(mst))
+    # print("s",s)
+    # print(n)
+   
     while(len(mst)!=n):
         
+        
         edge=g.pop(0)
+        # print("this",find(s,edge[0]),find(s,edge[1]))
         
         if(find(s,edge[0])!=find(s,edge[1])):
+            # print("Chaos")
             if edge[0] not in mst and edge[1] not in mst and len(mst)+2>n:
+                # print("Chao")
                 
                 mst.add(edge[0])
                 continue
@@ -144,8 +156,10 @@ def allotgrpkrushkal(graph,G,n):
             mst.add(edge[1])
             union(edge[0],edge[1],s)
         if(len(edge)==0):
-          break
-    room[n]=room[n]-1;
+            # print("Chao")
+            break
+    # print("End")    
+    room[n]=room[n]-1
     ms=[i for i in mst]
     mst_set = set(mst)
    
@@ -154,6 +168,7 @@ def allotgrpkrushkal(graph,G,n):
         del G[node]
         for other_node in G:
             G[other_node] = [neighbor for neighbor in G[other_node] if neighbor != node]
+
     return ms
 
 def dfs2(graph,visited,u,list):
@@ -400,7 +415,9 @@ scc=out[0]
 scc=[i for i in scc if len(i)>1]
 scc = sorted(scc, key=lambda x: -len(x))
 n=max(room, key=lambda k: k)
+
 for grs in scc:
+        # print(grs)
         if(len(G)==0 or len(room)==0):
             break
         if len(grs)==n:
@@ -447,7 +464,8 @@ for grs in scc:
             n=max(room, key=lambda k: k)
             continue
 
-while(len(G)!=0 and len(room)!=0): 
+while(len(G)!=0 and len(room)!=0):
+    # print("Gnow",G) 
     if(len(G)==0 or len(room)==0):
             break
     visited=[]
@@ -458,12 +476,18 @@ while(len(G)!=0 and len(room)!=0):
             dfs2(G,visited,i,li)
             glist.append(li)
     glist=[makegraph_nodeletion(G,i) for i in glist]
+    # print("glist",glist)
+    # print("room",room)
+    # print("ans",ans)
+    # print("n",n)
 
 
     for grs in glist:
         if(len(G)==0 | len(room)==0):
+            # print("Executed_1")
             break
         if len(grs)==n:
+            # print("grs_1",grs)
             grt=[i for i in grs]
             for ver in G:
                 for v in G[ver]:
@@ -477,12 +501,15 @@ while(len(G)!=0 and len(room)!=0):
             if(room[n]==0):
                 del room[n]
             ans[n].append(grt)
+            # print("1",grt)
             if(len(G)==0 or len(room)==0):
+                # print("Executed_2")
                 break
             n=max(room, key=lambda k: k)
             continue
 
         if len(grs)>n:
+            # print("grs_2",grs)
             grt=allotgrpkrushkal(grs,G,n)
 
 
@@ -490,24 +517,30 @@ while(len(G)!=0 and len(room)!=0):
 #             room[n]=room[n]-1
 #             if(room[n]==0):
 #                 del room[n]
+            # print("2",grt)
             ans[n].append(grt)
             if(len(G)==0 or len(room)==0):
+                # print("Executed_3")
                 break
             n=max(room, key=lambda k: k)
             continue
         if len(grs)<n: 
+            # print("grs_3",grs)
             grt=unified(grs,G,n)
+            # print("3",grt)
 
             room[n]=room[n]-1
             if(room[n]==0):
                 del room[n]
             ans[n].append(grt)
             if(len(G)==0 or len(room)==0):
+                # print("Executed_4")
                 break
             n=max(room, key=lambda k: k)
             continue
 
 ans = {str(key): value for key, value in ans.items()}
-
+# print("Helo")
+# print("ans",ans)
 print(ans)
     

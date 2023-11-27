@@ -211,7 +211,7 @@ export default function Forms() {
       })
       .then((data) => {
        
-        console.log("Successfully submitted the preferences");
+        window.alert("Successfully submitted the preferences");
         // navigate("/new-route", { state: { hostelID: Hostel_ID } });        
       })
       .catch((err) => console.log(err));

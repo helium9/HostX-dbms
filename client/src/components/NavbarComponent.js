@@ -616,7 +616,7 @@ export default function NavbarComponent({ tokens }) {
               </Link>
             </NavbarItem>
             <NavbarItem isActive>
-              <Link href="/form" aria-current="page" className="text-xl">
+              <Link href="https://github.com/helium9/HostX-dbms" aria-current="page" className="text-xl">
                 Docs
               </Link>
             </NavbarItem>

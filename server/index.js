@@ -645,6 +645,7 @@ app.get("/solve", (req, res) => {
               `\n` +
               JSON.stringify(rooms);
             // console.log(input_data)
+
             const pythonProcess = spawn("python", [scriptPath]);
             pythonProcess.stdin.write(input_data);
             pythonProcess.stdin.end();
@@ -652,7 +653,7 @@ app.get("/solve", (req, res) => {
             // console.log('After spawn');
             let outputData = "";
             pythonProcess.stdout.on("data", (data) => {
-              // console.log('Data received:', data.toString());
+              console.log('Data received:', data.toString());
               outputData += data.toString();
             });
             pythonProcess.on("close", (code) => {
