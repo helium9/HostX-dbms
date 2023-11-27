@@ -3,8 +3,8 @@ import Dashboard from "./pages/Dashboard"
 import Forms from "./pages/Forms";
 import AboutPage from "./pages/AboutUs";
 import LandingPage from "./pages/LandingPage" 
-import DashboardTest from "./pages/DashboardTest"
-import DashboardTest2 from "./pages/DashboardTest2"
+// import DashboardTest from "./pages/DashboardTest"
+// import DashboardTest2 from "./pages/DashboardTest2"
 import AdminTable from "./pages/AdminTable"
 import PrefTable from "./pages/PrefTable";
 
@@ -28,9 +28,9 @@ function App() {
         </PublicElement>}>
       </Route>
 
-      <Route path="/admin" element={<AdminElement><Dashboard/></AdminElement>}></Route>
-      <Route path="/admin2" element={<AdminElement><DashboardTest/></AdminElement>}></Route>
-      <Route path="/admin3" element={<AdminElement><DashboardTest2/></AdminElement>}></Route>
+      {/* <Route path="/admin" element={<AdminElement><Dashboard/></AdminElement>}></Route> */}
+      <Route path="/admin2" element={<AdminElement><Dashboard/></AdminElement>}></Route>
+      {/* <Route path="/admin3" element={<AdminElement><DashboardTest2/></AdminElement>}></Route> */}
       <Route path="/form" element={<UserElement><Forms /></UserElement>}></Route>
       <Route path="/Ptable" element={<UserElement><PrefTable /></UserElement>}></Route>
       <Route path="/table" element={<AdminTable />}></Route>

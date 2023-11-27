@@ -3,7 +3,7 @@ import blueCross from "../images/blueCross.svg";
 import blueEditPencil from "../images/blueEditPencil.svg";
 import { Card, CardHeader, CardBody, Button, Divider } from "@nextui-org/react";
 import { useState, useRef, useContext } from "react";
-import { AdminContext } from "../pages/DashboardTest";
+import { AdminContext } from "../pages/Dashboard";
 import {
   Modal,
   ModalContent,

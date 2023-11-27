@@ -13,7 +13,7 @@ import {
 import { Card, CardHeader, CardBody, Button, Divider } from "@nextui-org/react";
 import axios from "axios";
 import { useState, useContext, createContext } from "react";
-import { AdminContext } from "../pages/DashboardTest";
+import { AdminContext } from "../pages/Dashboard";
 
 function FormPlusModal({ getHostel }) {
   const { admin_ID, setAdmin } = useContext(AdminContext);
