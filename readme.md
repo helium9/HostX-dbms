@@ -26,8 +26,7 @@ Navigate to the server directory:
 2.`npm start`
 
 ## Start Frontend Server
-## Open a new terminal window, navigate to the client directory:
-
+Open a new terminal window, navigate to the client directory:
 1.`cd "HostX-dbms/client"`
 2.`npm start`
 
