@@ -575,7 +575,7 @@ app.get("/solve", (req, res) => {
         // console.log(groupSize);
         // console.log("hi", groupSize['2']);
         finalAllocation.push({
-          Floor: i,
+          Floor: i+1,
           Room: resultVector[i][j][0],
           Roll: group,
         });
