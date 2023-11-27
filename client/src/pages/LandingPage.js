@@ -1,19 +1,19 @@
 import React from "react";
 import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
-import pyramid from "../images/2_3pyramid.svg";
-import donut from "../images/5_3donut.svg";
-import strip from "../images/18_3strip.svg";
-import wave from "../images/Line 1wave.svg";
-import person from "../images/Frame 36persons.svg";
-import slice from "../images/Mask groupwatermelon.svg";
+import pyramid from "../images/pyramid.png";
+import donut from "../images/donut.png";
+import strip from "../images/18_3combine.png";
+import wave from "../images/wave.png";
+import person from "../images/person.png";
+import slice from "../images/Mask group.png";
 import { Link, Button } from "@nextui-org/react";
 
 export default function LandingPage() {
   return (
     <>
       <div className="relative flex flex-col ">
-        <NavbarComponent />
+        <NavbarComponent tokens={false} />
 
         <img
           className="absolute left-0 top-0 h-[200px] sm:w-3/4 sm:h-[250px] "
@@ -26,7 +26,7 @@ export default function LandingPage() {
 
         <img
           src={person}
-          className="w-[100px] sm:w-[120px] h-[128px] left-3/4 top-[100px] sm:w-1/8  md:top-[50px] md:h-[185px] lg:h-[280px] md:w-[20%] absolute"
+          className=" h-[128px] left-3/4 top-[100px]  md:top-[50px] md:h-[185px] lg:h-[280px] absolute"
         ></img>
         <img
           src={slice}
@@ -34,7 +34,7 @@ export default function LandingPage() {
         ></img>
         <img
           src={strip}
-          className="absolute w-[30%] h-[180px] hidden md:block top-[180px] lg:top-[240px] lg:left-[40%]  left-1/2"
+          className="absolute  h-[180px] hidden md:block top-[180px] lg:top-[240px] lg:left-[55%]  left-1/2"
         ></img>
         <img
           src={donut}

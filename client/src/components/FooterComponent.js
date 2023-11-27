@@ -14,7 +14,7 @@ export default function FooterComponent() {
         <div className="grid grid-cols-2 gap-4 gap-x-0 box-content justify-self-end  ml-auto text-2xl">
           <div className="font-[poppins]  self-left "><a href="/">Home</a></div>
           <div className="font-[poppins]  self-left "><a href="">Contact Us</a></div>
-          <div className="font-[poppins]  self-left "><a href="/form">Docs</a></div>
+          <div className="font-[poppins]  self-left "><a href="https://github.com/helium9/HostX-dbms">Docs</a></div>
           <div className="font-[poppins]  self-left "><a href="/about">About Us</a></div>
           <div className="font-[poppins]  self-left ">Help</div>
           <div className="font-[poppins]  self-left ">Results</div>

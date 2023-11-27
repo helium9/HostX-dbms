@@ -1,13 +1,16 @@
 import NavbarComponent from "../components/NavbarComponent";
-import { useState,useRef } from "react";
+import { useState,useRef,useEffect } from "react";
 import { Button } from "@nextui-org/react";
 import whiteTick from "../images/whiteTick.svg";
 import FooterComponent from "../components/FooterComponent";
 import React from 'react';
 import {Input} from "@nextui-org/react";
+import { useLocation } from 'react-router-dom';
+import { MailIcon } from "../images/MailIcon";
 import {useForm,Controller} from 'react-hook-form';
 // import {DevTool} from '@hookform/devtools';
 import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
 
 // function InputComponent({ id, children = "Roll number", isDisabled = false }) {
@@ -75,11 +78,13 @@ import axios from 'axios'
 function InputComponent(){
   const [value, setValue] = React.useState("");
 
+  
+
   return (
     <div className="w-full flex flex-col gap-2 max-w-[240px] group">
       <Input
       
-        label="Roommate Preference"
+        label={props.name1}
         classNames={{
           label: [
             "text-white-400 font-normal",
@@ -101,9 +106,10 @@ function InputComponent(){
             "group",
           ]
         }}
+        isRequired
         isDisabled={props.isDisabled}
         placeholder="220001001"
-        type="number"
+        type={"text"}
         value={props.value}
         onValueChange={setValue}
         name={props.name}
@@ -118,8 +124,40 @@ function InputComponent(){
   );
 
 }
+InputComponent.defaultProps = {
+  name1: 'Roommate Preference',
+ typo: 'number',
+};
 
 export default function Forms() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const Hostel_ID = searchParams.get('f');
+  const [pl,setpl]=useState(1);
+  const [email,setemail]=useState("");
+  const getMaxroom = () => {
+    axios
+      .get("http://localhost:8000/getMaxroom", {
+        params: {
+          hostel_ID: Hostel_ID,
+        },
+      })
+      .then((data) => {
+        console.log(data.data);
+       
+        setpl(data.data["Size"]);
+        
+        
+      })
+      .catch((err) => console.log(err));
+  };
+  useEffect(() => {
+    
+    
+    getMaxroom();
+  }, []);
+
  
   // const [username, setUsername] = useState("");
   // const usernameRef=useRef()
@@ -131,14 +169,14 @@ export default function Forms() {
   //   console.log(usernameRef);
   // }
 
-  const [post,setPost]=useState({
-    P1:'',
-    P2:'',
-    P3:'',
-    P4:'',
-    P5:'',
-    P6:''
-  })
+  // const [post,setPost]=useState({
+  //   P1:'',
+  //   P2:'',
+  //   P3:'',
+  //   P4:'',
+  //   P5:'',
+  //   P6:''
+  // })
 
   // const handleSubmit=(e)=>{
   //   e.preventDefault();
@@ -146,6 +184,14 @@ export default function Forms() {
   //   console.log(Object.fromEntries(data.entries()));
     
   // }
+
+  const [post, setPost] = useState(() => {
+    const initialState = {};
+    for (let i = 1; i <= pl; i++) {
+      initialState[`P${i}`] = '';
+    }
+    return initialState;
+  });
   
   const handleInput=(event)=>{
     setPost({...post,[event.target.name]: event.target.value})
@@ -173,8 +219,37 @@ export default function Forms() {
     }
   }
   
-  
-
+  const inputComponents = Array.from({ length: pl }, (_, i) => (
+    <InputComponent
+      key={i}
+      name={`P${i + 1}`}
+      name1={(i===0)?`Your Roll Number`:`Preference ${i}`}
+      id={`P${i + 1}`}
+      value={post[`P${i + 1}`]}
+      onChange={handleInput}
+    />
+  ));
+  const senddata = (e) => {
+    e.preventDefault();
+    const jsTimestamp = new Date().toISOString();
+    const sqlTimestamp = new Date(jsTimestamp).toISOString().slice(0, 19).replace('T', ' ');
+    console.log(post);
+    axios
+      .post("http://localhost:8000/getpref", {
+        params: {
+          hostel_ID: Hostel_ID,
+          pref:post,
+          Email:email,
+          time:sqlTimestamp ,
+        },
+      })
+      .then((data) => {
+       
+        window.alert("Successfully submitted the preferences");
+        // navigate("/new-route", { state: { hostelID: Hostel_ID } });        
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <>
       <div className="flex flex-col min-h-screen">
@@ -183,15 +258,18 @@ export default function Forms() {
            <p className="font-bold lg:text-4xl text-3xl m-4 lg:m-6 lg:ml-0 ml-0">
             Your preferences
            </p>
+           <InputComponent
+            classNames="mt-12"
+            typo="text"
+            name1="Email"
+            
+            value={email}
+            onChange={(e)=>{setemail(e.target.value)}}
+          />
           {/* <InputComponent id="P1" isDisabled={true}>220001001 placeholder="user" </InputComponent> */}
           {/* <InputComponent id="P1"  refer={usernameRef} /> */}
-          <InputComponent /*isDisabled*/ value={post.P1} name="P1" id="P1" onChange={handleInput}  />
-          <InputComponent name="P2" id="P2" value={post.P2} onChange={handleInput} />
-          <InputComponent name="P3" id="P3" value={post.P3} onChange={handleInput} />
-          <InputComponent name="P4" id="P4" value={post.P4} onChange={handleInput} />
-          <InputComponent name="P5" id="P5" value={post.P5} onChange={handleInput} />
-          <InputComponent name="P6" id="P6" value={post.P6} onChange={handleInput}/>
-          <Button type="submit" className="rounded-lg h-12 w-32 bg-blue-600 flex flex-row items-center m-0 p-0 gap-1 self-end mt-6">
+          {inputComponents} 
+          <Button type="submit" onClick={senddata} className="rounded-lg h-12 w-32 bg-blue-600 flex flex-row items-center m-0 p-0 gap-1 self-end mt-6">
             <img className="h-7 w-7" src={whiteTick} alt="menu" />
             <p className="text-xl font-bold">Submit</p>
           </Button>
