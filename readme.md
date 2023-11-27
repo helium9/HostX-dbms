@@ -13,24 +13,23 @@
    DB_PASSWORD='admin'
    DB_NAME='hostx-dbms'```
 # Clone the Repository and Install Dependencies
-git clone https://github.com/helium9/HostX-dbms.git
-cd HostX-dbms/server
-npm install
-cd ../client
-npm install
+1.`git clone https://github.com/helium9/HostX-dbms.git`
+2.`cd "HostX-dbms/server"`
+3.`npm install`
+4.`cd HostX-dbms/client`
+5.`npm install`
 
-## Usage
-# Start Backend Server
+# Usage
+## Start Backend Server
 Navigate to the server directory:
-
-`cd "HostX-dbms/server"`
-`npm start`
+1.`cd "HostX-dbms/server"`
+2.`npm start`
 
 ## Start Frontend Server
-# Open a new terminal window, navigate to the client directory:
+## Open a new terminal window, navigate to the client directory:
 
-`cd "HostX-dbms/client"`
-`npm start`
+1.`cd "HostX-dbms/client"`
+2.`npm start`
 
-# Visit http://localhost:3000 in your web browser to access the frontend.
+## Visit http://localhost:3000 in your web browser to access the frontend.
 
