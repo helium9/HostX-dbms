@@ -210,7 +210,7 @@ export default function Forms() {
         },
       })
       .then((data) => {
-       
+        alert("Thankyou for submission");
         console.log("Successfully submitted the preferences");
         // navigate("/new-route", { state: { hostelID: Hostel_ID } });        
       })
