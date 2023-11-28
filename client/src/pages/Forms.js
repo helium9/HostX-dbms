@@ -75,7 +75,7 @@ import { useNavigate } from "react-router-dom";
 //   );
 
 // }
-function InputComponent(){
+function InputComponent(props){
   const [value, setValue] = React.useState("");
 
   
