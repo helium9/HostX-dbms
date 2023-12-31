@@ -34,15 +34,27 @@ def makegraph_nodeletion(graph,li):
     return gr    
 
 
+# def dfs2(graph,visited,u,list):
+#     print("t1")
+#     x=int(u)
+#     visited.append(u)
+#     for node in graph[u]:
+#         if node not in visited:
+#             list.append(dfs2(graph,visited,node,list))
+#     print("t1")        
+#     return u 
 def dfs2(graph,visited,u,list):
-    
+    # print("indfs2",graph,visited,u,list)
     x=int(u)
     visited.append(u)
+    
     for node in graph[u]:
-        if node not in visited:
+        if node not in visited and node in graph:
+            # print("middfs2",node,graph,visited) 
             list.append(dfs2(graph,visited,node,list))
+    # print("lastdfs2")        
+         
     return u 
-
 
             
 def dfsrec2(graph,visited,u,list):
@@ -171,14 +183,7 @@ def allotgrpkrushkal(graph,G,n):
 
     return ms
 
-def dfs2(graph,visited,u,list):
-   
-    x=int(u)
-    visited.append(u)
-    for node in graph[u]:
-        if node not in visited:
-            list.append(dfs2(graph,visited,node,list))
-    return u 
+
 def wants(graph,fromgraph):
     count=0
     
@@ -238,29 +243,45 @@ def unified(graph,G,n):
             
             
     if(len(node)==n):
-            
-        for ver in node:
-            if ver in G:
-                del G[ver]
+        # print("loo",node,G)
+        nodes_to_delete = node
+        for nodes in nodes_to_delete:
+            if(nodes in G):
+                del G[nodes]
+            for other_node in G:
+                G[other_node] = [neighbor for neighbor in G[other_node] if neighbor != nodes]   
+                 
+        # print("looq",node,G)
+        # nodes_to_delete = inode
+        # for node in nodes_to_delete:
+        #     del G[node]
+        #     for other_node in G:
+        #         G[other_node] = [neighbor for neighbor in G[other_node] if neighbor != node]   
+        # print("in node",node,"G before",G,"inode",inode)      
+        # for ver in node:
+        #     if ver in G:
+        #         del G[ver]
 
-        for ver in G:
-            for vertex in G[ver]:
-                if vertex in node:
-                    G[ver].remove(vertex)
+        # for ver in G:
+        #     for vertex in G[ver]:
+        #         if vertex in node:
+        #             G[ver].remove(vertex)
 
 
-
-        for ver in inode:
-            if ver in G:
-                for v in G[ver]:
-                    G[ver].remove(v)
-        for ver in inode:
-            if ver in G:
-                del G[ver] 
-        for ver in G:
-            for vertex in G[ver]:
-                if vertex in inode:
-                    G[ver].remove(vertex)        
+        # # print("in node",node,"G before",G,"inode",inode) 
+        # for ver in inode:
+        #     if ver in G:
+        #         for v in G[ver]:
+        #             G[ver].remove(v)
+        # for ver in inode:
+        #     if ver in G:
+        #         del G[ver] 
+        # for ver in G:
+        #     for vertex in G[ver]:
+        #         if vertex in inode:
+        #             G[ver].remove(vertex)   
+        # print("in node",node,"G after",G,"inode",inode)
+        # print("in unified",node)                  
         return node  
 #     print(node)
 #     print(to_take)
@@ -277,14 +298,22 @@ def unified(graph,G,n):
     
     
     if(len(node)==n):
-        for ver in to_take:
-            if ver not in node:
-                node.append(ver)
-                for v in G[ver]:
-                    G[ver].remove(v)
-        for ver in to_take:
-            if ver in G:
-                del G[ver]
+        # print("loo",to_take,G)
+        nodes_to_delete = node
+        for nodes in nodes_to_delete:
+            if nodes in G:
+                del G[nodes]
+            for other_node in G:
+                G[other_node] = [neighbor for neighbor in G[other_node] if neighbor != nodes] 
+        # print("looq2",to_take,G)
+        # for ver in to_take:
+        #     if ver not in node:
+        #         node.append(ver)
+        #         for v in G[ver]:
+        #             G[ver].remove(v)
+        # for ver in to_take:
+        #     if ver in G:
+        #         del G[ver]
         return node  
             
 #     print(node)
@@ -349,35 +378,47 @@ def unified(graph,G,n):
                 if((len(node))==n):
                     break                        
 #     print(node)
-#     print(to_take)        
-    
-    for ver in node:
-        if ver in G:
-            for v in G[ver]:
-                G[ver].remove(v)
+#     print(to_take)
+    print("loo23",node,G)                    
+    nodes_to_delete = node
+    for nodes in nodes_to_delete:
+        if nodes in G:
+            del G[nodes]
+        for other_node in G:
+            G[other_node] = [neighbor for neighbor in G[other_node] if neighbor != nodes] 
+    print("loo23af",node,G)
+    # for ver in node:
+    #     if ver in G:
+    #         for v in G[ver]:
+    #             G[ver].remove(v)
             
-    for ver in node:
-        if ver in G:
-            del G[ver]
+    # for ver in node:
+    #     if ver in G:
+    #         del G[ver]
         
-    for ver in G:
-        for vertex in G[ver]:
-            if vertex in node:
-                G[ver].remove(vertex)
-               
-      
-    
-    for ver in inode:
-        if ver in G:
-            for v in G[ver]:
-                G[ver].remove(v)
-    for ver in inode:
-        if ver in G:
-            del G[ver] 
-    for ver in G:
-        for vertex in G[ver]:
-            if vertex in inode:
-                G[ver].remove(vertex)        
+    # for ver in G:
+    #     for vertex in G[ver]:
+    #         if vertex in node:
+    #             G[ver].remove(vertex)
+    # print("loo23inode",inode,G)           
+    nodes_to_delete = inode
+    for nodes in nodes_to_delete:
+        if nodes in G:
+            del G[nodes]
+        for other_node in G:
+            G[other_node] = [neighbor for neighbor in G[other_node] if neighbor != nodes]   
+    # print("loo23uiuiu",inode,G)
+    # for ver in inode:
+    #     if ver in G:
+    #         for v in G[ver]:
+    #             G[ver].remove(v)
+    # for ver in inode:
+    #     if ver in G:
+    #         del G[ver] 
+    # for ver in G:
+    #     for vertex in G[ver]:
+    #         if vertex in inode:
+    #             G[ver].remove(vertex)        
     return node   
                         
         
@@ -420,6 +461,8 @@ scc=out[0]
 scc=[i for i in scc if len(i)>1]
 scc = sorted(scc, key=lambda x: -len(x))
 n=max(room, key=lambda k: k)
+# print("scc",scc)
+# print("out" ,out[1])
 
 for grs in scc:
         # print(grs)
@@ -427,13 +470,21 @@ for grs in scc:
             break
         if len(grs)==n:
             grt=[i for i in grs]
-            for ver in G:
-                for v in G[ver]:
-                    if v in grt:
-                        G[ver].remove(v)
-            for ver in grt:
-                if ver in G:
-                    del G[ver]
+            # print("grs",grs)
+            # print("grt",grt)
+            # print("G1before",G)
+            nodes_to_delete = grt
+            for node in nodes_to_delete:
+                del G[node]
+                for other_node in G:
+                    G[other_node] = [neighbor for neighbor in G[other_node] if neighbor != node]
+            # for ver in G:
+            #     for v in G[ver]:
+            #         if v in grt:
+            #             G[ver].remove(v)
+            # for ver in grt:
+            #     if ver in G:
+            #         del G[ver]
             room[n]=room[n]-1
             if(room[n]==0):
                 del room[n]
@@ -441,6 +492,7 @@ for grs in scc:
             if(len(G)==0 or len(room)==0):
                 break
             n=max(room, key=lambda k: k)
+            # print("G1",G)
             
             continue
                     
@@ -468,40 +520,55 @@ for grs in scc:
                 break
             n=max(room, key=lambda k: k)
             continue
-
+# print("Hello")
 while(len(G)!=0 and len(room)!=0):
     # print("Gnow",G) 
+    # print("room",room)
     if(len(G)==0 or len(room)==0):
             break
     visited=[]
     glist=[]
+    # print("t")
     for i in G:
         if i not in visited:
             li=[i]
+            # print("t")
             dfs2(G,visited,i,li)
+            # print("tend",G)
             glist.append(li)
+    # print("tlast")        
     glist=[makegraph_nodeletion(G,i) for i in glist]
     # print("glist",glist)
-    # print("room",room)
+    # print("G",G)
+    # print("room2",room)
     # print("ans",ans)
     # print("n",n)
 
 
     for grs in glist:
+        # print("Imh")
         if(len(G)==0 | len(room)==0):
             # print("Executed_1")
             break
         if len(grs)==n:
             # print("grs_1",grs)
-            grt=[i for i in grs]
-            for ver in G:
-                for v in G[ver]:
 
-                    if v in grt:
-                        G[ver].remove(v)
-            for ver in grt:
-                if ver in G:
-                    del G[ver]
+            grt=[i for i in grs]
+            nodes_to_delete = grt
+            for node in nodes_to_delete:
+                del G[node]
+                for other_node in G:
+                    G[other_node] = [neighbor for neighbor in G[other_node] if neighbor != node]
+            # print("Gaf",G)
+            # print("room2af",room)        
+            # for ver in G:
+            #     for v in G[ver]:
+
+            #         if v in grt:
+            #             G[ver].remove(v)
+            # for ver in grt:
+            #     if ver in G:
+            #         del G[ver]
             room[n]=room[n]-1
             if(room[n]==0):
                 del room[n]
@@ -516,6 +583,8 @@ while(len(G)!=0 and len(room)!=0):
         if len(grs)>n:
             # print("grs_2",grs)
             grt=allotgrpkrushkal(grs,G,n)
+            # print("Gaf2",G)
+            # print("room2af2",room)    
 
 
 
@@ -531,7 +600,10 @@ while(len(G)!=0 and len(room)!=0):
             continue
         if len(grs)<n: 
             # print("grs_3",grs)
+            # print("Gafunified bef",G)
             grt=unified(grs,G,n)
+            # print("Gafunified",G)
+              
             # print("3",grt)
 
             room[n]=room[n]-1
@@ -542,10 +614,16 @@ while(len(G)!=0 and len(room)!=0):
                 # print("Executed_4")
                 break
             n=max(room, key=lambda k: k)
+            # print("room2afunif",room) 
+            # print("answer",ans) 
             continue
 
 ans = {str(key): value for key, value in ans.items()}
 # print("Helo")
 # print("ans",ans)
+# j=0
+# while(True):
+#     j=j
+
 print(ans)
     
